@@ -1,0 +1,177 @@
+        <?php
+        require 'lib/Session.php';
+        require "lib/Database.php";
+
+        Session::checkSession();
+
+        $db = new Database();
+
+        if(isset($_POST['principal_id'])){
+            $principal_id = $_POST['principal_id'];
+            $fromdate = $_POST['fromdate'];
+            $todate = $_POST['todate'];
+
+            $filename = $db->getPrincipalName($principal_id).'_'.$fromdate.'_'.$todate.'.csv';
+
+            $output = fopen('php://output', 'w');
+
+            $is_print = 0;
+
+            /*----------------------------------------------------------*/
+
+
+            if($principal_id == 1){
+                $fields = array('DHL AWB NO', 'SHIPPER REFERENCE', 'SHIPPER COMPANY', 'SHIPPER ATTN NAME', 'SHIPPER COUNTRY', 'RECEIVER COMPANY', 'RECEIVER ATTN', ' RECEIVER ADD 1', 'RECEIVER ADD 2', 'RECEIVER ADD 3', 'RECEIVER CITY', 'RECEIVER POSTAL CODE', 'RECEIVER COUNTRY CODE', 'RECEIVER PHONE', 'RECEIVER MOBILE', 'SHIPMENT PIECES', 'SHIPMENT WEIGHT', 'LOCAL PRODUCT CODE', 'CONTENTS ', 'ROUNDED WEIGHT', 'SHIPMENT DECLARED VALUE');
+
+                fputcsv($output, $fields, ',');
+
+                /*$csv_export = "";*/
+
+                $sql = "SELECT tracking_id FROM consignment_booked WHERE principal_id='$principal_id' AND assigned_date BETWEEN '$fromdate' AND '$todate' AND status='0'";
+                $query = $db->link->query($sql);
+                if($query->num_rows > 0){
+                    $is_print = 1;
+                    while($rowR = $query->fetch_assoc()){
+                        $tr = $rowR['tracking_id'];
+
+                        $conQl = "SELECT * FROM consignment_booking WHERE tracking_id='$tr'";
+                        $conQry = $db->link->query($conQl);
+                        while($row = $conQry->fetch_assoc()){
+                            $fields = array($row['tracking_id'], $row['s_company'], $row['s_name'], $row['s_country'], $row['r_company'], $row['r_name'], $row['r_address1'], $row['r_address2'], $row['r_address3'], $row['r_city'], $row['r_zip'], $row['r_country'], $row['r_phone'], $row['r_mobile'], $row['g_pieces'], $row['g_weight'], $row['g_type'], $row['g_title'], $row['g_weight'], $row['g_customs_value']);
+                            fputcsv($output, $fields, ",");
+                        }
+                    }
+                }
+            }else if($principal_id == 2){
+                $fields = array("FEDEX AWB NO", 'SHIPMENT ACCOUNT NO', 'SHIPPER_COMPANY', 'SHIPPER_ATTN', 'SHIPPER_ADD1', 'SHIPPER_ADD2', 'SHIPPER_CITY', ' SHIPPER_PHONE', 'SENDER_REFERENCE', 'RECEIVER_COMPANY', 'RECEIVER_ATTENTION', 'RECEIVER_ADDRESS_1', 'RECEIVER_ADDRESS_2', 'RECEIVER_CITY', 'RECEIVER_STATE', 'RECEIVER_ZIP', 'RECEIVER_COUNTRY', 'RECEIVER_PHONE', 'RECEIVER EMAIL', 'SHIPMENT_PIECES', 'TOTAL_WEIGHT', 'CUSTOM_VALUE', 'DESCRIPTION', 'COUNTRY OF MANUFACTURE', 'SERVICE TYPE', 'DOCUMENT TYPE');
+
+                fputcsv($output, $fields, ",");
+
+                /*$csv_export = "";*/
+
+                $sql = "SELECT tracking_id FROM consignment_booked WHERE principal_id='$principal_id' AND assigned_date BETWEEN '$fromdate' AND '$todate' AND status='0'";
+                $query = $db->link->query($sql);
+                if($query->num_rows > 0){
+                    $is_print = 1;
+                    while($rowR = $query->fetch_assoc()){
+                        $tr = $rowR['tracking_id'];
+
+                        $conQl = "SELECT * FROM consignment_booking WHERE tracking_id='$tr'";
+                        $conQry = $db->link->query($conQl);
+                        while($row = $conQry->fetch_assoc()){
+                            $fields = array(' ', ' ', $row['s_company'], $row['s_name'], $row['s_country'], $row['s_address'], '', $row['s_contact'], $row['tracking_id'], $row['r_company'], $row['r_name'], $row['r_address1'], $row['r_address2'], $row['r_city'], '', $row['r_zip'], $row['r_country'], $row['r_phone'], $row['r_email'], $row['g_pieces'], $row['g_weight'], $row['g_customs_value'], $row['g_title'], 'CN', 'IP', $row['g_type']);
+                            fputcsv($output, $fields, ",");
+                        }
+                    }
+                }
+            }else if($principal_id == 3){
+                $fields = array('DHL AWB NO', 'SHIPPER REFERENCE', 'SHIPPER COMPANY', 'SHIPPER ATTN NAME', 'SHIPPER COUNTRY', 'RECEIVER COMPANY', 'RECEIVER ATTN', ' RECEIVER ADD 1', 'RECEIVER ADD 2', 'RECEIVER ADD 3', 'RECEIVER CITY', 'RECEIVER POSTAL CODE', 'RECEIVER COUNTRY CODE', 'RECEIVER PHONE', 'RECEIVER MOBILE', 'SHIPMENT PIECES', 'SHIPMENT WEIGHT', 'LOCAL PRODUCT CODE', 'CONTENTS ', 'ROUNDED WEIGHT', 'SHIPMENT DECLARED VALUE');
+
+                fputcsv($output, $fields, ",");
+
+                $csv_export = "";
+
+                $sql = "SELECT tracking_id FROM consignment_booked WHERE principal_id='$principal_id' AND assigned_date BETWEEN '$fromdate' AND '$todate' AND status='0'";
+                $query = $db->link->query($sql);
+                if($query->num_rows > 0){
+                    $is_print = 1;
+                    while($rowR = $query->fetch_assoc()){
+                        $tr = $rowR['tracking_id'];
+
+                        $conQl = "SELECT * FROM consignment_booking WHERE tracking_id='$tr'";
+                        $conQry = $db->link->query($conQl);
+                        while($row = $conQry->fetch_assoc()){
+                            $fields = array('', $row['tracking_id'], $row['s_company'], $row['s_name'], $row['s_country'], $row['r_company'], $row['r_name'], $row['r_address1'], $row['r_address2'], $row['r_address3'], $row['r_city'], $row['r_zip'], $row['r_country'], $row['r_phone'], $row['r_mobile'], $row['g_pieces'], $row['g_weight'], $row['g_type'], $row['g_title'], $row['g_weight'], $row['g_customs_value']);
+                            fputcsv($output, $fields, ",");
+                        }
+                    }
+                }
+            }else if($principal_id == 4){
+
+                $fields = array('DHL AWB NO', 'SHIPPER REFERENCE', 'SHIPPER COMPANY', 'SHIPPER ATTN NAME', 'SHIPPER COUNTRY', 'RECEIVER COMPANY', 'RECEIVER ATTN', ' RECEIVER ADD 1', 'RECEIVER ADD 2', 'RECEIVER ADD 3', 'RECEIVER CITY', 'RECEIVER POSTAL CODE', 'RECEIVER COUNTRY CODE', 'RECEIVER PHONE', 'RECEIVER MOBILE', 'SHIPMENT PIECES', 'SHIPMENT WEIGHT', 'LOCAL PRODUCT CODE', 'CONTENTS ', 'ROUNDED WEIGHT', 'SHIPMENT DECLARED VALUE');
+
+                fputcsv($output, $fields, ",");
+
+                $csv_export = "";
+
+                $sql = "SELECT tracking_id FROM consignment_booked WHERE principal_id='$principal_id' AND assigned_date BETWEEN '$fromdate' AND '$todate' AND status='0'";
+                $query = $db->link->query($sql);
+                if($query->num_rows > 0){
+                    $is_print = 1;
+                    while($rowR = $query->fetch_assoc()){
+                        $tr = $rowR['tracking_id'];
+
+                        $conQl = "SELECT * FROM consignment_booking WHERE tracking_id='$tr'";
+                        $conQry = $db->link->query($conQl);
+                        while($row = $conQry->fetch_assoc()){
+                            $fields = array('', $row['tracking_id'], $row['s_company'], $row['s_name'], $row['s_country'], $row['r_company'], $row['r_name'], $row['r_address1'], $row['r_address2'], $row['r_address3'], $row['r_city'], $row['r_zip'], $row['r_country'], $row['r_phone'], $row['r_mobile'], $row['g_pieces'], $row['g_weight'], $row['g_type'], $row['g_title'], $row['g_weight'], $row['g_customs_value']);
+                            fputcsv($output, $fields, ",");
+                        }
+                    }
+                }
+            }else if($principal_id == 5){
+
+                $fields = array('DHL AWB NO', 'SHIPPER REFERENCE', 'SHIPPER COMPANY', 'SHIPPER ATTN NAME', 'SHIPPER COUNTRY', 'RECEIVER COMPANY', 'RECEIVER ATTN', ' RECEIVER ADD 1', 'RECEIVER ADD 2', 'RECEIVER ADD 3', 'RECEIVER CITY', 'RECEIVER POSTAL CODE', 'RECEIVER COUNTRY CODE', 'RECEIVER PHONE', 'RECEIVER MOBILE', 'SHIPMENT PIECES', 'SHIPMENT WEIGHT', 'LOCAL PRODUCT CODE', 'CONTENTS ', 'ROUNDED WEIGHT', 'SHIPMENT DECLARED VALUE');
+
+                fputcsv($output, $fields, ",");
+
+                $csv_export = "";
+
+                $sql = "SELECT tracking_id FROM consignment_booked WHERE principal_id='$principal_id' AND assigned_date BETWEEN '$fromdate' AND '$todate' AND status='0'";
+                $query = $db->link->query($sql);
+                if($query->num_rows > 0){
+                    $is_print = 1;
+                    while($rowR = $query->fetch_assoc()){
+                        $tr = $rowR['tracking_id'];
+
+                        $conQl = "SELECT * FROM consignment_booking WHERE tracking_id='$tr'";
+                        $conQry = $db->link->query($conQl);
+                        while($row = $conQry->fetch_assoc()){
+                            $fields = array('', $row['tracking_id'], $row['s_company'], $row['s_name'], $row['s_country'], $row['r_company'], $row['r_name'], $row['r_address1'], $row['r_address2'], $row['r_address3'], $row['r_city'], $row['r_zip'], $row['r_country'], $row['r_phone'], $row['r_mobile'], $row['g_pieces'], $row['g_weight'], $row['g_type'], $row['g_title'], $row['g_weight'], $row['g_customs_value']);
+                            fputcsv($output, $fields, ",");
+                        }
+                    }
+                }
+            }else if($principal_id == 6){
+
+                $fields = array('DHL AWB NO', 'SHIPPER REFERENCE', 'SHIPPER COMPANY', 'SHIPPER ATTN NAME', 'SHIPPER COUNTRY', 'RECEIVER COMPANY', 'RECEIVER ATTN', ' RECEIVER ADD 1', 'RECEIVER ADD 2', 'RECEIVER ADD 3', 'RECEIVER CITY', 'RECEIVER POSTAL CODE', 'RECEIVER COUNTRY CODE', 'RECEIVER PHONE', 'RECEIVER MOBILE', 'SHIPMENT PIECES', 'SHIPMENT WEIGHT', 'LOCAL PRODUCT CODE', 'CONTENTS ', 'ROUNDED WEIGHT', 'SHIPMENT DECLARED VALUE');
+
+                fputcsv($output, $fields, ",");
+
+                $csv_export = "";
+
+                $sql = "SELECT tracking_id FROM consignment_booked WHERE principal_id='$principal_id' AND assigned_date BETWEEN '$fromdate' AND '$todate' AND status='0'";
+                $query = $db->link->query($sql);
+                if($query->num_rows > 0){
+                    $is_print = 1;
+                    while($rowR = $query->fetch_assoc()){
+                        $tr = $rowR['tracking_id'];
+
+                        $conQl = "SELECT * FROM consignment_booking WHERE tracking_id='$tr'";
+                        $conQry = $db->link->query($conQl);
+                        while($row = $conQry->fetch_assoc()){
+                            $fields = array('', $row['tracking_id'], $row['s_company'], $row['s_name'], $row['s_country'], $row['r_company'], $row['r_name'], $row['r_address1'], $row['r_address2'], $row['r_address3'], $row['r_city'], $row['r_zip'], $row['r_country'], $row['r_phone'], $row['r_mobile'], $row['g_pieces'], $row['g_weight'], $row['g_type'], $row['g_title'], $row['g_weight'], $row['g_customs_value']);
+                            fputcsv($output, $fields, ",");
+                        }
+                    }
+                }
+            }else{
+                header("location: index.php");
+            }
+
+
+            /* end all csv create code*/
+
+            /* checque csv*/
+            if($is_print == 1){
+
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename='.$filename.';');
+                fpassthru($output);
+            }
+
+        }else{
+            header("location: index.php");
+        }
+
+        ?>
