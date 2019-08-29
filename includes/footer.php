@@ -3994,7 +3994,16 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
                         method: "POST",
                         data: form_data,
                         success: function(data){
-                            console.log(data);
+                            if(data == "1"){
+                                alert("Consignment Booked!");
+                                document.getElementById("corporate_booking_form").reset();
+                                $("#corporate_clients").selectpicker('refresh');
+                                $("#corporate_dest_country").selectpicker('refresh');
+                                $("#corporate_goods_weight").selectpicker('refresh');
+                                $("#corporate_bdt").text("");
+                            }else{
+                                alert("Somthing wrongs!!!!!!!!!!!!!!");
+                            }
                         }
                     });
                 }else{
@@ -4090,6 +4099,10 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
                                 alert('Consigned Booking Successfully!');
                                 
                                 document.getElementById('personal_consignment_form').reset();
+                                $("#personal_dest_country").selectpicker("refresh");
+                                $("#personal_goods_weight").selectpicker("refresh");
+                                $("#assigned_user").selectpicker("refresh");
+                                $("#personal_bdt").text("");
                             }else{
                                 alert("Consignment Already Submitted!");
                             }
