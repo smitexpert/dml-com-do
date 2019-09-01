@@ -11,7 +11,7 @@ $dbn = new Database();
 
 if(isset($_POST['agent_id'])){
     $agent_id = $_POST['agent_id'];
-    $get_mail_query = "SELECT email FROM agent_company WHERE id='$agent_id'";
+    $get_mail_query = "SELECT email FROM agent_clients WHERE id='$agent_id'";
     $get_mail_result = $db->link->query($get_mail_query);
     $get_mail = $get_mail_result->fetch_row();
     $mail = $get_mail[0];
@@ -43,7 +43,7 @@ if(isset($_POST['agent_id'])){
 
 if(isset($_POST['agent_up'])){
     $agent_id = $_POST['agent_up'];
-    $get_mail_query = "SELECT email FROM agent_company WHERE id='$agent_id'";
+    $get_mail_query = "SELECT email FROM agent_clients WHERE id='$agent_id'";
     $get_mail_result = $db->link->query($get_mail_query);
     $get_mail = $get_mail_result->fetch_row();
     $mail = $get_mail[0];
@@ -78,15 +78,15 @@ if(isset($_POST['agent_up'])){
 if($_POST['agent_status_id']){
     $agent_id = $_POST['agent_status_id'];
     
-    $get_sql = "SELECT status FROM agent_company WHERE id='$agent_id'";
+    $get_sql = "SELECT status FROM agent_clients WHERE id='$agent_id'";
     $get_query = $db->link->query($get_sql);
     $get_result = $get_query->fetch_row();
     $result = $get_result[0];
     
     if($result == 0){
-        $up_sql = "UPDATE agent_company SET status = '1' WHERE id='$agent_id'";
+        $up_sql = "UPDATE agent_clients SET status = '1' WHERE id='$agent_id'";
     }else{
-        $up_sql = "UPDATE agent_company SET status = '0' WHERE id='$agent_id'";
+        $up_sql = "UPDATE agent_clients SET status = '0' WHERE id='$agent_id'";
     }
     
     $up_query = $db->link->query($up_sql);

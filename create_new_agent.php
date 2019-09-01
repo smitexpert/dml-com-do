@@ -18,14 +18,20 @@ if (isset($_POST['agent_name'])) {
     $client_status = $_POST['client_status'];
     $corpoAssignTo = $_POST['corpoAssignTo'];
     
+    $password = md5(123456);
+    
     $created_by = Session::get("adminId");
     
+    $created_date = date('Y-m-d');
     
-    $insert = "INSERT INTO agent_company (name, email, company_name, address, contact, assign_to, created_by, status) VALUES ('$agent_name', '$client_mail', '$client_company', '$client_addr', '$client_contact', '$corpoAssignTo', '$created_by', $client_status)";
+    
+    $insert = "INSERT INTO agent_clients (name, email, company_name, address, contact, bank_name, bank_account_name, bank_acount_number, member_type, discount_offer, password, assign_to, created_by, created_date, status) VALUES ('$agent_name', '$client_mail', '$client_company', '$client_addr', '$client_contact', '$bank_name', '$account_name', '$acc_num', '$member_type', '$discount', '$password', '$corpoAssignTo', '$created_by', '$created_date', '$client_status')";
     
     $query = $db->link->query($insert);
     
     if($query){
+        $newQuery = "INSERT INTO agent_accounts (agent_email, credit_limit, cash_amount, debit_amount, update_date, balance, update_by) VALUES ('$client_mail', '0', '0', '0', NOW(), '0', '$created_by')";
+        $newResult = $db->link->query($newQuery);
         header('location: '.$_SERVER['PHP_SELF']."?success");
     }else{
         header('location: '.$_SERVER['PHP_SELF']."?error=".$db->link->error);

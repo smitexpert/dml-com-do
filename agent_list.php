@@ -1,6 +1,6 @@
 <?php 
 include('includes/header.php'); 
-	$query = "SELECT * FROM  agent_company order by id desc";
+	$query = "SELECT * FROM  agent_clients order by id desc";
     $result = $db->link->query($query);
     
 ?>

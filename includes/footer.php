@@ -2182,6 +2182,63 @@ if($uri_parts[0] == '/client_limit_update.php'){
 		<?php
 }
 
+if($uri_parts[0] == '/agent_limit_update.php'){
+    ?>
+
+		<script>
+		    $("#agent_limit_update_id").change(function() {
+		        var agent_id = $("#agent_limit_update_id").find(":selected").val();
+		        $("#alert").children().remove();
+		        $(".loading").css("display", "block");
+		        $.ajax({
+		            url: "../ajax/ajax_agent_limit_update.php",
+		            method: "POST",
+		            data: {
+		                agent_limit_update_id_check: agent_id
+		            },
+		            success: function(data) {
+
+		                $(".loading").css("display", "none");
+
+		                if (data == 'NOT') {
+		                    $("#alert").append('<div class="alert alert-danger"><strong>Warning!</strong><br> Agent Not Found!</div>');
+		                } else {
+		                    $("#currentcredit").val(data);
+		                }
+		            }
+		        });
+		    });
+
+		    $("#agent_limit_update").on('submit', function(event) {
+		        event.preventDefault();
+		        var agent_limit_update = $("#agent_limit_update").serialize();
+		        $("#alert").children().remove();
+		        $(".loading").css("display", "block");
+
+		        $.ajax({
+		            url: "../ajax/ajax_agent_limit_update.php",
+		            method: "POST",
+		            data: agent_limit_update,
+		            success: function(data) {
+		                $(".loading").css("display", "none");
+
+		                if (data == 1) {
+		                    alert('Limit Update Successfully!');
+		                    location.reload();
+		                } else {
+
+		                    $("#alert").append(data);
+		                }
+
+		            }
+		        });
+		    });
+
+		</script>
+
+		<?php
+}
+
 
 
 if($uri_parts[0] == '/set_general_price.php'){
@@ -3884,6 +3941,12 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
 
 		        $("#corporate_body").css("display", "none");
 		        $("#agent_body").css("display", "block");
+                
+                document.getElementById("agent_consignment_form").reset();
+                
+                $("#agent_principal").find('option').remove();
+                $(".selectpicker").selectpicker('refresh');
+                
 		    });
 
 		    $("#corporate_clients").change(function() {
@@ -3911,7 +3974,7 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
 		                    $(".corporate_sender_addr").val(data.address);
 		                    $(".corporate_assign_to").val(data.assign_to);
                             
-                            $("#corporate_shipping_charge").val("");
+//                            $("#corporate_shipping_charge").val("");
 		                }
 		            })
 		        }
@@ -4112,6 +4175,126 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
 		            alert("Please Check All Required Field Are Filled Up!");
 		        }
 		    });
+            
+            $("#agent_company").change(function(){
+                var agent_company = $("#agent_company").find(":selected").val();
+                
+                $.ajax({
+                    url: "../ajax/consignment/ajax_agent_form.php",
+                    method: "POST",
+                    data: { get_agent_info: agent_company },
+                    dataType: 'JSON',
+                    success: function(data){
+                        $(".agent_sender_name").val(data.name);
+                        $("#agent_company_name").val(data.company_name);
+                        $(".agent_sender_mail").val(data.email);
+                        $(".agent_sender_contact").val(data.contact);
+                        $(".agent_sender_addr").val(data.address);
+                        $(".agent_assign_to").val(data.assign_to);
+//                        console.log(data);
+                    }
+                });
+                
+                $.ajax({
+                    url: "../ajax/consignment/ajax_agent_form.php",
+                    method: "POST",
+                    data: { get_agent_principals: agent_company },
+                    success: function(data){
+                        $("#agent_principal").find('option').remove();
+                        $("#agent_principal").append(data);
+                        $("#agent_principal").selectpicker('refresh');
+                    }
+                });
+            });
+            
+            
+            function get_agent_price(){
+                var agent_dest_country = $("#agent_dest_country").find(":selected").val();
+                var agent_goods_type = $("#agent_goods_type").find(":selected").val();
+                var agent_goods_weight = $("#agent_goods_weight").find(":selected").val();
+                var agent_principal = $("#agent_principal").find(":selected").val();
+                var agent_sender_mail = $(".agent_sender_mail").val();
+                if((agent_dest_country != "") && (agent_goods_type != "") && (agent_goods_weight != "") && (agent_principal != "") && (agent_sender_mail != "")){
+                    
+                    $.ajax({
+                        url: "../ajax/consignment/ajax_agent_form.php",
+                        method: "POST",
+                        data: { 
+                            agent_dest_country: agent_dest_country,
+                            agent_goods_type: agent_goods_type,
+                            agent_goods_weight: agent_goods_weight,
+                            agent_principal: agent_principal,
+                            agent_sender_mail: agent_sender_mail
+                        },
+                        success: function(data){
+                            if(data == 'NOTHING'){
+                                
+                                $("#agent_shipping_charge").val("");
+                                var con = confirm("No Price Found! Do you want to input Price Manually?");
+                                if(con == true){
+                                    $("#agent_shipping_charge").prop('readonly', false);
+                                    agent_convert_to_bdt()
+                                }
+                            }else{
+                                $("#agent_shipping_charge").prop('readonly', true);
+                                $("#agent_shipping_charge").val(data);
+                                agent_convert_to_bdt()
+                            }
+                        }
+                    });
+                    
+                }
+            }
+            
+            function agent_convert_to_bdt(){
+                var usd = $("#agent_shipping_charge").val();
+                $("#agent_bdt").text("");
+                if(usd != ""){
+                    $.ajax({
+                        url: "../ajax/consignment/ajax_agent_form.php",
+                        method: "POST",
+                        data: {
+                            usd: usd
+                        },
+                        success: function(data){
+                            $("#agent_bdt").text(data);
+                        }
+                    });
+                }
+            }
+            
+            $("#agent_consignment_form").submit(function(event){
+                event.preventDefault();
+                var form_data = $(this).serialize();
+                var agent_company = $("#agent_company").val();
+                var agent_dest_country = $("#agent_dest_country").val();
+                var agent_goods_type = $("#agent_goods_type").val();
+                var agent_goods_weight = $("#agent_goods_weight").val();
+                var agent_principal = $("#agent_principal").val();
+                var agent_shipping_charge = $("#agent_shipping_charge").val();
+                var agent_tracking_id = $(".agent_tracking_id").val();
+                
+                if((agent_shipping_charge != "") && (agent_tracking_id != "")){
+                    $.ajax({
+                        url: "../ajax/consignment/ajax_agent_form.php",
+                        data: form_data,
+                        method: "POST",
+                        success: function(data){
+                            if(data == '1'){
+                                alert("Consigned Booking Successfully!");
+                                document.getElementById("agent_consignment_form").reset();
+                                $('.selectpicker').selectpicker('refresh');
+                            }else{
+                                alert("SOMETHING WRONG!!!!");
+                            }
+                        }
+                    });
+                }else{
+                    alert("Please Fillup all required fields!!!");
+                }
+                
+                
+            })
 
 		</script>
 		<?php

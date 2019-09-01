@@ -72,7 +72,7 @@ if(isset($_POST['zone_no'])){
     $agent_id = $_POST['agent_id'];
     $principal_id = $_POST['principal_id'];
     
-    $sl_agent = "SELECT email FROM agent_company WHERE id='$agent_id'";
+    $sl_agent = "SELECT email FROM agent_clients WHERE id='$agent_id'";
     $ql_agent = $db->link->query($sl_agent);
     $row_agent = $ql_agent->fetch_row();
     
@@ -91,7 +91,7 @@ if(isset($_POST['zone_no'])){
 
 if(isset($_POST['get_agent_mail'])){
     $get_agent_mail = $_POST['get_agent_mail'];
-    $sl_agent = "SELECT email FROM agent_company WHERE id='$get_agent_mail'";
+    $sl_agent = "SELECT email FROM agent_clients WHERE id='$get_agent_mail'";
     $ql_agent = $db->link->query($sl_agent);
     $row_agent = $ql_agent->fetch_row();
     echo $row_agent[0];
@@ -206,7 +206,7 @@ if(isset($_POST['agent_zone_price'])){
     
     $get_agent_mail = $_POST['agent_zone_price'];
     $view_price_principal = $_POST['view_price_principal'];
-    $sl_agent = "SELECT email FROM agent_company WHERE id='$get_agent_mail'";
+    $sl_agent = "SELECT email FROM agent_clients WHERE id='$get_agent_mail'";
     $ql_agent = $db->link->query($sl_agent);
     $row_agent = $ql_agent->fetch_row();
     $agent_mail = $row_agent[0];

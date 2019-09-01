@@ -188,7 +188,7 @@
 								</li>
 							</ol>
 							<div class="page-header">
-								<h1>Dashboard <small>overview &amp; stats </small></h1>
+								<h1>Dashboard <small>overview &amp; stats</small></h1>
 							</div>
 							<!-- end: PAGE TITLE & BREADCRUMB -->
 						</div>

@@ -676,7 +676,7 @@ if (isset($_POST['submit'])) {
                     </form>
                 </div>
                 <div id="agent_body" style="display: none">
-                    <form action="">
+                    <form action="" id="agent_consignment_form">
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -698,10 +698,12 @@ if (isset($_POST['submit'])) {
                                                                 <label class="control-label">
                                                                     Agent Company <span class="symbol required"></span>
                                                                 </label>
+                                                                <input type="hidden" name="assign_to" class="agent_assign_to">
+                                                                <input type="hidden" id="agent_company_name" name="agent_company_name">
                                                                 <select id="agent_company" name="agent_company" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
 
                                                                     <option value="">Select Agent</option>
-                                                                    <?php $query = "SELECT * FROM agent_company WHERE status=1 ORDER BY id DESC";
+                                                                    <?php $query = "SELECT * FROM agent_clients WHERE status=1 ORDER BY id DESC";
 														    $selectCorpoClient = $Corpoclients->selectCorpoClient($query);
 														    if ($selectCorpoClient) { while ($getcropoclnt=$selectCorpoClient->fetch_assoc()) { ?>
                                                                     <option value="<?php echo $getcropoclnt['id'];?>"><?php echo $getcropoclnt['company_name'];?></option>
@@ -851,7 +853,7 @@ if (isset($_POST['submit'])) {
                                                             <div class="form-group connected-group">
                                                                 <label class="control-label">Destination Country<span class="symbol required"></span>
                                                                 </label>
-                                                                <select name="dest_country" id="dest_country" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                                                <select onchange="get_agent_price()" name="dest_country" id="agent_dest_country" class="form-control selectpicker agent_dest_country" data-show-subtext="true" data-live-search="true">
                                                                     <option value="">--</option>
                                                                     <?php $query2 = "SELECT * FROM tbl_country WHERE status=1";
 																	    $selectcnty = $Consignment->selectConsignment($query2);
@@ -860,6 +862,14 @@ if (isset($_POST['submit'])) {
 
                                                                     <?php } }else{} ?>
                                                                 </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="">ZIP</label>
+                                                                <input type="text" class="form-control" name="recipient_zip">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -877,7 +887,7 @@ if (isset($_POST['submit'])) {
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="goods_title">Goods Title</label>
-                                                                <input type="text" class="form-control" id="goods_title" placeholder="Goods Title">
+                                                                <input type="text" class="form-control" id="goods_title" placeholder="Goods Title" name="goods_title" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
@@ -885,7 +895,7 @@ if (isset($_POST['submit'])) {
                                                                 <label class="control-label">
                                                                     Local Product Code <span class="symbol required"></span>
                                                                 </label>
-                                                                <select name="goods_type" id="goods_type" class="form-control">
+                                                                <select onchange="get_agent_price()" name="goods_type" id="agent_goods_type" class="form-control" required>
                                                                     <option value="">--</option>
                                                                     <option value="P">Parcel</option>
                                                                     <option value="D">Document</option>
@@ -900,7 +910,7 @@ if (isset($_POST['submit'])) {
                                                                 <label class="control-label">
                                                                     Goods Weight <span class="symbol required"></span>
                                                                 </label>
-                                                                <select name="goods_weight" id="goods_weight" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                                                <select onchange="get_agent_price()" name="goods_weight" id="agent_goods_weight" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                                                     <option value="">--</option>
                                                                     <?php 
 																			$slectweight = "SELECT * FROM tbl_weight WHERE status=1 ORDER BY weight ASC";
@@ -917,7 +927,7 @@ if (isset($_POST['submit'])) {
                                                                 <label class="control-label">
                                                                     Shipment Pieces<span class="symbol required"></span>
                                                                 </label>
-                                                                <input type="number" class="form-control" name="shimpent_pieces" id="shimpent_pieces" min='1'>
+                                                                <input type="number" class="form-control" name="shimpent_pieces" id="shimpent_pieces" min='1' required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -927,13 +937,13 @@ if (isset($_POST['submit'])) {
                                                                 <label class="control-label">
                                                                     Declared Value/Custom's Value<span class="symbol required"></span>
                                                                 </label>
-                                                                <input type="text" class="form-control" name="shimpent_declared_value" id="shimpent_declared_value">
+                                                                <input type="text" class="form-control" name="shimpent_declared_value" id="shimpent_declared_value" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="control-label">
-                                                                    AWB NO <span class="symbol required"></span>
+                                                                    AWB NO
                                                                 </label>
                                                                 <input type="text" class="form-control" name="custom_trackId" id="custom_trackId" value="" placeholder="AWB NO">
                                                             </div>
@@ -945,8 +955,9 @@ if (isset($_POST['submit'])) {
                                                                 <label class="control-label">
                                                                     Select Principal <span class="symbol required"></span>
                                                                 </label>
-                                                                <select name="agent_principal" id="agent_principal" class="form-control">
+                                                                <select onchange="get_agent_price()" name="agent_principal" id="agent_principal" class="form-control selectpicker">
                                                                     <option value="">--</option>
+                                                                    
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -961,16 +972,22 @@ if (isset($_POST['submit'])) {
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            
+                                                           <br>
+                                                            <p>IN BDT = <span id="agent_bdt"></span></p>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="control-label">
                                                                     Shipping Charge <span class="symbol required"></span>
                                                                 </label>
-                                                                <input style="text-align: right;" type="text" class="form-control" name="shipping_charge" id="shipping_charge" readonly>
+                                                                <input onkeyup="agent_convert_to_bdt()" style="text-align: right;" type="text" class="form-control" name="shipping_charge" id="agent_shipping_charge" readonly>
                                                                 <span id="showgenprice"></span>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <button class="btn btn-block btn-warning">SUBMIT</button>
                                                         </div>
                                                     </div>
                                                 </div>

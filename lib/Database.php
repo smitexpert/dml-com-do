@@ -259,6 +259,13 @@ class Database
         return $row[0];
     }
     
+    public function getAgentEmail($id){
+        $query = "SELECT email FROM agent_clients WHERE id='$id'";
+        $result = $this->link->query($query);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+    
     public function checkRemoteArea($country, $zip, $city, $principal){
         
         $sql = "SELECT * FROM remote_area WHERE principal_id='$principal' AND country='$country' AND city='$city' AND zip_code='$zip'";

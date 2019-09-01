@@ -25,7 +25,7 @@ include('includes/header.php');
                                     <select name="agent_select" required id="agent_select" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                         <option value="">--</option>
                                         <?php
-			$selectclientname = "SELECT * FROM agent_company WHERE status='1'";
+			$selectclientname = "SELECT * FROM agent_clients WHERE status='1'";
 				$findclientname =  $db->link->query($selectclientname);
 		if ($findclientname->num_rows > 0) { while ($getclientname=$findclientname->fetch_assoc()) { ?>
                                         <option id="cour_comp_name" class="" value="<?php echo $getclientname['id']; ?>"><?php echo $getclientname['company_name']; ?></option>
