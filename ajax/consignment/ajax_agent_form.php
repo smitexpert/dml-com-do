@@ -100,6 +100,7 @@ if(isset($_POST['agent_company_name'])){
     $sql = "INSERT INTO consignment_booking(client_Id, tracking_id, awb_no, s_type, s_name, s_company, s_email, s_contact, s_country, s_address, r_name, r_company, r_email, r_address1, r_address2, r_address3, r_zip, r_phone, r_mobile, r_city, r_country, g_title, g_type, g_weight, g_pieces, g_customs_value, g_shipment_charge, status, assigned_user, submited_by) VALUES ('$agent_company_id', '$trackID', '$custom_trackId', 'agent', '$sender_name', '$agent_company_name', '$sender_mail', '$sender_contact', '$sender_country', '$sender_addr', '$recipient_name', '$recipient_company', '$recipient_mail', '$recipient_addr1', '$recipient_addr2', '$recipient_addr3', '$recipient_zip', '$recipient_phone', '$recipient_mobile', '$recipient_city', '$dest_country', '$goods_title', '$goods_type', '$goods_weight', '$shimpent_pieces', '$shimpent_declared_value', '$shipping_charge', '2', '$assign_to', '$logged_user')";
     
     $query = $db->link->query($sql);
+//    $query = true;
     
     if($query){
         
@@ -120,6 +121,8 @@ if(isset($_POST['agent_company_name'])){
         $costing = $db->getPrincipalCosting($agent_principal, $rowPr['price'], $goods_weight);
         
         $sql2 = "INSERT INTO consignment_booked (tracking_id, principal_id, principal_rate, principal_rate_usd, costing, booking_price, assigned_by, status, assigned_date) VALUES ('$trackID', '$agent_principal', '$principal_rate', '$principal_rate_usd', '$costing', '$shipping_charge', '$logged_user', '0', NOW())";
+        
+        echo $sql2;
         
         $query2 = $db->link->query($sql2);
         if($query2){

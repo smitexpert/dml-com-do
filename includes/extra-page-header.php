@@ -151,6 +151,23 @@ if($userStatus == 0){
             top: 30%;
             position: relative;
         }
+        
+        .loading-img {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            top: 15%;
+            margin-left: 50%;
+            left: -128px;
+            display: none;
+            z-index: 999;
+        }
+        
+        .loading-img img {
+            margin-top: 8%;
+            width: 256px;
+            height: auto;
+        }
 
         #selected_country a {
             margin: 0 10px;

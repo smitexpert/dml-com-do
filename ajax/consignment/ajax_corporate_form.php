@@ -7,6 +7,12 @@ Session::checkSession();
 $db = new Database();
 $dbn = new Database();
 
+$t = time();
+
+$usd = $db->getCurrency('USD');
+
+$transaction_id = 'DML'.$t;
+
 $logged_user = Session::get('adminId');
 
 if(isset($_POST['corporate_id'])){
@@ -83,7 +89,17 @@ if(isset($_POST['sender_name'])){
     $query = $db->link->query($sql);
     
     if($query){
-        echo '1';
+        $bdt = $shipping_charge*$usd;
+        $sql2 = "UPDATE corporate_accounts SET debit_amount=debit_amount+$shipping_charge WHERE corporate_client_email='$sender_mail'";
+        $query2 = $db->link->query($sql2);
+        $sql3 = "INSERT INTO accounts (reference_id, transaction_id, transaction_type, transaction_mode, payer_type, client_name, client_id, amount, based, base_rate, bdt_ammount, usd_ammount, prepared_by, description, transaction_date, entry_date) VALUES ('$trackID', '$transaction_id', '0', 'booking', 'corporate', '$sender_company', '$corporate_clients', '$shipping_charge', 'USD', '$usd', '$bdt', '$shipping_charge', '$logged_user', 'CORPORATE CONSIGNMENT BOOKING', NOW(), NOW())";
+        
+        $query3 = $db->link->query($sql3);
+        if($query2 && $query3){
+            echo '1';
+        }else{
+            echo $db->link->error;
+        }
     }else{
         echo $db->link->error;
     }

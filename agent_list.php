@@ -35,7 +35,8 @@ include('includes/header.php');
                                     <tr>
                                         <th class="center">#</th>
                                         <th class="center">Name of Agent</th>
-                                        <th class="center">Action</th>
+                                        <th class="center">Select Principal</th>
+                                        <th class="center">Deactivate</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,6 +56,14 @@ include('includes/header.php');
                                         <td class="center">
                                             <div class="">
                                                 <button id="assign-<?php echo $row['id']; ?>" class="btn btn-xs btn-warning agent_edit_btn" data-toggle="modal" data-target="#myModal"><i class="fa fa-check"></i></button>
+                                                
+                                                <!--<button id="status_<?php echo $row['id']; ?>" class="btn btn-xs <?php echo $sta; ?> status_btn"><i class="fa fa-circle "></i></button>-->
+
+                                            </div>
+                                        </td>
+                                           <td class="center">
+                                            <div class="">
+                                                <!--<button id="assign-<?php echo $row['id']; ?>" class="btn btn-xs btn-warning agent_edit_btn" data-toggle="modal" data-target="#myModal"><i class="fa fa-check"></i></button>-->
                                                 
                                                 <button id="status_<?php echo $row['id']; ?>" class="btn btn-xs <?php echo $sta; ?> status_btn"><i class="fa fa-circle "></i></button>
 
@@ -102,7 +111,7 @@ include('includes/header.php');
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Save Change</button>
             </div>
         </div>
 

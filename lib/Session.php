@@ -36,6 +36,14 @@ class Session{
         }
      }
 
+     public static function checkAgentSession(){
+        self::init();
+        if (self::get("agent_login")== false) {
+         self::destroy();
+         header("Location:../client_login.php");
+        }
+     }
+
      public static function checkLogin(){
         self::init();
         if (self::get("login")== true) {
@@ -46,6 +54,12 @@ class Session{
     public static function destroy(){
       session_destroy();
       header("Location:login.php");
+     }
+
+    public static function clientDestroy(){
+        self::destroy();
+      session_destroy();
+      header("Location:../client_login.php");
      }
 
 

@@ -1,25 +1,4 @@
-<?php
-
-    $currentPage = $_SERVER['REQUEST_URI'];
-
-    require_once __DIR__.'/../lib/Database.php';
-    
-    $user_menu = 'menu_'.Session::get('adminId');
-
-    
-
-    $menu = new Database();
-    $query = "SELECT * FROM menu_sidebar";
-    $selectMenu = $menu->select($query);
-
-    /*while($row = $selectMenu->fetch_assoc()){
-        echo $row['menuName'];
-    }*/
-
-?>
-            <br>
-
-			<div class="navbar-content">
+<div class="navbar-content">
 				<!-- start: SIDEBAR -->
 				<div class="main-navigation navbar-collapse collapse">
 					<!-- start: MAIN MENU TOGGLER BUTTON -->
@@ -32,54 +11,12 @@
 					
 					<nav>
 					<ul id="nav" class="main-navigation-menu">
-
-						<li class="linav">
-							<!--<a href="javascript:void(0)"><i class="clip-pencil"></i>
-								<span class="title"> Creation Area</span><i class="icon-arrow"></i>
-								<span class="selected"></span>
+                        <li class="linav">
+							<a href="index.php"><i class="clip-screen"></i>
+								<span class="title"> Dashboard</span>
 							</a>
-							<ul  class="sub-menu">
-								<li class="acli">
-									<a href="create_weight.php">
-										<span class="title">Create Weight</span>
-									</a>
-								</li>
-								<li>
-									<a href="createRoute.php">
-										<span class="title">Create Route</span>
-									</a>
-								</li>								
-								<li>
-									<a href="add_country.php">
-										<span class="title">Create Country</span>
-									</a>
-								</li>	
-								<li>
-									<a href="createCourierCompany.php">
-										<span class="title">Create Courier Company</span>
-									</a>	
-								</li>									
-
-								<li>
-									<a href="create_stuff.php">
-										<span class="title">Create Stuff</span>
-									</a>
-								</li>								
-
-								<li>
-									<a href="createBranch.php">
-										<span class="title">Create Branch</span>
-									</a>
-								</li>									
-
-								<li>
-									<a href="createDesignation.php">
-										<span class="title">Create Designation</span>
-									</a>
-								</li>					
-
-							</ul>
-						</li>-->							
+                        </li>
+										
 
 
 						<li class="linav">
@@ -123,6 +60,11 @@
 								<li>
 									<a href="client_view_special_price.php">
 										<span class="title">View Special Price</span>
+									</a>
+								</li>
+								<li>
+									<a href="client_view_special_price.php">
+										<span class="title">Search Price</span>
 									</a>
 								</li>
 

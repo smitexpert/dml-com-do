@@ -86,7 +86,7 @@ if(isset($_POST['country'])){
         <tr style="font-size: 18px;background-color: yellow;color: red; font-weight: bold;">
             <td title="Lowest Price"><?php echo $db->getPrincipalName($lowest_p_id[$j]); ?></td>
             <td><?php echo $weight; ?></td>
-            <td style="text-align: right;"><?php echo $db->getCurrencyName($lowest_p_id[$j]).' '.$lowest_price[$j]; ?></td>
+            <td style="text-align: right;"><?php echo $db->getCurrencyName($lowest_p_id[$j]).' '.number_format($lowest_price[$j], 2); ?></td>
             <td style="text-align: right;"><?php echo number_format($db->converttousd($lowest_p_id[$j], $lowest_price[$j]), 2); ?></td>
             <td style="text-align: right;"><?php echo $db->getFuelCost($lowest_p_id[$j], $lowest_price[$j]); ?></td>
             <td style="text-align: right;"><?php echo $lowest_costing[$j]; ?></td>
@@ -98,7 +98,7 @@ if(isset($_POST['country'])){
         <tr>
             <td><?php echo $db->getPrincipalName($lowest_p_id[$j]); ?></td>
             <td><?php echo $weight; ?></td>
-            <td style="text-align: right;"><?php echo $db->getCurrencyName($lowest_p_id[$j]).' '.$lowest_price[$j]; ?></td>
+            <td style="text-align: right;"><?php echo $db->getCurrencyName($lowest_p_id[$j]).' '.number_format($lowest_price[$j], 2); ?></td>
             <td style="text-align: right;"><?php echo number_format($db->converttousd($lowest_p_id[$j], $lowest_price[$j]), 2); ?></td>
             <td style="text-align: right;"><?php echo $db->getFuelCost($lowest_p_id[$j], $lowest_price[$j]); ?></td>
             <td style="text-align: right;"><?php echo $lowest_costing[$j]; ?></td>
@@ -197,7 +197,7 @@ if(isset($_POST['country'])){
         <tr style="font-size: 18px;background-color: yellow;color: red; font-weight: bold;">
             <td title="Lowest Price" ><?php echo $db->getPrincipalName($lowest_p_id[$j]); ?></td>
             <td><?php echo $weight; ?></td>
-            <td style="text-align: right;"><?php echo $db->getCurrencyName($lowest_p_id[$j]).' '.$lowest_price[$j]; ?></td>
+            <td style="text-align: right;"><?php echo $db->getCurrencyName($lowest_p_id[$j]).' '.number_format($lowest_price[$j], 2); ?></td>
             <td style="text-align: right;"><?php echo number_format($db->converttousd($lowest_p_id[$j], $lowest_price[$j]), 2); ?></td>
             <td style="text-align: right;"><?php echo $db->getFuelCost($lowest_p_id[$j], $lowest_price[$j]); ?></td>
             <td style="text-align: right;"><?php echo $lowest_costing[$j]; ?></td>
@@ -209,7 +209,7 @@ if(isset($_POST['country'])){
         <tr>
             <td><?php echo $db->getPrincipalName($lowest_p_id[$j]); ?></td>
             <td><?php echo $weight; ?></td>
-            <td style="text-align: right;"><?php echo $db->getCurrencyName($lowest_p_id[$j]).' '.$lowest_price[$j]; ?></td>
+            <td style="text-align: right;"><?php echo $db->getCurrencyName($lowest_p_id[$j]).' '.number_format($lowest_price[$j], 2); ?></td>
             <td style="text-align: right;"><?php echo number_format($db->converttousd($lowest_p_id[$j], $lowest_price[$j]), 2); ?></td>
             <td style="text-align: right;"><?php echo $db->getFuelCost($lowest_p_id[$j], $lowest_price[$j]); ?></td>
             <td style="text-align: right;"><?php echo $lowest_costing[$j]; ?></td>
