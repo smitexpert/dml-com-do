@@ -292,26 +292,62 @@ if(isset($_POST['update_principal_id'])){
 }
 
 if(isset($_POST['up_principal_id'])){
+    
+    $t=0;
+    
     $pid = $_POST['up_principal_id'];
     $d_price = $_POST['d_price'];
+    $d_weight = $_POST['d_weight'];
+    
     $p_price = $_POST['p_price'];
+    $p_weight = $_POST['p_weight'];
     $tag = $_POST['select_country_update'];
     
     $sql = "DELETE FROM principal_special_rate WHERE principal_id='$pid' AND country_tag='$tag'";
     $query = $db->link->query($sql);
     if($query){
+        $t++;
         
         for($i = 0; $i<count($d_price); $i++){
+            $dw = $d_weight[$i];
+            $dp = $d_price[$i];
             if($i == 0){
-                $sql_d = "";
+                $sql_d = "INSERT INTO principal_special_rate(principal_id, country_tag, goods_type, weight, price, entry_by, status) VALUES ('$pid', '$tag', 'D', '$dw', '$dp', '$logged_user', '1');";
             }else if($i == count($d_price)-1){
-                
+                $sql_d .= "INSERT INTO principal_special_rate(principal_id, country_tag, goods_type, weight, price, entry_by, status) VALUES ('$pid', '$tag', 'D', '$dw', '$dp', '$logged_user', '1')";
             }else{
-                
+                $sql_d .= "INSERT INTO principal_special_rate(principal_id, country_tag, goods_type, weight, price, entry_by, status) VALUES ('$pid', '$tag', 'D', '$dw', '$dp', '$logged_user', '1');";
             }
         }
         
+        $query_d = $db->link->multi_query($sql_d);
+        
+        if($query_d){
+            $t++;
+        }
+        
+        for($i=0; $i<count($p_price); $i++){
+            $pw = $p_weight[$i];
+            $pp = $p_price[$i];
+            
+            if($i == 0){
+                $sql_p = "INSERT INTO principal_special_rate(principal_id, country_tag, goods_type, weight, price, entry_by, status) VALUES ('$pid', '$tag', 'P', '$pw', '$pp', '$logged_user', '1');";
+            }else if($i == count($p_price)-1){
+                $sql_p .= "INSERT INTO principal_special_rate(principal_id, country_tag, goods_type, weight, price, entry_by, status) VALUES ('$pid', '$tag', 'P', '$pw', '$pp', '$logged_user', '1')";
+            }else{
+                $sql_p .= "INSERT INTO principal_special_rate(principal_id, country_tag, goods_type, weight, price, entry_by, status) VALUES ('$pid', '$tag', 'P', '$pw', '$pp', '$logged_user', '1');";
+            }
+        }
+        
+        $query_p = $dbn->link->multi_query($sql_p);
+        
+        if($query_p){
+            $t++;
+        }
+        
     }
+    
+    echo $t;
 }
 
 ?>

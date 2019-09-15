@@ -4692,7 +4692,11 @@ if($uri_parts[0] == '/set_principal_special_rate.php'){
             method: "POST",
             data: form_data,
             success: function(data){
-                console.log(data);
+                if(data == 3){
+                    alert("Price Update successfully!");
+                }else{
+                    alert("Data not changed!!!");
+                }
             }
         })
     })
