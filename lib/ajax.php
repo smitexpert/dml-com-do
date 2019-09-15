@@ -308,7 +308,8 @@ if(isset($_POST['principalId'])){
     $principalId = $_POST['principalId'];
     $zone_code = $_POST['zone_code'];
     
-    $sql = "SELECT * FROM principal_zone WHERE principal_id='$principalId' AND zone='$zone_code'";
+//    $sql = "SELECT * FROM principal_zone WHERE principal_id='$principalId' AND zone='$zone_code' ORDER BY country_tag ASC";
+    $sql = "SELECT principal_zone.*, tbl_country.country_name FROM principal_zone INNER JOIN tbl_country ON principal_zone.country_tag = tbl_country.country_tag WHERE principal_zone.principal_id = '$principalId' AND principal_zone.zone = '$zone_code' ORDER BY tbl_country.country_name ASC";
     $query = $db->link->query($sql);
     
     if($query->num_rows > 0){

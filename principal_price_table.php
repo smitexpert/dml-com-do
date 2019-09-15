@@ -335,7 +335,7 @@ if(isset($_POST['update_zone_price'])){
                         <div class="input-group">
                             <span class="input-group-addon"><?php echo number_format($dw, 2).' kg'; ?></span>
                             <input type="hidden" value="<?php echo $dw; ?>" name="d_weight[]">
-                            <input type="text" class="form-control up_price" name="d_price[]" placeholder="0" value="<?php echo $row_d['price']; ?>">
+                            <input type="text" class="form-control up_price" name="d_price[]" placeholder="0" value="<?php echo round($row_d['price'], 2); ?>">
                         </div>
                     </div>
                     <?php
@@ -383,7 +383,7 @@ if(isset($_POST['update_zone_price'])){
                         <div class="input-group">
                             <span class="input-group-addon"><?php echo number_format($pw, 2).' kg'; ?></span>
                             <input type="hidden" value="<?php echo $pw; ?>" name="p_weight[]">
-                            <input type="text" class="form-control up_price" name="p_price[]" placeholder="0" value="<?php echo $row_p['price']; ?>">
+                            <input type="text" class="form-control up_price" name="p_price[]" placeholder="0" value="<?php echo round($row_p['price'], 2); ?>">
                         </div>
                     </div>
                     <?php

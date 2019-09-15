@@ -4526,13 +4526,17 @@ if($uri_parts[0] == '/set_principal_special_rate.php'){
         }
     });
     
-    $(".nav_view ul li").click(function(){
-        
-        
-        
+    $("#setspecialprice").click(function(){
         $("#country").val('');
         $("#country").selectpicker('refresh');
-        
+    })
+    
+    $("#viewspecialprice").click(function(){
+        $("#view_country").val('');
+        $("#view_country").selectpicker('refresh');
+    })
+    
+    $(".nav_view ul li").click(function(){
         $(".nav_view ul li").removeClass('active');
         $(this).addClass('active');
         
@@ -4593,6 +4597,102 @@ if($uri_parts[0] == '/set_principal_special_rate.php'){
                     alert("Something Wrong!!!");
                     console.log(data);
                 }
+            }
+        })
+    });
+    
+    $("#view_country").change(function(){
+        $("#viewspecialratehere").find("*").remove();
+        var principalid = $("#principalid").find(":selected").val();
+        var country = $("#view_country").find(":selected").val();
+        var ajax_form = "view_price_pid="+principalid+"&view_price_tag="+country;
+        
+        if(country != ""){
+            $.ajax({
+                url: '../ajax/ajax_principal_special_price.php',
+                method: "POST",
+                data: ajax_form,
+                success: function(data){
+                    if(data == 0){
+                        alert("Special Price Not Found For This Country!");
+                        $("#viewspecialratehere").append("");
+                    }else{
+                        $("#viewspecialratehere").append(data);
+                    }
+                }
+            })
+        }
+        
+    });
+    
+    $("#viewspecialprice").click(function(){
+        var principalid = $("#principalid").find(":selected").val();
+        $("#view_country").find("*").remove();
+        $("#view_country").selectpicker('refresh');
+        
+        
+        $.ajax({
+            url: "../ajax/ajax_principal_special_price.php",
+            method: "POST",
+            data: { get_principal_country: principalid },
+            success: function(data){
+                $("#view_country").append(data);
+                $("#view_country").selectpicker('refresh');
+            }
+        })
+    });
+    
+    $("#updatespecialprice").click(function(){
+        var principalid = $("#principalid").find(":selected").val();
+        $("#select_country_update").find("*").remove();
+        $("#update_principal_special_price").find("*").remove();
+        $("#select_country_update").selectpicker('refresh');
+        
+        
+        $.ajax({
+            url: "../ajax/ajax_principal_special_price.php",
+            method: "POST",
+            data: { get_principal_country: principalid },
+            success: function(data){
+                $("#select_country_update").append(data);
+                $("#select_country_update").selectpicker('refresh');
+            }
+        })
+    });
+    
+    $("#select_country_update").change(function(){
+        var country = $("#select_country_update").find(":selected").val();
+        var principalid = $("#principalid").find(":selected").val();
+        
+        $("#update_principal_special_price").find("*").remove();
+        
+        $.ajax({
+            url: "../ajax/ajax_principal_special_price.php",
+            method: "POST",
+            data: {
+                update_principal_id: principalid,
+                up_country: country
+            },
+            success: function(data){
+                $("#update_principal_special_price").append(data);
+            }
+        })
+        
+    });
+    
+    
+    $("#up_special_price").submit(function(event){
+        event.preventDefault();
+        
+        var principalid = $("#principalid").find(":selected").val();
+        var form_data = $(this).serialize()+"&up_principal_id="+principalid;
+        
+        $.ajax({
+            url: "../ajax/ajax_principal_special_price.php",
+            method: "POST",
+            data: form_data,
+            success: function(data){
+                console.log(data);
             }
         })
     })

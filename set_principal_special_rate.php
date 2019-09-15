@@ -39,6 +39,7 @@ include('includes/header.php');
                         <ul class="nav nav-pills">
                             <li><a id="setspecialprice" href="#">SET SPECIAL PRICE</a></li>
                             <li><a id="viewspecialprice" href="#">VIEW SPECIAL PRICE</a></li>
+                            <li><a id="updatespecialprice" href="#">UPDATE SPECIAL PRICE</a></li>
                         </ul>
                     </div>
                 </div>
@@ -86,7 +87,7 @@ include('includes/header.php');
                                             </div>
                                         </div>
                                         <br>
-                                        
+
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="#">
@@ -126,7 +127,7 @@ include('includes/header.php');
                                             </div>
                                         </div>
                                         <br>
-                                        
+
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="#">
@@ -134,7 +135,7 @@ include('includes/header.php');
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row">
@@ -176,14 +177,72 @@ include('includes/header.php');
                     </div>
                 </div>
                 <div id="viewspecialprice_body" class="view_body" style="display: none;">
-                    <h2>Hello</h2>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <i class="fa fa-external-link-square"></i>
+                                    View Principal Special Price of : <span class="principal_name">principal_name</span>
+                                </div>
+                                <div class="panel-body">
+                                    <form action="">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="">Select Country</label>
+                                                    <div class="country_form">
+                                                        <input type="hidden" id="userId" name="userId" value="">
+                                                        <select name="view_country" id="view_country" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                                            <option value="">--</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </form>
+                                    <br>
+                                    <div id="viewspecialratehere">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-12">
-
+                <div id="updatespecialprice_body" class="view_body" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <i class="fa fa-external-link-square"></i>
+                                    Update Principal Special Price of : <span class="principal_name">principal_name</span>
+                                </div>
+                                <div class="panel-body">
+                                    <form action="" id="up_special_price">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="">Select Country</label>
+                                                    <select name="select_country_update" id="select_country_update" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                                        <option value="">--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div id="update_principal_special_price">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
