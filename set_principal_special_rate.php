@@ -40,6 +40,7 @@ include('includes/header.php');
                             <li><a id="setspecialprice" href="#">SET SPECIAL PRICE</a></li>
                             <li><a id="viewspecialprice" href="#">VIEW SPECIAL PRICE</a></li>
                             <li><a id="updatespecialprice" href="#">UPDATE SPECIAL PRICE</a></li>
+                            <li><a id="copyspecialprice" href="#">COPY</a></li>
                         </ul>
                     </div>
                 </div>
@@ -239,6 +240,65 @@ include('includes/header.php');
                                             </div>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="copyspecialprice_body"  class="view_body" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><i class="fa fa-external-link-square"></i>
+                                    Copy Principal Special Price of : <span class="principal_name">principal_name</span>
+                                </div>
+                                <div class="panel-body">
+                                       
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">SELECT COUNTRY</label>
+                                                <select name="copytocountry" id="copytocountry" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                                    <option value="">--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">FROM PRINCIPAL</label>
+                                                <select name="fromprincipal" id="fromprincipal" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                                    <option value="">--</option>
+                                                    <?php
+                                                    $p_sql = "SELECT * FROM principals_name ORDER BY id ASC";
+                                                    $p_query = $db->link->query($p_sql);
+                                                    if($p_query->num_rows > 0){
+                                                        while($p_row = $p_query->fetch_assoc()){
+                                                            ?>
+                                                            <option value="<?php echo $p_row['id']; ?>"><?php echo $p_row['principal_name']; ?></option>
+                                                            <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">FROM COUNTRY</label>
+                                                <select name="copyformcountry" id="copyformcountry" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                                    <option value="">--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   <form action="" id="copyformanother">
+                                   
+                                    <div id="viewcopyfrom">
+                                        
+                                    </div>
+                                    
+                                   </form>
                                 </div>
                             </div>
                         </div>

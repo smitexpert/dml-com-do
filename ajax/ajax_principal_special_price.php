@@ -350,4 +350,148 @@ if(isset($_POST['up_principal_id'])){
     echo $t;
 }
 
+if(isset($_POST['no_price_country'])){
+    $pid = $_POST['no_price_country'];
+    
+    $sql = "SELECT * FROM tbl_country WHERE NOT EXISTS (SELECT country_tag FROM principal_special_rate WHERE tbl_country.country_tag = principal_special_rate.country_tag AND principal_special_rate.principal_id = '$pid') ORDER BY country_name ASC";
+    
+    $query = $db->link->query($sql);
+    
+    if($query->num_rows > 0){
+        ?>
+        <option value="">--</option>
+        <?php
+        while($row = $query->fetch_assoc()){
+            ?>
+            <option value="<?php echo $row['country_tag']; ?>"><?php echo $row['country_name']; ?></option>
+            <?php
+        }
+    }
+}
+
+if(isset($_POST['copy_from_pid'])){
+    
+    $pid = $_POST['copy_from_pid'];
+    $country = $_POST['copy_from_tag'];
+    
+    $d_i = 0.25;
+    $p_w = array();
+    $d_w = array();
+    
+    while($d_i <= 3.0){
+        $d_w["$d_i"] = 0;
+        if($d_i == 0.25){
+            $d_i = 0.5;
+        }else{
+            $d_i+=0.5;
+        }
+    }
+    
+    $sql_w = "SELECT * FROM tbl_weight WHERE status='1' ORDER BY weight ASC";
+    $query_w = $db->link->query($sql_w);
+    if($query_w->num_rows > 0){
+        while($row_w = $query_w->fetch_assoc()){
+            $rw = $row_w['weight'];
+            $p_w["$rw"] = 0;
+        }
+    }
+    
+    $sql_p = "SELECT * FROM principal_special_rate WHERE principal_id='$pid' AND country_tag='$country' AND goods_type='P'";
+    $query_p = $db->link->query($sql_p);
+    
+    if($query_p->num_rows > 0){
+        while($row_p = $query_p->fetch_assoc()){
+            $r_w = $row_p['weight'];
+            $p_w["$r_w"] = $row_p['price'];
+        }
+    }
+    
+    $sql_d = "SELECT * FROM principal_special_rate WHERE principal_id='$pid' AND country_tag='$country' AND goods_type='D'";
+    $query_d = $db->link->query($sql_d);
+    
+    if($query_d->num_rows > 0){
+        while($row_d = $query_d->fetch_assoc()){
+            $r_w = $row_d['weight'];
+            $d_w["$r_w"] = $row_d['price'];
+        }
+    }
+    
+    ?>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="#">
+                <div style="font-weight:bold; padding-bottom:5px;">COPY PRICE FOR DOCUMENT</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+               <?php
+                $d = 0.25;
+                while($d <= 3.0){
+                ?>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon"><?php echo $d; ?> kg</span>
+                        <input type="hidden" value="<?php echo $d; ?>" name="d_weight[]">
+                        <input type="text" class="form-control" name="d_price[]" value="<?php echo $d_w["$d"]; ?>" placeholder="0">
+                    </div>
+                </div>
+                <?php
+                    
+                    if($d == 0.25)
+                        $d = 0.5;
+                    else
+                        $d += 0.5;
+                    
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="#">
+                <div style="font-weight:bold; padding-bottom:5px;">COPY PRICE FOR PARCEL</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+               <?php
+                $query_w = $db->link->query($sql_w);
+                if($query_w->num_rows > 0){
+                    while($row_w = $query_w->fetch_assoc()){
+                        $rw = $row_w['weight'];
+                ?>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon"><?php echo $rw; ?> kg</span>
+                        <input type="hidden" value="<?php echo $rw; ?>" name="p_weight[]">
+                        <input type="text" class="form-control" name="p_price[]" value="<?php echo $p_w["$rw"]; ?>" placeholder="0">
+                    </div>
+                </div>
+                <?php
+                    
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-warning btn-block">SUBMIT</button>
+        </div>
+    </div>
+    
+    <?php
+    
+}
+
 ?>

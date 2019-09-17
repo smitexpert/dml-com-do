@@ -4547,6 +4547,25 @@ if($uri_parts[0] == '/set_principal_special_rate.php'){
         
     });
     
+    $("#copyspecialprice").click(function(){
+        $("#copytocountry").find("*").remove();
+        
+        var principalid = $("#principalid").find(":selected").val();
+        if(principalid != ""){
+            $.ajax({
+                url: '../ajax/ajax_principal_special_price.php',
+                method: "POST",
+                data: {
+                    no_price_country: principalid
+                },
+                success: function(data){
+                    $("#copytocountry").append(data);
+                    $("#copytocountry").selectpicker("refresh");
+                }
+            });
+        }
+    });
+    
     $("#country").change(function(){
         var check_country = $("#country").find(":selected").val();
         var principalid = $("#principalid").find(":selected").val();
@@ -4699,6 +4718,91 @@ if($uri_parts[0] == '/set_principal_special_rate.php'){
                 }
             }
         })
+    })
+    
+    $("#fromprincipal").change(function(){
+        var pid = $(this).find(":selected").val();
+        $("#copyformcountry").find("*").remove();
+        $("#copyformcountry").selectpicker("refresh");
+        
+        if(pid != ""){
+            $.ajax({
+                url: "../ajax/ajax_principal_special_price.php",
+                method: "POST",
+                data: { get_principal_country: pid },
+                success: function(data){
+                    $("#copyformcountry").append(data);
+                    $("#copyformcountry").selectpicker("refresh");
+                }
+            });
+        }
+    });
+    
+    $("#copyformcountry").change(function(){
+        $("#viewcopyfrom").find("*").remove();
+        var pid = $("#fromprincipal").find(":selected").val();
+        var tag = $(this).find(":selected").val();
+        
+        if(tag != ""){
+            $.ajax({
+                url: "../ajax/ajax_principal_special_price.php",
+                method: "POST",
+                data: {
+                    copy_from_pid: pid,
+                    copy_from_tag: tag
+                },
+                success: function(data){
+                    $("#viewcopyfrom").append(data);
+                }
+            });
+        }
+    });
+    
+    $("#copyformanother").submit(function(e){
+        e.preventDefault();
+        var pid = $("#principalid").find(":selected").val();
+        var tag = $("#copytocountry").find(":selected").val();
+        
+        if(tag != ""){
+            var form_data = $(this).serialize()+"&add_principal_id="+pid+"&country="+tag;
+        
+            $.ajax({
+                url: "../ajax/ajax_principal_special_price.php",
+                method: "POST",
+                data: form_data,
+                success: function(data){
+                    if(data == '2'){
+                        
+                        alert("Copied Successfully!");
+                        
+                        $("#copytocountry").find("*").remove();
+                        
+                        $("#copyformcountry").find("*").remove();
+                        $("#copyformcountry").selectpicker("refresh");
+                        
+                        $("#fromprincipal").val("");
+                        $("#fromprincipal").selectpicker("refresh");
+        
+                        var principalid = $("#principalid").find(":selected").val();
+                        if(principalid != ""){
+                            $.ajax({
+                                url: '../ajax/ajax_principal_special_price.php',
+                                method: "POST",
+                                data: {
+                                    no_price_country: principalid
+                                },
+                                success: function(data){
+                                    $("#copytocountry").append(data);
+                                    $("#copytocountry").selectpicker("refresh");
+                                }
+                            });
+                        }
+                        
+                        $("#viewcopyfrom").find("*").remove();
+                    }
+                }
+            })
+        }
     })
     
 </script>
