@@ -68,6 +68,7 @@ if(isset($_POST['get_principal_list'])){
     $lowest_price = array();
     $lowest_costing = array();
     $lowest_p_id = array();
+    $price_type = array();
     $i=0;
     
     while($rowPrincipla = $qrPrincipal->fetch_assoc()){
@@ -86,10 +87,34 @@ if(isset($_POST['get_principal_list'])){
         if($qrPrice->num_rows > 0){
             
             $dt = 1;
+            $min_row_price = 0;
             
             while($rowPrice = $qrPrice->fetch_assoc()){
-                $lowest_price[$i] = $rowPrice['price'];
-                $lowest_costing[$i] = $db->getPrincipalCosting($principal_id, $rowPrice['price'], $weight);
+                $p_sql = "SELECT price FROM principal_special_rate WHERE principal_id='$principal_id' AND country_tag='$country' AND weight='$weight' AND goods_type='$g_type' AND price > 0";
+                
+                $p_query = $db->link->query($p_sql);
+                
+                if($p_query->num_rows > 0){
+                    $p_row = $p_query->fetch_assoc();
+                    
+                    if($p_row['price'] < $rowPrice['price']){
+                        $lowest_price[$i] = $p_row['price'];
+                        $min_row_price = $p_row['price'];
+                        $price_type[$i] = 1;
+                    }else{
+                        $lowest_price[$i] = $rowPrice['price'];
+                        $min_row_price = $rowPrice['price'];
+                        $price_type[$i] = 0;
+                    }
+                    
+                }else{
+                    $lowest_price[$i] = $rowPrice['price'];
+                    $min_row_price = $rowPrice['price'];
+                    $price_type[$i] = 0;
+                }
+                
+                
+                $lowest_costing[$i] = $db->getPrincipalCosting($principal_id, $min_row_price, $weight);
                 $lowest_p_id[$i] = $principal_id;
                 $i++;
             }
@@ -102,7 +127,7 @@ if(isset($_POST['get_principal_list'])){
     
     
     if($dt == 1){
-        array_multisort($lowest_costing, $lowest_p_id);
+        array_multisort($lowest_costing, $lowest_p_id, $price_type);
     }
     
     $j=0;
@@ -115,6 +140,7 @@ if(isset($_POST['get_principal_list'])){
     <td><?php echo $db->getPrincipalName($lowest_p_id[$j]); ?></td>
     <td><?php echo $lowest_costing[$j]; ?></td>
     <td><?php echo $db->checkRemoteArea($country, $r_zip, $r_city, $lowest_p_id[$j]); ?></td>
+    <td><?php if($price_type[$j] == 1){ echo "Sepecial"; } else { echo "General"; } ?></td>
     <td>
         <input onclick="getRemotePoss(<?php echo $id.', '.$lowest_p_id[$j]; ?>)" type="radio" name="radio">
     </td>

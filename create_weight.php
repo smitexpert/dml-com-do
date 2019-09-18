@@ -111,9 +111,9 @@ if (isset($_POST['submit'])) {
 										<thead>
 											<tr>
 												<th class="center">#</th>
-												<th>Unit</th>
-												<th class="hidden-xs">Status</th>
-												<th>Dated</th>
+												<th class="center">Unit</th>
+												<th class="center">Status</th>
+												<th class="center">Dated</th>
 												<th></th>
 											</tr>
 										</thead>
@@ -127,7 +127,7 @@ if (isset($_POST['submit'])) {
 									   if ($selectweight) { while ($getweight=$selectweight->fetch_assoc()) { $i++; ?>
 											<tr>
 												<td class="center"><?php echo $i; ?></td>
-												<td><?php echo $getweight['weight']; ?></td>
+												<td class="center"><?php echo $getweight['weight']; ?></td>
 												<td>
 												<a href="#" rel="nofollow" target="_blank">
 													<?php echo $getweight['status']; ?>

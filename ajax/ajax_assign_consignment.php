@@ -31,11 +31,26 @@ if($_POST['trackid']){
     
     $rowPr = $queryPr->fetch_assoc();
     
-    $principal_rate = $rowPr['price'];
+    $p_sql = "SELECT price FROM principal_special_rate WHERE principal_id='$pid' AND country_tag='$tag' AND weight='$weight' AND goods_type='$type' AND price > 0";
+                
+    $p_query = $db->link->query($p_sql);
     
-    $principal_rate_usd = $db->converttousd($pid, $rowPr['price']);
+    if($p_query->num_rows > 0){
+        $p_row = $p_query->fetch_assoc();
+        if($p_row['price'] < $rowPr['price']){
+            $principal_rate = $p_row['price'];
+        }else{
+            $principal_rate = $rowPr['price'];
+        }
+    }else{
+        $principal_rate = $rowPr['price'];
+    }
     
-    $costing = $db->getPrincipalCosting($pid, $rowPr['price'], $weight);
+    
+    
+    $principal_rate_usd = $db->converttousd($pid, $principal_rate);
+    
+    $costing = $db->getPrincipalCosting($pid, $principal_rate, $weight);
     
     $assignee = Session::get('adminId');
     

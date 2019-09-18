@@ -124,7 +124,7 @@ if(isset($_POST['view_price_pid'])){
 <div class="row">
     <div class="col-md-12">
         <div class="#">
-            <div style="font-weight:bold; padding-bottom:5px;">SET PRICE FOR DOCUMENT</div>
+            <div style="font-weight:bold; padding-bottom:5px;">SET PRICE FOR PARCEL</div>
         </div>
     </div>
 </div>

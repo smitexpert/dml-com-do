@@ -195,6 +195,7 @@ $result = $db->link->query($query);
                                     <th>Principal Name</th>
                                     <th>Costing (USD)</th>
                                     <th>Remote Area</th>
+                                    <th>Price Type</th>
                                     <th>#</th>
                                 </tr>
                             </thead>

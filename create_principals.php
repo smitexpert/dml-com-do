@@ -137,7 +137,7 @@ if (isset($_POST['submit'])) {
                                         <th>Principals Name</th>
                                         <th>Zone/Country Based</th>
                                         <th>Fuel Cost</th>
-                                        <th>Airlines Cost</th>
+                                        <th>Airlines Cost (USD)</th>
                                         <th>Currency</th>
                                         <th>Update By</th>
                                         <th>Dated</th>

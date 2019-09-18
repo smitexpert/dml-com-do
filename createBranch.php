@@ -152,7 +152,7 @@ if (isset($_POST['submit'])) {
 													<div class="row">
 														<div class="col-md-12">
 															<div class="form-group connected-group">
-																<input class="btn btn-lg btn-green btn-block" type="submit" name="submit" value="submit">
+																<input class="btn btn-lg btn-warning btn-block" type="submit" name="submit" value="submit">
 															</div>		
 														</div>
 													</div>

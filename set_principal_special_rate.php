@@ -37,10 +37,10 @@ include('includes/header.php');
                     <br>
                     <div class="nav_view" style="display: none;">
                         <ul class="nav nav-pills">
-                            <li><a id="setspecialprice" href="#">SET SPECIAL PRICE</a></li>
-                            <li><a id="viewspecialprice" href="#">VIEW SPECIAL PRICE</a></li>
-                            <li><a id="updatespecialprice" href="#">UPDATE SPECIAL PRICE</a></li>
-                            <li><a id="copyspecialprice" href="#">COPY</a></li>
+                            <li><a id="setspecialprice" href="#">SET PRICE</a></li>
+                            <li><a id="viewspecialprice" href="#">VIEW PRICE</a></li>
+                            <li><a id="updatespecialprice" href="#">UPDATE PRICE</a></li>
+                            <li><a id="copyspecialprice" href="#">COPY PRICE</a></li>
                         </ul>
                     </div>
                 </div>
