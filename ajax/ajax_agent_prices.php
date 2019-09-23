@@ -13,33 +13,39 @@ if(isset($_POST['get_zone_agent_mail'])){
     $principal_id = $_POST['get_zone_principal'];
     $agent_client_email = $_POST['get_zone_agent_mail'];
     
-    $zone = array();
+//    $zone = array();
+//    
+//    
+//    $select = "SELECT DISTINCT zone FROM dml_zone ORDER BY ZONE ASC";
+//    $sql = $db->link->query($select);
+//    if($sql->num_rows > 0){
+//        while($row = $sql->fetch_assoc()){
+//            $zone[] = $row['zone'];
+//        }
+//    }
+//    
+//    $agent_sql = "SELECT DISTINCT zone FROM agent_client_price WHERE agent_client_email='$agent_client_email' AND principal_id='$principal_id'";
+//    
+//    $agent_query = $db->link->query($agent_sql);
+//    
+//    if($agent_query->num_rows > 0){
+//        while($agent_row = $agent_query->fetch_assoc()){
+//            $agent_principal = $agent_row['zone'];
+//            if(($key = array_search($agent_principal, $zone)) !== false){
+//                unset($zone[$key]);
+//            }
+//        }
+//    }
     
+    $sql = "SELECT DISTINCT zone FROM dml_zone WHERE NOT EXISTS (SELECT DISTINCT zone FROM agent_client_price WHERE agent_client_email='$agent_client_email' AND principal_id='$principal_id' AND dml_zone.zone = agent_client_price.zone) ORDER BY zone ASC";
     
-    $select = "SELECT DISTINCT zone FROM dml_zone ORDER BY ZONE ASC";
-    $sql = $db->link->query($select);
-    if($sql->num_rows > 0){
-        while($row = $sql->fetch_assoc()){
-            $zone[] = $row['zone'];
-        }
-    }
+    $query = $db->link->query($sql);
     
-    $agent_sql = "SELECT DISTINCT zone FROM agent_client_price WHERE agent_client_email='$agent_client_email' AND principal_id='$principal_id'";
-    
-    $agent_query = $db->link->query($agent_sql);
-    
-    if($agent_query->num_rows > 0){
-        while($agent_row = $agent_query->fetch_assoc()){
-            $agent_principal = $agent_row['zone'];
-            if(($key = array_search($agent_principal, $zone)) !== false){
-                unset($zone[$key]);
-            }
-        }
-    }
-    
-    for($i=0; $i<count($zone); $i++){
-        if(isset($zone[$i])){
-            echo '<option value="'.$zone[$i].'">'.$zone[$i].'</option>';
+    if($query->num_rows > 0){
+        while($row = $query->fetch_assoc()){
+            ?>
+            <option value="<?php echo $row['zone']; ?>"><?php echo $row['zone']; ?></option>
+            <?php
         }
     }
 }
@@ -625,6 +631,54 @@ if(isset($_POST['upzoneprincipal'])){
     
     
     
+}
+
+
+if(isset($_POST['agent_copyprice_mail'])){
+    $agent_mail = $_POST['agent_copyprice_mail'];
+    
+    $sql = "SELECT DISTINCT principals_name.principal_name, principals_name.id FROM principals_name INNER JOIN agent_client_price ON agent_client_price.principal_id = principals_name.id WHERE agent_client_price.agent_client_email='$agent_mail' ORDER BY agent_client_price.principal_id ASC";
+    $query = $db->link->query($sql);
+    if($query->num_rows > 0){
+        ?>
+        <option value="">--</option>
+        <?php
+        while($row = $query->fetch_assoc()){
+            ?>
+    <option value="<?php echo $row['id']; ?>"><?php echo $row['principal_name']; ?></option>
+    <?php
+        }
+    }else{
+        ?>
+        <option value="">--</option>
+        <?php
+    }
+}
+
+if(isset($_POST['copy_to_agent'])){
+    
+    $copy_to_agent = $_POST['copy_to_agent'];
+    $copy_to_principal = $_POST['copy_to_principal'];
+    $copy_from_agent = $_POST['copy_from_agent'];
+    $copy_from_principal = $_POST['copy_from_principal'];
+    
+    $sql_del = "DELETE FROM agent_client_price WHERE agent_client_email='$copy_to_agent' AND principal_id='$copy_to_principal'";
+    $query_del = $db->link->query($sql_del);
+    
+    if($query_del){
+        $sql = "INSERT INTO agent_client_price(agent_client_email, principal_id, goods_type, zone, weight, price) SELECT '$copy_to_agent', '$copy_to_principal', goods_type, zone, weight, price FROM agent_client_price WHERE agent_client_email = '$copy_from_agent' AND principal_id = '$copy_from_principal'";
+    
+        $query = $db->link->query($sql);
+
+        if($query){
+            echo '1';
+        }else{
+            echo $db->link->error;
+        }
+        
+    }else{
+        echo $db->link->error;
+    }
 }
 
 ?>

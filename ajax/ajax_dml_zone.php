@@ -11,7 +11,8 @@ $ndb = new Database();
 if(isset($_POST['dml_zone_view'])){
     $zone = $_POST['dml_zone_view'];
     
-    $sql = "SELECT * FROM dml_zone WHERE zone='$zone'";
+//    $sql = "SELECT * FROM dml_zone WHERE zone='$zone'";
+    $sql = "SELECT tbl_country.country_name, dml_zone.* FROM dml_zone INNER JOIN tbl_country ON tbl_country.country_tag = dml_zone.country_tag WHERE dml_zone.zone = '$zone' ORDER BY tbl_country.country_name ASC";
     $query = $db->link->query($sql);
     $id = 1;
     if($query->num_rows > 0){
@@ -19,7 +20,7 @@ if(isset($_POST['dml_zone_view'])){
             ?>
             <tr>
                 <td><?php echo $id; ?></td>
-                <td><?php echo $db->getCountryName($row['country_tag']); ?></td>
+                <td><?php echo $row['country_name']; ?></td>
                 <td><?php echo $row['country_tag']; ?></td>
                 <td><button class="btn btn-sm btn-block btn-warning" id="<?php echo $row['id']; ?>" onclick="removeCountry(event)">REMOVE</button></td>
             </tr>

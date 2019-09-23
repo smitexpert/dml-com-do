@@ -28,7 +28,7 @@ include('includes/header.php');
 			$selectclientname = "SELECT * FROM agent_clients WHERE status='1'";
 				$findclientname =  $db->link->query($selectclientname);
 		if ($findclientname->num_rows > 0) { while ($getclientname=$findclientname->fetch_assoc()) { ?>
-                                        <option id="cour_comp_name" class="" value="<?php echo $getclientname['id']; ?>"><?php echo $getclientname['company_name']; ?></option>
+                                        <option id="cour_comp_name" value="<?php echo $getclientname['id']; ?>"><?php echo $getclientname['company_name']; ?></option>
                                         <!-- <option data-subtext="<?php //echo $getclientname['cour_comp_name']; ?>" class="cl" value="<?php //echo $getclientname['client_id']; ?>"><?php //echo $getclientname['cour_comp_name']; ?></option> -->
                                         <?php } }else{} ?>
                                     </select>
@@ -41,7 +41,7 @@ include('includes/header.php');
                                         <li><a id="setprice" href="#">SET PRICE</a></li>
                                         <li><a id="viewprice" href="#">VIEW PRICE</a></li>
                                         <li><a id="updateprice" href="#">UPDATE PRICE</a></li>
-                                        <li><a id="updateagent" href="#">AGENT SETTINGS</a></li>
+                                        <li><a id="copyagent" href="#">COPY</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -68,8 +68,6 @@ include('includes/header.php');
                                                 <label for="principal">Select Principal</label>
                                                 <select name="principal" id="principal" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                                     <option value="">--</option>
-
-                                                    ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -78,9 +76,6 @@ include('includes/header.php');
                                                 <label for="zone">Select Zone</label>
                                                 <select name="zone" id="zone" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                                     <option value="">--</option>
-                                                    <?php
-                                                    
-                                                ?>
                                                 </select>
                                                 <input type="hidden" id="agent_email" name="agent_email">
                                             </div>
@@ -235,19 +230,59 @@ include('includes/header.php');
                 </div>
             </div>
 
-            <div class="viewpanel" id="view_updateagent" style="display: none">
+            <div class="viewpanel" id="view_copyagent" style="display: none">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <i class="fa fa-external-link-square"></i>
-                                Update Agent
+                                Copy Agent Price
                             </div>
                             <div class="panel-body">
-
-                                <br>
-
-                                <br>
+                               <br>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                           <label for="">To Principal</label>
+                                            <select name="copy_to_principal_id" id="copy_to_principal_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
+                                                <option value="">--</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <h3>FROM</h3>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="">From Agent</label>
+                                            <select name="copy_from_agent_id" id="copy_from_agent_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
+                                                <option value="">--</option>
+                                                <?php
+                                                 $copy_query = $db->link->query($selectclientname);
+                                                if($copy_query->num_rows > 0){
+                                                    while($copy_row = $copy_query->fetch_assoc()){
+                                                        ?>
+                                                        <option value="<?php echo $copy_row['email']; ?>"><?php echo $copy_row['company_name']; ?></option>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="">From Principal</label>
+                                            <select name="copy_from_principal_id" id="copy_from_principal_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
+                                                <option value="">--</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <br>
+                                        <button id="copy_btn" style="margin-top: 8px;" class="btn btn-sm btn-warning">COPY</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

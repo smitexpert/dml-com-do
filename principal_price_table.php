@@ -94,7 +94,7 @@ if(isset($_POST['principalid'])){
         while($rowZone = $rltZone->fetch_assoc()){
             ?>
 
-                <th colspan="3"><?php echo 'ZONE: '. $rowZone['zone']; ?></th>
+                <th onclick="zone_click(event)" id="zone_<?php echo $rowZone['zone']; ?>" colspan="3"><?php echo 'ZONE: '. $rowZone['zone']; ?></th>
 
                 <?php
         }
@@ -139,7 +139,7 @@ if(isset($_POST['principalid'])){
         }
         ?>
 
-                <th><?php echo number_format($i, 2); ?></th>
+                <th onclick="weight_click(event)" id="weight_<?php echo str_replace(".","_","$i"); ?>"><?php echo number_format($i, 2); ?></th>
 
                 <?php
         
@@ -159,19 +159,19 @@ if(isset($_POST['principalid'])){
             }
             
             ?>
-                <td><?php 
+                <td class="zone_<?php echo $zone ?> weight_<?php echo str_replace(".","_","$i"); ?>"><?php 
             if($showR != 0)
                 echo number_format($rowR['price'], 2);
                     ?></td>
                 
-                <td><?php
+                <td class="zone_<?php echo $zone ?> weight_<?php echo str_replace(".","_","$i"); ?>"><?php
             if($showR != 0)
                 echo number_format($db->converttousd($principalid, $rowR['price']), 2);
                 ?></td>
 
                     
 
-                <td><?php 
+                <td class="zone_<?php echo $zone ?> weight_<?php echo str_replace(".","_","$i"); ?>"><?php 
             
                 if($i == 0.25){
                     $unit = $i/0.5;
@@ -222,7 +222,7 @@ if(isset($_POST['principalid'])){
                 <th rowspan="<?php echo $totalW; ?>" style="vertical-align: top;">PARCEL</th>
                 <?php } $l++; ?>
 
-                <th><?php echo $weight; ?></th>
+                <th onclick="weight_click(event)" id="weight_<?php echo str_replace(".","_","$weight"); ?>"><?php echo $weight; ?></th>
 
                 <?php
         
@@ -241,20 +241,20 @@ if(isset($_POST['principalid'])){
                 }
                 
                 ?>
-                <td><?php
+                <td class="zone_<?php echo $zone ?> weight_<?php echo str_replace(".","_","$weight"); ?>"><?php
                 
                 if($show == 1)
                     echo number_format($rowPrice['price'], 2);
                 
                     ?></td>
-                <td><?php 
+                <td class="zone_<?php echo $zone ?> weight_<?php echo str_replace(".","_","$weight"); ?>"><?php 
                 
                 if($show == 1)
                     echo $db->converttousd($principalid, $rowPrice['price']);
                     
                     ?></td>
 
-                <td><?php 
+                <td class="zone_<?php echo $zone ?> weight_<?php echo str_replace(".","_","$weight"); ?>"><?php 
                 
                 
                 $priceD = $rowPrice['price'];

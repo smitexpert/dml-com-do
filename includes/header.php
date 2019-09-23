@@ -5,6 +5,13 @@ Session::checkSession();
 include $main_path.'/../lib/Database.php';
 include $main_path.'/../helper/Format.php';
 
+function random_color_part() {
+    return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+}
+
+function random_color() {
+    return random_color_part() . random_color_part() . random_color_part();
+}
 
 
 //to include automatically all class from classes folder
@@ -328,6 +335,16 @@ if(Session::get('role') != 1){
         .country_form input {
             padding: 16px 10px !important;
             font-size: 14px;
+        }
+        
+        .zone_class  {
+            color: aqua;
+            background-color: green !important;
+        }
+        
+        .weight_class  {
+            color: aqua;
+            background-color: red !important;
         }
 
     </style>

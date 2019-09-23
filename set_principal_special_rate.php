@@ -41,6 +41,7 @@ include('includes/header.php');
                             <li><a id="viewspecialprice" href="#">VIEW PRICE</a></li>
                             <li><a id="updatespecialprice" href="#">UPDATE PRICE</a></li>
                             <li><a id="copyspecialprice" href="#">COPY PRICE</a></li>
+                            <li><a id="removespecialprice" href="#">REMOVE PRICE</a></li>
                         </ul>
                     </div>
                 </div>
@@ -299,6 +300,33 @@ include('includes/header.php');
                                     </div>
                                     
                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="removespecialprice_body"  class="view_body" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><i class="fa fa-external-link-square"></i>
+                                    Remove Principal Special Price of : <span class="principal_name">principal_name</span>
+                                </div>
+                                <div class="panel-body">
+                                   <div class="row">
+                                       <div class="col-md-3">
+                                           <div class="form-group">
+                                               <label for="">Country</label>
+                                               <select name="remove_country" id="remove_country" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                                   <option value="">--</option>
+                                               </select>
+                                           </div>
+                                       </div>
+                                       <div class="col-md-2">
+                                           <br>
+                                           <button style="margin-top: 6px;" id="remove_country_btn" class="btn btn-sm btn-warning">REMOVE</button>
+                                       </div>
+                                   </div>
                                 </div>
                             </div>
                         </div>

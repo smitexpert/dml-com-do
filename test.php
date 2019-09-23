@@ -1,20 +1,11 @@
-<script>
+<?php
+function random_color_part() {
+    return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+}
 
-    function Person(name){
-        this.name = name;
-        this.greeting = function(){
-            alert("Hello World! "+name);
-        }
-        
-        this.name.message = name+" How are you?";
-        
-//        return obj;
-    }
-    
-    const sujan = new Person('Sujan');
-    
-    console.log(sujan.name.message);
-    
-//    sujan.greeting();
-    
-</script>
+function random_color() {
+    return random_color_part() . random_color_part() . random_color_part();
+}
+
+echo random_color();
+?>

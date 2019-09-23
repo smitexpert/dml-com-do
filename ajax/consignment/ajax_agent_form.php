@@ -43,7 +43,9 @@ if(isset($_POST['agent_dest_country'])){
     $agent_principal = $_POST['agent_principal'];
     $agent_sender_mail = $_POST['agent_sender_mail'];
     
-    $sql = "SELECT agent_client_price.price, principal_zone.zone, agent_client_price.agent_client_email FROM agent_client_price INNER JOIN principal_zone ON agent_client_price.zone = principal_zone.zone WHERE agent_client_price.agent_client_email='$agent_sender_mail' AND agent_client_price.weight='$agent_goods_weight' AND agent_client_price.goods_type = '$agent_goods_type'  AND agent_client_price.principal_id = '$agent_principal' AND principal_zone.country_tag = '$agent_dest_country' AND principal_zone.principal_id = '$agent_principal'";
+    $sql = "SELECT price, principal_id FROM agent_client_price WHERE weight = '2' AND agent_client_email = 'sujon@gmail.com' AND principal_id = '2' AND goods_type = ''";
+    
+    $sql = "SELECT agent_client_price.price, agent_client_price.principal_id, dml_zone.country_tag FROM agent_client_price INNER JOIN dml_zone ON dml_zone.zone = agent_client_price.zone WHERE dml_zone.country_tag = '$agent_dest_country' AND  agent_client_price.weight = '$agent_goods_weight' AND agent_client_price.agent_client_email = '$agent_sender_mail' AND agent_client_price.principal_id = '$agent_principal' AND agent_client_price.goods_type = '$agent_goods_type'";
     
     $query = $db->link->query($sql);
     
@@ -122,7 +124,7 @@ if(isset($_POST['agent_company_name'])){
         
         $sql2 = "INSERT INTO consignment_booked (tracking_id, principal_id, principal_rate, principal_rate_usd, costing, booking_price, assigned_by, status, assigned_date) VALUES ('$trackID', '$agent_principal', '$principal_rate', '$principal_rate_usd', '$costing', '$shipping_charge', '$logged_user', '0', NOW())";
         
-        echo $sql2;
+//        echo $sql2;
         
         $query2 = $db->link->query($sql2);
         if($query2){

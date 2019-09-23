@@ -152,7 +152,7 @@ if(isset($_POST['view_price_pid'])){
 if(isset($_POST['get_principal_country'])){
     $pid = $_POST['get_principal_country'];
     
-    $sql = "SELECT DISTINCT principal_special_rate.country_tag, tbl_country.country_name FROM principal_special_rate INNER JOIN tbl_country ON principal_special_rate.country_tag = tbl_country.country_tag WHERE principal_special_rate.principal_id='$pid'";
+    $sql = "SELECT DISTINCT principal_special_rate.country_tag, tbl_country.country_name FROM principal_special_rate INNER JOIN tbl_country ON principal_special_rate.country_tag = tbl_country.country_tag WHERE principal_special_rate.principal_id='$pid' ORDER BY tbl_country.country_name ASC";
     
     $query = $db->link->query($sql);
     ?>
@@ -492,6 +492,20 @@ if(isset($_POST['copy_from_pid'])){
     
     <?php
     
+}
+
+if(isset($_POST['remove_country_tag'])){
+    $tag = $_POST['remove_country_tag'];
+    $pid = $_POST['pid'];
+    
+    $sql = "DELETE FROM principal_special_rate WHERE principal_id='$pid' AND country_tag='$tag'";
+    $query = $db->link->query($sql);
+    
+    if($query){
+        echo '1';
+    }else{
+        echo $db->link->error;
+    }
 }
 
 ?>
