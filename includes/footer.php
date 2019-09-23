@@ -3709,7 +3709,68 @@ if($uri_parts[0] == '/agent_prices.php'){
 		<?php
 }
 
+if($uri_parts[0] == '/agent_client_special_price.php'){
+    ?>
+    <script>
+        $('#agent_zone_price').DataTable()
 
+		    $("#agent_select").change(function() {
+		        var agent_id = $(this).find(":selected").val();
+		        if (agent_id != "") {
+		            $(".nav_view").css("display", "block");
+
+		            $.ajax({
+		                url: "../ajax/ajax_agent_prices.php",
+		                method: "POST",
+		                data: {
+		                    get_agent_mail: agent_id
+		                },
+		                success: function(data) {
+		                    $("#agent_email").val(data);
+		                }
+		            })
+
+		        } else {
+		            $(".nav_view").css("display", "none");
+		            $("#agent_email").val("");
+		        }
+
+		        $(".viewpanel").css("display", "none");
+		        $(".nav_view li").removeClass("active");
+		    });
+
+		    $(".nav_view li").click(function() {
+		        $(".nav_view li").removeClass("active");
+		        $(this).addClass("active");
+                
+                $(".viewpanel").css('display', 'none');
+                
+                var id = $(this).find('a').attr("id");
+                
+                $("#view_"+id).css('display', 'block');
+                
+		    });
+        
+        $("#setprice").click(function(){
+            var agent_mail = $("#agent_email").val();
+            $("#principal").find("*").remove();
+            $("#principal").selectpicker('refresh');
+            $.ajax({
+                url: "../ajax/ajax_agent_client_special_price.php",
+                method: "POST",
+                data: {
+                    get_agent_principals: agent_mail
+                },
+                success: function(data){
+                    $("#principal").append(data);
+                    $("#principal").selectpicker('refresh');
+                }
+            });
+        })
+        
+    </script>
+    <?php
+}
 if($uri_parts[0] == '/view_zone_by_country.php'){
     ?>
 		<script>
