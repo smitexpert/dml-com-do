@@ -51,7 +51,7 @@ include('includes/header.php');
             </div>
 
             <div class="viewpanel" id="view_setprice" style="display: none">
-                <form id="agent_zone_set_form">
+                <form id="agent_set_special_form">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel panel-default">
@@ -73,11 +73,23 @@ include('includes/header.php');
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group connected-group">
-                                                <label for="zone">Select Country</label>
+                                                <label for="country">Select Country</label>
                                                 <select name="country" id="country" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                                     <option value="">--</option>
                                                 </select>
                                                 <input type="hidden" id="agent_email" name="agent_email">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">Start Date</label>
+                                                <input type="text" class="form-control" id="agent_start_date" name="agent_start_date" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">End Date</label>
+                                                <input type="text" class="form-control" id="agent_end_date" name="agent_end_date" required>
                                             </div>
                                         </div>
                                     </div>
@@ -157,7 +169,7 @@ include('includes/header.php');
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <button id="submit_zone_price" type="submit" class="btn btn-lg btn-warning btn-block" disabled>SUBMIT</button>
+                                                <button id="submit_special_price" type="submit" class="btn btn-lg btn-warning btn-block" disabled>SUBMIT</button>
                                             </div>
                                         </div>
                                     </div>
@@ -181,10 +193,18 @@ include('includes/header.php');
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group connected-group">
+                            <label for="view_principal">Select Country</label>
+                            <select name="view_country" id="view_country" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                <option value="">--</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <hr>
                 <div id="load_price">
-
+                    
                 </div>
                 <br>
             </div>
@@ -203,18 +223,30 @@ include('includes/header.php');
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group connected-group">
-                                                <label for="upzoneprincipal">Select Principal</label>
-                                                <select name="upzoneprincipal" id="upzoneprincipal" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                                <label for="up_agent_principal">Select Principal</label>
+                                                <select name="up_agent_principal" id="up_agent_principal" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                                     <option value="">--</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group connected-group">
-                                                <label for="upzone">Select Zone</label>
-                                                <select name="upzone" id="upzone" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                                <label for="up_country">Select Country</label>
+                                                <select name="up_country" id="up_country" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                                     <option value="">--</option>
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group connected-group">
+                                                <label for="up_country">Start Date</label>
+                                                <input type="text" class="form-control" id="up_start_date" name="up_start_date" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group connected-group">
+                                                <label for="up_country">End Date</label>
+                                                <input type="text" class="form-control" id="up_end_date" name="up_end_date" disabled>
                                             </div>
                                         </div>
                                     </div>

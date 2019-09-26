@@ -478,17 +478,17 @@ if(isset($_GET['user'])){
         
             <div class="col-md-4">
                  <?php 
-                    if($db->CuntMenu('stuff-settings') > 0){
+                    if($db->CuntMenu('staff-settings') > 0){
                         
                         ?>
                         <div class="panel panel-info">
                           <div class="panel-heading">
-                              Stuff Settings
+                              Staff Settings
                               <div class="panel-tools"><a class="btn btn-xs btn-link panel-collapse collapses" href="#"></a></div>
                           </div>
                           <div class="panel-body" style="display: block;">
                         <?php
-                        $dashboardMenu = $db->Menus('stuff-settings');
+                        $dashboardMenu = $db->Menus('staff-settings');
                         
                         while($dashboardRow = $dashboardMenu->fetch_assoc()){
                             ?>

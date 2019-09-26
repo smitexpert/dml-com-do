@@ -20,7 +20,7 @@ include('includes/header.php');
                         <div class="col-md-12">
                             <div class="col-md-3">
                                 <div class="form-group connected-group" style="margin-left: -20px;">
-                                    <label class="control-label" style="font-size: 16px">Select Agent <span class="symbol required"></span>
+                                    <label class="control-label" style="font-size: 16px">Select Agent<span class="symbol required"></span>
                                     </label>
                                     <select name="agent_select" required id="agent_select" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                         <option value="">--</option>

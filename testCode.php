@@ -1748,180 +1748,8 @@ if($uri_parts[0] == '/corporate_client_price.php'){
 			$("#corporate_select").change(function(){
 				var corporate_id = $(this).find(":selected").val();
 
-				if (corporate_id != "") {
-		            $(".nav_view").css("display", "block");
-
-		            $.ajax({
-		                url: "../ajax/ajax_corporate_prices.php",
-		                method: "POST",
-		                data: {
-		                    get_corporate_mail: corporate_id
-		                },
-		                success: function(data) {
-		                    $("#corporate_email").val(data);
-		                }
-		            })
-
-		        } else {
-		            $(".nav_view").css("display", "none");
-		            $("#agent_email").val("");
-		        }
-				
-		        $(".viewpanel").css("display", "none");
-		        $(".nav_view li").removeClass("active");
+				console.log(corporate_id);
 			});
-
-			$(".nav_view li").click(function() {
-		        $(".nav_view li").removeClass("active");
-		        $(this).addClass("active");
-		    });
-
-			$("#setprice").click(function() {
-		        $(".viewpanel").css("display", "none");
-		        $("#view_setprice").css("display", "block");
-
-		        var corporate_email = $("#corporate_email").val();
-		        $("#zone").find('*').remove();
-		        $("#zone").append('<option value="">--</option>');
-		        $("#zone").selectpicker('refresh');
-
-		        $.ajax({
-		            url: "../ajax/ajax_corporate_prices.php",
-		            method: "POST",
-		            data: {
-		                corporate_setprice_email: corporate_email
-		            },
-		            success: function(data) {
-		                $("#zone").find("*").remove();
-		                $("#zone").append(data);
-		                $("#zone").selectpicker('refresh');
-		                $("#submit_zone_price").prop("disabled", true);
-		            }
-		        })
-
-		    });
-
-			$("#zone").change(function(){
-				var zone_id = $(this).find(":selected").val();
-				var corporate_email = $("#corporate_email").val();
-
-				
-
-				if(zone_id != ""){
-					$.ajax({
-						url:"../ajax/ajax_corporate_prices.php",
-						method: "POST",
-						data:{
-						selected_zone_id : zone_id,
-						selected_corporate_email : corporate_email
-						},
-						success:function(result){
-							// console.log(result);
-							if(result == 1){
-								alert("Zone Price Already Exits!");
-								$("#submit_zone_price").prop("disabled", true);
-							}else{
-								$("#submit_zone_price").prop("disabled", false);
-							}
-						}
-					})
-				}
-
-			})
-			
-			$("#corporate_zone_set_form").submit(function(event){
-				event.preventDefault();
-
-				var setCorporateClientGeneralPrice = $(this).serialize();
-				// console.log(setCorporateClientGeneralPrice);
-				$.ajax({
-					url:"../ajax/ajax_corporate_prices.php",
-					method:"POST",
-					data: setCorporateClientGeneralPrice,
-					success:function(result){
-						if(result == "DP PP"){
-							$("#zone").val("");
-							$("#zone").selectpicker("refresh");
-							$(".corpo_price").val("");
-						}
-					}
-				});
-
-
-
-			})
-			
-			$("#viewprice").click(function() {
-		        $(".viewpanel").css("display", "none");
-		        $("#view_viewprice").css("display", "block");
-
-
-
-		        var agent_mail = $("#agent_email").val();
-
-		        $.ajax({
-		            url: "../ajax/ajax_agent_prices.php",
-		            method: "POST",
-		            data: {
-		                get_view_price_principal: agent_mail
-		            },
-		            success: function(data) {
-		                $("#view_principal").find("*").remove();
-		                $("#view_principal").append(data);
-		                $("#view_principal").selectpicker('refresh');
-		                //		                console.log(data);
-		            }
-		        })
-
-		    });
-
-
-		    $("#updateprice").click(function() {
-		        $(".viewpanel").css("display", "none");
-		        $("#view_updateprice").css("display", "block");
-
-		        var agent_mail = $("#agent_email").val();
-
-		        $("#load_update_price").find("*").remove();
-
-		        $.ajax({
-		            url: "../ajax/ajax_agent_prices.php",
-		            method: "POST",
-		            data: {
-		                get_view_price_principal: agent_mail
-		            },
-		            success: function(data) {
-		                $("#upzoneprincipal").find("*").remove();
-		                $("#upzoneprincipal").append(data);
-		                $("#upzoneprincipal").selectpicker('refresh');
-		                //		                console.log(data);
-		            }
-		        })
-		    });
-
-			$("#copyCorporate").click(function() {
-		        $(".viewpanel").css("display", "none");
-		        $("#view_copyagent").css("display", "block");
-                
-                var agent_mail = $("#agent_email").val();
-		        $("#copy_to_zone").find('*').remove();
-		        $("#copy_to_zone").append('<option value="">--</option>');
-		        $("#copy_to_zone").selectpicker('refresh');
-
-		        $.ajax({
-		            url: "../ajax/ajax_agent_prices.php",
-		            method: "POST",
-		            data: {
-		                agent_setprice_mail: agent_mail
-		            },
-		            success: function(data) {
-		                $("#copy_to_principal_id").find("*").remove();
-		                $("#copy_to_principal_id").append(data);
-		                $("#copy_to_principal_id").selectpicker('refresh');
-		            }
-		        })
-                
-		    });
 
 		</script>
 
@@ -3817,27 +3645,11 @@ if($uri_parts[0] == '/agent_client_special_price.php'){
     <script>
         
   $( function() {
-    $( "#agent_start_date" ).datepicker({
-		dateFormat: 'yy-mm-dd'
-	});
+    $( "#agent_start_date" ).datepicker();
   } );
         
   $( function() {
-    $( "#agent_end_date" ).datepicker({
-		dateFormat: 'yy-mm-dd'
-	});
-  } );
-        
-  $( function() {
-    $( "#up_start_date" ).datepicker({
-		dateFormat: 'yy-mm-dd'
-	});
-  } );
-        
-  $( function() {
-    $( "#up_end_date" ).datepicker({
-		dateFormat: 'yy-mm-dd'
-	});
+    $( "#agent_end_date" ).datepicker();
   } );
         
         $('#agent_zone_price').DataTable()
@@ -3954,8 +3766,7 @@ if($uri_parts[0] == '/agent_client_special_price.php'){
                             alert("Successfully Submited!");
                             
                         }else{
-							alert("Somthing Wrong@@!!");
-							console.log(data);
+                            alert("Somthing Wrong@@!!");
                         }
                     }
             })
@@ -4007,145 +3818,11 @@ if($uri_parts[0] == '/agent_client_special_price.php'){
             var pid = $("#view_principal").find(":selected").val();
             var agent_mail = $("#agent_email").val();
             var tag = $("#view_country").find(":selected").val();
-            $("#load_price").find("*").remove();
+            
             if(tag != ''){
-                $.ajax({
-                    url: "../ajax/ajax_agent_client_special_price.php",
-                    method: "POST",
-                    data: {
-                        view_agent_price_mail: agent_mail,
-                        view_agent_price_pid: pid,
-                        view_agent_price_tag: tag
-                    },
-                    success: function(data){
-                       $("#load_price").append(data);
-                    }
-				});
+                
             }
-		});
-		
-		$("#updateprice").click(function(){
-			var agent_mail = $("#agent_email").val();
-            
-            $("#up_agent_principal").find("*").remove();
-			$("#up_agent_principal").selectpicker('refresh');
-			
-			$("#load_update_price").find("*").remove();
-
-			$("#up_start_date").val("");
-			$("#up_end_date").val("");
-
-			$("#up_start_date").prop("disabled", true);
-			$("#up_end_date").prop("disabled", true);
-            
-            $.ajax({
-                url: "../ajax/ajax_agent_client_special_price.php",
-                method: "POST",
-                data: {
-                    view_agent_principal: agent_mail
-                },
-                success: function(data){
-                    $("#up_agent_principal").append(data);
-                    $("#up_agent_principal").selectpicker('refresh');
-                }
-            })
-		})
-
-		$("#up_agent_principal").change(function(){
-			var agent_mail = $("#agent_email").val();
-			var pid = $("#up_agent_principal").find(":selected").val();
-
-			$("#up_country").find("*").remove();
-            $("#up_country").selectpicker('refresh');
-
-			if(pid != ''){
-				$.ajax({
-					url: "../ajax/ajax_agent_client_special_price.php",
-					method: "POST",
-					data: {
-						up_agent_mail: agent_mail,
-						up_agent_pid: pid
-					},
-					success: function(data){
-						$("#up_country").append(data);
-                    	$("#up_country").selectpicker('refresh');
-					}
-				})
-			}
-		})
-
-		$("#up_country").change(function(){
-			var agent_mail = $("#agent_email").val();
-			var pid = $("#up_agent_principal").find(":selected").val();
-			var tag = $("#up_country").find(":selected").val();
-
-			$("#up_start_date").val("");
-			$("#up_end_date").val("");
-
-			$("#load_update_price").find("*").remove();
-			if(tag != ''){
-				$.ajax({
-					url: "../ajax/ajax_agent_client_special_price.php",
-					method: "POST",
-					data: {
-						get_up_mail: agent_mail,
-						get_up_pid: pid,
-						get_up_tag: tag
-					},
-					success: function(data){
-						$("#load_update_price").append(data);
-					}
-				})
-
-				
-				
-                $.ajax({
-                    url: "../ajax/ajax_agent_client_special_price.php",
-                    method: "POST",
-                    data: {
-                        view_agent_price_mail_date: agent_mail,
-                        view_agent_price_pid_date: pid,
-                        view_agent_price_tag_date: tag
-					},
-					dataType: 'json',
-                    success: function(result){
-						$("#up_start_date").val(result.start_date);
-						$("#up_end_date").val(result.end_date);
-						$("#up_start_date").prop("disabled", false);
-						$("#up_end_date").prop("disabled", false);
-                    }
-                })
-			}
-		})
-
-		function update_agent_submit(event){
-			event.preventDefault();
-			var agent_mail = $("#agent_email").val();
-			var form_data = $(event.target).serialize()+"&up_agent_sub="+agent_mail;
-			// console.log(form_data);
-			$.ajax({
-				url: "../ajax/ajax_agent_client_special_price.php",
-				method: "POST",
-				data: form_data,
-				success: function(data){
-					if(data == '3'){
-						alert("Updated Successfully!!");
-						$("#up_agent_principal").val("");
-						$("#up_agent_principal").selectpicker("refresh");
-						$("#up_country").val("");
-						$("#up_country").selectpicker("refresh");
-						$("#up_start_date").val("");
-						$("#up_start_date").prop("disabled", true);
-						$("#up_end_date").val("");
-						$("#up_end_date").prop("disabled", true);
-						$("#load_update_price").find("*").remove();
-					}else{
-						alert("Warning: Data Not Submitted!!@");
-						console.log(data);
-					}
-				}
-			})
-		}
+        })
         
     </script>
     <?php

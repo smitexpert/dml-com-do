@@ -68,7 +68,7 @@ if(Session::get('role') == 1){
 <?php
 
     
-$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='consignment-area'";
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='creation-area'";
 
 $creationAreaCount = $menu->count($superCreationAreaQuery);
 
@@ -80,7 +80,7 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 ?>
 <li class="linav">
     <a href="javascript:void(0)"><i class="clip-pencil"></i>
-    <span class="title">CONSIGNMENT AREA</span><i class="icon-arrow"></i>
+    <span class="title">CREATION AREA</span><i class="icon-arrow"></i>
     <span class="selected"></span>
     </a>
     <ul  class="sub-menu">
@@ -91,6 +91,48 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 
 
             <li class="acli <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?>">
+                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
+                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
+                </a>
+            </li>	
+
+            <?php
+            }
+
+
+        ?>
+
+
+    </ul>
+</li>
+<?php
+
+}
+    
+    
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='consignment-area'";
+
+$creationAreaCount = $menu->count($superCreationAreaQuery);
+
+if($creationAreaCount[0] > 0) {
+
+$creationAreaMenu = $menu->select($superCreationAreaQuery);
+
+
+?>
+<li class="linav">
+    <a href="javascript:void(0)"><i class="clip-screen"></i>
+    <span class="title">CONSIGNMENT AREA</span><i class="icon-arrow"></i>
+    <span class="selected"></span>
+    </a>
+    <ul  class="sub-menu">
+        <?php
+
+        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
+            ?>
+
+
+            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
                 <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
                 <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
                 </a>
@@ -121,7 +163,7 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 
 ?>
 <li class="linav">
-    <a href="javascript:void(0)"><i class="clip-screen"></i>
+    <a href="javascript:void(0)"><i class="clip-grid-6"></i>
     <span class="title">MANIFEST AREA</span><i class="icon-arrow"></i>
     <span class="selected"></span>
     </a>
@@ -163,7 +205,7 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 
 ?>
 <li class="linav">
-    <a href="javascript:void(0)"><i class="clip-grid-6"></i>
+    <a href="javascript:void(0)"><i class="clip-user-2"></i>
     <span class="title">CORPORATE AREA</span><i class="icon-arrow"></i>
     <span class="selected"></span>
     </a>
@@ -236,49 +278,7 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 }
     
     
-$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='general-price-settings'";
-
-$creationAreaCount = $menu->count($superCreationAreaQuery);
-
-if($creationAreaCount[0] > 0) {
-
-$creationAreaMenu = $menu->select($superCreationAreaQuery);
-
-
-?>
-<li class="linav">
-    <a href="javascript:void(0)"><i class="clip-user-2"></i>
-    <span class="title">GENERAL SETTINGS</span><i class="icon-arrow"></i>
-    <span class="selected"></span>
-    </a>
-    <ul  class="sub-menu">
-        <?php
-
-        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
-            ?>
-
-
-            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
-                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
-                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
-                </a>
-            </li>	
-
-            <?php
-            }
-
-
-        ?>
-
-
-    </ul>
-</li>
-<?php
-
-}
-    
-    
-$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='principal-price-settings'";
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='rote-settings'";
 
 $creationAreaCount = $menu->count($superCreationAreaQuery);
 
@@ -290,175 +290,7 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 ?>
 <li class="linav">
     <a href="javascript:void(0)"><i class="clip-location"></i>
-    <span class="title">PRINCIPAL SETTINGS</span><i class="icon-arrow"></i>
-    <span class="selected"></span>
-    </a>
-    <ul  class="sub-menu">
-        <?php
-
-        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
-            ?>
-
-
-            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
-                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
-                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
-                </a>
-            </li>	
-
-            <?php
-            }
-
-
-        ?>
-
-
-    </ul>
-</li>
-<?php
-
-}
-    
-    
-$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='sales-marketing'";
-
-$creationAreaCount = $menu->count($superCreationAreaQuery);
-
-if($creationAreaCount[0] > 0) {
-
-$creationAreaMenu = $menu->select($superCreationAreaQuery);
-
-
-?>
-<li class="linav">
-    <a href="javascript:void(0)"><i class="clip-grid-6"></i>
-    <span class="title">SALES &amp; MARKETING</span><i class="icon-arrow"></i>
-    <span class="selected"></span>
-    </a>
-    <ul  class="sub-menu">
-        <?php
-
-        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
-            ?>
-
-
-            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
-                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
-                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
-                </a>
-            </li>	
-
-            <?php
-            }
-
-
-        ?>
-
-
-    </ul>
-</li>
-<?php
-
-}
-    
-    
-$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='accounts'";
-
-$creationAreaCount = $menu->count($superCreationAreaQuery);
-
-if($creationAreaCount[0] > 0) {
-
-$creationAreaMenu = $menu->select($superCreationAreaQuery);
-
-
-?>
-<li class="linav">
-    <a href="javascript:void(0)"><i class="clip-bars"></i>
-    <span class="title">ACCOUNTS</span><i class="icon-arrow"></i>
-    <span class="selected"></span>
-    </a>
-    <ul  class="sub-menu">
-        <?php
-
-        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
-            ?>
-
-
-            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
-                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
-                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
-                </a>
-            </li>	
-
-            <?php
-            }
-
-
-        ?>
-
-
-    </ul>
-</li>
-<?php
-
-}
-    
-    
-$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='settings'";
-
-$creationAreaCount = $menu->count($superCreationAreaQuery);
-
-if($creationAreaCount[0] > 0) {
-
-$creationAreaMenu = $menu->select($superCreationAreaQuery);
-
-
-?>
-<li class="linav">
-    <a href="javascript:void(0)"><i class="clip-bars"></i>
-    <span class="title">SETTINGS</span><i class="icon-arrow"></i>
-    <span class="selected"></span>
-    </a>
-    <ul  class="sub-menu">
-        <?php
-
-        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
-            ?>
-
-
-            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
-                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
-                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
-                </a>
-            </li>	
-
-            <?php
-            }
-
-
-        ?>
-
-
-    </ul>
-</li>
-<?php
-
-}
-    
-    
-$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='creation-area'";
-
-$creationAreaCount = $menu->count($superCreationAreaQuery);
-
-if($creationAreaCount[0] > 0) {
-
-$creationAreaMenu = $menu->select($superCreationAreaQuery);
-
-
-?>
-<li class="linav">
-    <a href="javascript:void(0)"><i class="clip-bars"></i>
-    <span class="title">CREATION AREA</span><i class="icon-arrow"></i>
+    <span class="title">Route Settings</span><i class="icon-arrow"></i>
     <span class="selected"></span>
     </a>
     <ul  class="sub-menu">
@@ -530,7 +362,7 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 }
     
     
-$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='staff-settings'";
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='general-price-settings'";
 
 $creationAreaCount = $menu->count($superCreationAreaQuery);
 
@@ -541,8 +373,8 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 
 ?>
 <li class="linav">
-    <a href="javascript:void(0)"><i class="clip-grid-6"></i>
-    <span class="title">STAFF SETTINGS</span><i class="icon-arrow"></i>
+    <a href="javascript:void(0)"><i class="clip-bars"></i>
+    <span class="title">GENERAL SETTINGS</span><i class="icon-arrow"></i>
     <span class="selected"></span>
     </a>
     <ul  class="sub-menu">
@@ -572,9 +404,7 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 }
     
     
-    
-    
-$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='designation-area'";
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='principal-price-settings'";
 
 $creationAreaCount = $menu->count($superCreationAreaQuery);
 
@@ -585,8 +415,50 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 
 ?>
 <li class="linav">
-    <a href="javascript:void(0)"><i class="clip-cog-2"></i>
-    <span class="title">DESIGNATION AREA</span><i class="icon-arrow"></i>
+    <a href="javascript:void(0)"><i class="clip-bars"></i>
+    <span class="title">PRINCIPAL SETTINGS</span><i class="icon-arrow"></i>
+    <span class="selected"></span>
+    </a>
+    <ul  class="sub-menu">
+        <?php
+
+        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
+            ?>
+
+
+            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
+                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
+                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
+                </a>
+            </li>	
+
+            <?php
+            }
+
+
+        ?>
+
+
+    </ul>
+</li>
+<?php
+
+}
+    
+    
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='stuff-settings'";
+
+$creationAreaCount = $menu->count($superCreationAreaQuery);
+
+if($creationAreaCount[0] > 0) {
+
+$creationAreaMenu = $menu->select($superCreationAreaQuery);
+
+
+?>
+<li class="linav">
+    <a href="javascript:void(0)"><i class="clip-bars"></i>
+    <span class="title">STAFF SETTINGS</span><i class="icon-arrow"></i>
     <span class="selected"></span>
     </a>
     <ul  class="sub-menu">
@@ -627,7 +499,7 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 
 ?>
 <li class="linav">
-    <a href="javascript:void(0)"><i class="clip-cog-2"></i>
+    <a href="javascript:void(0)"><i class="clip-grid-6"></i>
     <span class="title">BRANCH AREA</span><i class="icon-arrow"></i>
     <span class="selected"></span>
     </a>
@@ -654,13 +526,183 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
     </ul>
 </li>
 <?php
+
 }
+    
+    
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='designation-area'";
+
+$creationAreaCount = $menu->count($superCreationAreaQuery);
+
+if($creationAreaCount[0] > 0) {
+
+$creationAreaMenu = $menu->select($superCreationAreaQuery);
+
+
 ?>
+<li class="linav">
+    <a href="javascript:void(0)"><i class="clip-grid-6"></i>
+    <span class="title">DESIGNATION AREA</span><i class="icon-arrow"></i>
+    <span class="selected"></span>
+    </a>
+    <ul  class="sub-menu">
+        <?php
+
+        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
+            ?>
+
+
+            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
+                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
+                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
+                </a>
+            </li>	
+
+            <?php
+            }
+
+
+        ?>
 
 
     </ul>
 </li>
 <?php
+
+}
+    
+    
+    
+    
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='sales-marketing'";
+
+$creationAreaCount = $menu->count($superCreationAreaQuery);
+
+if($creationAreaCount[0] > 0) {
+
+$creationAreaMenu = $menu->select($superCreationAreaQuery);
+
+
+?>
+<li class="linav">
+    <a href="javascript:void(0)"><i class="clip-cog-2"></i>
+    <span class="title">SALES &amp; MARKETING</span><i class="icon-arrow"></i>
+    <span class="selected"></span>
+    </a>
+    <ul  class="sub-menu">
+        <?php
+
+        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
+            ?>
+
+
+            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
+                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
+                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
+                </a>
+            </li>	
+
+            <?php
+            }
+
+
+        ?>
+
+
+    </ul>
+</li>
+<?php
+
+}
+    
+    
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='accounts'";
+
+$creationAreaCount = $menu->count($superCreationAreaQuery);
+
+if($creationAreaCount[0] > 0) {
+
+$creationAreaMenu = $menu->select($superCreationAreaQuery);
+
+
+?>
+<li class="linav">
+    <a href="javascript:void(0)"><i class="clip-cog-2"></i>
+    <span class="title">ACCOUNTS</span><i class="icon-arrow"></i>
+    <span class="selected"></span>
+    </a>
+    <ul  class="sub-menu">
+        <?php
+
+        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
+            ?>
+
+
+            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
+                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
+                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
+                </a>
+            </li>	
+
+            <?php
+            }
+
+
+        ?>
+
+
+    </ul>
+</li>
+<?php
+
+}
+    
+    
+    
+    
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='settings'";
+
+$creationAreaCount = $menu->count($superCreationAreaQuery);
+
+if($creationAreaCount[0] > 0) {
+
+$creationAreaMenu = $menu->select($superCreationAreaQuery);
+
+
+?>
+<li class="linav">
+    <a href="javascript:void(0)"><i class="clip-cog-2"></i>
+    <span class="title">SETTINGS</span><i class="icon-arrow"></i>
+    <span class="selected"></span>
+    </a>
+    <ul  class="sub-menu">
+        <?php
+
+        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
+            ?>
+
+
+            <li class="acli  <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?> ">
+                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
+                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
+                </a>
+            </li>	
+
+            <?php
+            }
+
+
+        ?>
+
+
+    </ul>
+</li>
+<?php
+
+}
+
+
+
 }else{
     ?>
     <li class="<?php if($currentPage == '/dashboard.php'){ echo 'active open'; } ?>">
@@ -1264,6 +1306,314 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
 }
 
 ?>
+                                    
+                                    
+                                    
+                        
+                        
+
+
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-pencil"></i>
+								<span class="title"> Creation Area</span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul  class="sub-menu">
+								<li class="acli">
+									<a href="create_weight.php">
+										<span class="title">Create Weight</span>
+									</a>
+								</li>
+								<li>
+									<a href="createRoute.php">
+										<span class="title">Create Route</span>
+									</a>
+								</li>								
+								<li>
+									<a href="add_country.php">
+										<span class="title">Create Country</span>
+									</a>
+								</li>	
+								<li>
+									<a href="createCourierCompany.php">
+										<span class="title">Create Courier Company</span>
+									</a>	
+								</li>									
+
+								<li>
+									<a href="create_stuff.php">
+										<span class="title">Create Stuff</span>
+									</a>
+								</li>								
+
+								<li>
+									<a href="createBranch.php">
+										<span class="title">Create Branch</span>
+									</a>
+								</li>									
+
+								<li>
+									<a href="createDesignation.php">
+										<span class="title">Create Designation</span>
+									</a>
+								</li>					
+
+							</ul>
+						</li>	-->						
+
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-screen"></i>
+								<span class="title"> Consignment Area</span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+								<li>
+									<a class="nav" href="consignment_booking.php">
+										<span class="title">Consignment Booking</span>
+									</a>
+								</li>
+								<li>
+									<a href="consignment_list.php">
+										<span class="title">Consignment List</span>
+									</a>
+								</li>								
+
+								<li>
+									<a href="track_consignment.php">
+										<span class="title">Consignment Track</span>
+									</a>
+								</li>	
+
+							</ul>
+						</li>-->						
+
+
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-grid-6"></i>
+								<span class="title"> Manifest Area </span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+
+								<li>
+									<a href="menifest_cons_srch.php">
+										<span class="title">Principal CSV Create</span>
+									</a>
+								</li>
+
+								<li>
+									<a href="prinicpal_menifest.php">
+										<span class="title">Principal Menifest</span>
+									</a>
+								</li>
+
+							</ul>
+						</li>-->
+
+
+
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-user-2"></i>
+								<span class="title"> Corporate Clients Area</span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+
+								<li>
+									<a href="corpo_client.php">
+										<span class="title">Create Corporate Client</span>
+									</a>
+								</li>
+								
+								<li>
+									<a href="corpo_client_price_dtails.php">
+										<span class="title">Corporate Client Prices Details</span>
+									</a>
+								</li>
+
+								<li>
+									<a href="corpo_client_list.php">
+										<span class="title">Corporate Client list</span>
+									</a>
+								</li>								
+
+							</ul>
+						</li>-->
+
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-location"></i>
+								<span class="title"> Route Settings </span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+								<li>
+									<a href="rout_list.php">
+										<span class="title">Route list</span>
+									</a>
+								</li>
+
+							</ul>
+						</li>-->
+
+
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-grid-6"></i>
+								<span class="title"> Country Settings </span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+
+								<li>
+									<a href="country_list.php">
+										<span class="title">Country list</span>
+									</a>
+								</li>
+							</ul>
+						</li>-->
+
+
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-bars"></i>
+								<span class="title"> General price Settings </span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+								<li>
+									<a href="add_route_price.php">
+										<span class="title">Set General Price With Route</span>
+									</a>
+								</li>	
+							</ul>
+						</li>	-->
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-bars"></i>
+								<span class="title"> Principal price Settings </span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+								
+								<li>
+									<a href="set_principal_route.php">
+										<span class="title">Principal Settings</span>
+									</a>									
+ 									<a href="add_principal_price.php">
+										<span class="title">Set Principal Price</span>
+									</a> 
+
+									<a href="search_prinicpal_price.php">
+										<span class="title">Search Prinicipal Price</span>
+									</a> 									
+
+									<a href="srch_principrice_by_weight.php">
+										<span class="title">Search by Weight</span>
+									</a> 
+								</li>	
+							</ul>
+						</li>-->							
+
+
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-bars"></i>
+								<span class="title"> Stuff Settings </span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+								
+								<li>
+									<a href="stuff_list.php">
+										<span class="title">Stuff List</span>
+									</a>									
+
+									<a href="search_stuff.php">
+										<span class="title">Search Stuff</span>
+									</a> 
+								</li>	
+							</ul>
+						</li>	-->					
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-grid-6"></i>
+								<span class="title"> Branch Area </span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+
+								<li>
+									<a href="branch_list.php">
+										<span class="title">Branch List</span>
+									</a>
+								</li>
+							</ul>
+						</li>-->
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-grid-6"></i>
+								<span class="title"> Designation Area </span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+
+								<li>
+									<a href="designation_list.php">
+										<span class="title">Designation List</span>
+									</a>
+								</li>
+							</ul>
+						</li>-->
+
+						<!--<li class="linav">
+							<a href="javascript:void(0)"><i class="clip-cog-2"></i>
+								<span class="title"> Accounts </span><i class="icon-arrow"></i>
+								<span class="selected"></span>
+							</a>
+							<ul class="sub-menu">
+								<li>
+									<a href="accounts_summery.php">
+										<span class="title">Accounts Summery</span>
+									</a>
+								</li>								
+
+								<li>
+									<a href="accounts_corporate.php">
+										<span class="title">Corporate Accounts</span>
+									</a>
+								</li>	
+
+
+								<li>
+									<a href="accounts_principal.php">
+										<span class="title">Principal's Account</span>
+									</a>
+								</li>
+								<li>
+									<a href="account_assignee_cour.php">
+										<span class="title">Corporate assignee Accounts</span>
+									</a>
+								</li>	
+
+								<li>
+									<a href="accounts_stuff_market.php">
+										<span class="title">Market Stuff Accounts</span>
+									</a>
+								</li>
+							
+
+								<li>
+									<a href="accounts_search.php">
+										<span class="title">Accounts Search</span>
+									</a>
+								</li>	
+							</ul>
+						</li>-->
 
 					</ul>
 					</nav>
