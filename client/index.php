@@ -4,10 +4,6 @@ include("header.php");
 
 ?>
 
-<div class="main-container">
-   <br>
-    <?php include("sidebar.php"); ?>
-    
     <div class="main-content">
         <div class="container"><br><br>
             <div class="row">

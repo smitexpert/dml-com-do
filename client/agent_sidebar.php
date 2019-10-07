@@ -13,13 +13,13 @@
 					<ul id="nav" class="main-navigation-menu">
                         <li class="linav">
 							<a href="index.php"><i class="clip-screen"></i>
-								<span class="title"> Dashboard</span>
+								<span class="title">DASHBOARD</span>
 							</a>
                         </li>
 										
 
 
-						<li class="linav">
+						<!-- <li class="linav">
 							<a href="javascript:void(0)"><i class="clip-screen"></i>
 								<span class="title"> Consignment Area</span><i class="icon-arrow"></i>
 								<span class="selected"></span>
@@ -43,43 +43,36 @@
 								</li>	
 
 							</ul>
-						</li>						
+						</li>						 -->
 
 
+						
 						<li class="linav">
-							<a href="javascript:void(0)"><i class="clip-grid-6"></i>
-								<span class="title"> Price Settings</span><i class="icon-arrow"></i>
-								<span class="selected"></span>
+							<a href="search_price.php">
+								<span class="title">Search Price</span>
 							</a>
-							<ul class="sub-menu">
-								<li>
-									<a class="nav" href="client_view_price.php">
-										<span class="title">View Genarel Price</span>
-									</a>
-								</li>
-								<li>
-									<a href="client_view_special_price.php">
-										<span class="title">View Special Price</span>
-									</a>
-								</li>
-								<li>
-									<a href="client_view_special_price.php">
-										<span class="title">Search Price</span>
-									</a>
-								</li>
-
-							</ul>
-						</li>					
-
-
+						</li>
 						<li class="linav">
+							<a class="nav" href="agent_client_view_price.php">
+								<span class="title">View Genarel Price</span>
+							</a>
+						</li>
+						<li class="linav">
+							<a href="client_view_special_price.php">
+								<span class="title">View Special Price</span>
+							</a>
+						</li>
+												
+
+
+						<!-- <li class="linav">
 							<a href="client_accounts.php"><i class="clip-screen"></i>
 								<span class="title">Accounts</span>
 							</a>
-				        </li>						
+				        </li>						 -->
 
 
-						<li class="linav">
+						<!-- <li class="linav">
 							<a href="javascript:void(0)"><i class="clip-user-2"></i>
 								<span class="title">Settings</span><i class="icon-arrow"></i>
 								<span class="selected"></span>
@@ -97,7 +90,7 @@
 								</li>
 
 							</ul>
-						</li>	
+						</li>	 -->
 
 					</ul>
 					</nav>

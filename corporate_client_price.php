@@ -14,6 +14,7 @@ include('includes/header.php');
         <div class="container"><br><br>
             <!-- start: PAGE CONTENT -->
             <!-- CLIENT PRICE SEARCH PORTION STARTS -->
+            
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
@@ -162,21 +163,10 @@ include('includes/header.php');
                 </form>
             </div>
 
-            <div class="viewpanel" id="view_viewprice" style="display: none">
-                <br>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group connected-group">
-                            <label for="view_principal">Select Principal</label>
-                            <select name="view_principal" id="view_principal" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-                                <option value="">--</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+            <div class="viewpanel" id="view_viewprice" style="display: none">                
                 <hr>
-                <div id="load_price">
-
+                <div id="showpricetable">
+                                   
                 </div>
                 <br>
             </div>
@@ -187,20 +177,14 @@ include('includes/header.php');
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <i class="fa fa-external-link-square"></i>
-                                Agent Update Price
+                                Corporate Client Update Price
                             </div>
+
                             <div class="panel-body">
-                                <form onsubmit="update_agent_submit(event)" action="">
+                                <form id="update_corporate_price_submit" action="">
                                     <br>
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group connected-group">
-                                                <label for="upzoneprincipal">Select Principal</label>
-                                                <select name="upzoneprincipal" id="upzoneprincipal" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-                                                    <option value="">--</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="col-md-3">
                                             <div class="form-group connected-group">
                                                 <label for="upzone">Select Zone</label>
@@ -211,8 +195,11 @@ include('includes/header.php');
                                         </div>
                                     </div>
                                     <br>
-                                    <div id="load_update_price">
-                                        
+                                    <div id="viewpriceview-loading" style="display: none;">
+                        <img style="position: fixed;z-index: 999;bottom: 30px;left: -128px;margin-left: 50%;" src="img/loading.gif" alt="">
+            </div>
+                                    <div id="load_corporate_general_price">
+
                                     </div>
                                 </form>
                             </div>

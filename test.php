@@ -1,5 +1,7 @@
 <?php
 
-echo date('d-m-Y');
+$num = (int) 0;
+
+echo $num;
 
 ?>

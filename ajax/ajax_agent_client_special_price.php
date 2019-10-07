@@ -30,6 +30,26 @@ if(isset($_POST['get_agent_principals'])){
     }
 }
 
+if(isset($_POST['get_agent_principals_price'])){
+    $agent_mail = $_POST['get_agent_principals_price'];
+    
+    $sql = "SELECT DISTINCT agent_client_special_rate.principal_id, principals_name.principal_name FROM agent_client_special_rate INNER JOIN principals_name ON agent_client_special_rate.principal_id = principals_name.id WHERE agent_client_special_rate.agent_client_email='$agent_mail' ORDER BY principals_name.id";
+    
+    $query = $db->link->query($sql);
+    
+    ?>
+    <option value="">--</option>
+    <?php
+    
+    if($query->num_rows > 0){
+        while($row = $query->fetch_assoc()){
+            ?>
+            <option value="<?php echo $row['principal_id']; ?>"><?php echo $row['principal_name']; ?></option>
+            <?php
+        }
+    }
+}
+
 if(isset($_POST['get_principals_country'])){
     $pid = $_POST['get_principals_country'];
     
@@ -453,6 +473,81 @@ if(isset($_POST['up_agent_principal'])){
 
     echo $res;
 
+}
+
+if(isset($_POST['copy_from_principal_country'])){
+    $principal_id = $_POST['copy_from_principal_country'];
+    $agent_mail = $_POST['copy_from_agent_country'];
+
+    $sql = "SELECT DISTINCT agent_client_special_rate.country_tag, tbl_country.country_name FROM agent_client_special_rate INNER JOIN tbl_country ON tbl_country.country_tag = agent_client_special_rate.country_tag WHERE agent_client_special_rate.agent_client_email='$agent_mail' AND agent_client_special_rate.principal_id='$principal_id' ORDER BY tbl_country.country_name";
+
+    $query = $db->link->query($sql);
+
+    if($query->num_rows > 0){
+        ?>
+        <div class="col-md-12">
+            <input id="all_country" type="checkbox" onclick="select_all_country()">
+            <label for="all_country">Select All Country</label>
+        </div>
+        <br>
+        <br>
+        <?php
+        while($row = $query->fetch_assoc()){
+            ?>
+        <div class="col-md-3">
+            <input name="country_tags[]" class="country_tag" id="<?php echo $row['country_tag']; ?>" type="checkbox" value="<?php echo $row['country_tag']; ?>" onclick="check_all_country()">
+            <label for="<?php echo $row['country_tag']; ?>"><?php echo $row['country_name']; ?></label>
+        </div>
+            <?php
+        }
+    }
+
+}
+
+if(isset($_POST['copy_to_principal_id'])){
+    $to_agent_id = $_POST['copy_to_agent_id'];
+    $to_principal_id = $_POST['copy_to_principal_id'];
+
+    $from_agent_id = $_POST['copy_from_agent_id'];
+    $from_principal_id = $_POST['copy_from_principal_id'];
+
+    $start = $_POST['copy_start'];
+    $end = $_POST['copy_end'];
+
+    $tags = $_POST['country_tags'];
+
+    $msg = "done";
+
+    for($i=0; $i<count($tags); $i++){
+        $r=0;
+        $tag = $tags[$i];
+
+        $sql_del = "DELETE FROM agent_client_special_rate WHERE agent_client_email='$to_agent_id' AND principal_id='$to_principal_id' AND country_tag='$tag'";
+
+        $sql = "INSERT INTO agent_client_special_rate(principal_id, agent_client_email, country_tag, goods_type, weight, price, start_date, end_date, entry_by, status) SELECT '$to_principal_id', '$to_agent_id', '$tag', goods_type, weight, price, '$start', '$end', '$logged_user', status FROM agent_client_special_rate WHERE agent_client_email='$from_agent_id' AND principal_id='$from_principal_id' AND country_tag='$tag'";
+
+        $query_del = $db->link->query($sql_del);
+        $query = $db->link->query($sql);
+
+        if($query){
+            $r++;
+        }
+
+        if($query_del){
+            $r++;
+        }
+
+        if($r==2){
+            continue;
+        }else{
+            $msg = $db->link->error;
+            break;
+        }
+
+        // $db->link->close();
+    }
+
+    echo $msg;
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-include('agent/login.php');
+include('client/login.php');
 
 $msg = '';
 
@@ -16,6 +16,7 @@ if(isset($_POST['agent'])){
 if(isset($_POST['corporate'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $msg = "Corporate Email: ".$email;
 }
 
 ?>

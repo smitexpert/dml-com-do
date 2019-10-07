@@ -283,6 +283,64 @@ if($uri_parts[0] == '/create_credit_voucher.php'){
 		        $(view).css("display", "block");
 		    });
 
+			$("#agent_selection").change(function(){
+				// console.log("Hello");
+				var agent_selection = $(this).find(":selected").val();
+
+				$.ajax({
+		            url: "../ajax/ajax_credit_corporte_voucher.php",
+		            method: "POST",
+		            data: {
+		                agent_selection_view: agent_selection
+		            },
+		            dataType: "JSON",
+		            success: function(data) {
+		                $("#agent_name").val(data.company_name);
+		                $("#agent_id").val(data.id);
+		                $("#agent_form_view").css("display", "block");
+		            }
+		        });
+			})
+
+			function bdtToUsd(event){
+				var amount = $(event.target).val();
+				var usd_rate = $("#usd_rate").val();
+				result =  amount/usd_rate;
+				
+				$("#ammount_agent_usd").val(result);
+				
+			}
+			function usdToBdt(event){
+				var amount = $(event.target).val();
+				var usd_rate = $("#usd_rate").val();
+				result = amount * usd_rate;
+				
+				$("#ammount_agent").val(result);
+				
+			}
+
+			$("#agent_form").submit(function(event){
+					event.preventDefault();
+
+					var AgentFormData = $(this).serialize();
+
+					// console.log(AgentFormData);
+
+					var con = confirm("Are you sure?");
+					if(con){
+						$.ajax({
+							url:"../ajax/ajax_credit_corporte_voucher.php",
+							method:"POST",
+							data:AgentFormData,
+							success:function(result){
+								if(result == 1){
+									
+								}
+							}
+						});
+					}
+			})
+			
 		    $("#corporate_selection").change(function() {
 
 		        var corporate_selection = $("#corporate_selection").find(":selected").val();
@@ -313,17 +371,29 @@ if($uri_parts[0] == '/create_credit_voucher.php'){
 
 		    $("#personal_credit_date").datepicker({
 		        dateFormat: "yy-mm-dd"
-		    });
+			});
+			
+			$("#AGENT").click(function(){
+				document.getElementById("agent_form").reset();
+				$("#agent_selection").val("");
+				$("#agent_selection").selectpicker("refresh");
+				$("#bank_account_no_agent, #bank_name_agent").prop('readonly', true);
+				$("#agent_form_view").css("display", "none");
+			})
 
-		    $("#pay_mode input").click(function() {
-		        var val = $(this).attr("id");
-		        if (val == "radio_check") {
-		            $("#bank_name, #bank_account_no").removeAttr('readonly');
-		            $("#bank_name, #bank_account_no").prop('required', true);
-		        } else {
+		    $(".radio_agent").click(function() {
+		        var val = $(this).val();
+
+				console.log(val);
+		        if (val == "cheque") {
+		            $("#bank_account_no_agent, #bank_name_agent").prop('readonly', false);
+		            // $("#bank_name_agent").prop('readonly', false);
+		            $("#bank_name_agent, #bank_account_no_agent").prop('required', true);
+		        } else {					
+		            $("#bank_account_no_agent, #bank_name_agent").prop('readonly', true);
+		            // $("#bank_name_agent").prop('readonly', true);
 		            $("#bank_name, #bank_account_no").val('');
-		            $("#bank_name, #bank_account_no").removeAttr('required');
-		            $("#bank_name, #bank_account_no").prop('readonly', true);
+					$("#bank_name_agent, #bank_account_no_agent").prop('required', false);
 		        }
 		    });
 
@@ -769,6 +839,170 @@ if($uri_parts[0] == '/accounts_corporate.php'){
 		                $("#principal_limit_table").html(data);
 		                $(".loading-img").css("display", "none");
 		                /*console.log(data);*/
+		            }
+		        });
+
+
+		    });
+
+		    /*$("#makepayment").click(function() {
+		        $("#overviewbody").css("display", "none");
+		        $("#transectionbody").css("display", "none");
+		        $("#paymentbody").css("display", "none");
+		        $("#balancebody").css("display", "none");
+		        $("#makepaymentbody").css("display", "block");
+		    });*/
+
+		</script>
+
+		<?php
+}
+
+if($uri_parts[0] == '/agent_accounts.php'){
+    
+    ?>
+
+		<script>
+		    $(document).ready(function() {
+				
+			});
+
+		    $(".nav_view").css("display", "none");
+
+			// $("#agent_transection_table").dataTable();
+
+		    $("#cour_company").change(function() {
+		        var cour_company = $("#cour_company").find(":selected").val();
+
+		        $("#overviewbody").css("display", "none");
+		        $("#transectionbody").css("display", "none");
+		        $("#paymentbody").css("display", "none");
+		        $("#balancebody").css("display", "none");
+		        $("#limitbody").css("display", "none");
+
+		        if (cour_company != 0) {
+		            $(".nav_view").css("display", "block");
+		        }
+
+		        $(".nav_view li").removeClass('active');
+		    })
+
+		    $(function() {
+		        $("#formdate").datepicker();
+		        $("#todate").datepicker();
+		    });
+
+		    $(".nav_view li").click(function() {
+		        $(".nav_view li").removeClass('active');
+		        $(this).addClass('active');
+		    });
+
+		    $("#overview").click(function() {
+		        $("#overviewbody").css("display", "block");
+		        $("#transectionbody").css("display", "none");
+		        $("#paymentbody").css("display", "none");
+		        $("#balancebody").css("display", "none");
+		        $("#limitbody").css("display", "none");
+		    });
+			
+		    $("#transection").click(function() {
+		        $("#overviewbody").css("display", "none");
+		        $("#transectionbody").css("display", "block");
+		        $("#paymentbody").css("display", "none");
+		        $("#balancebody").css("display", "none");
+		        $("#limitbody").css("display", "none");
+
+				
+		        var agent_email = $("#cour_company").find(":selected").val();
+		        $(".loading-img").css("display", "block");
+
+		        $.ajax({
+		            url: "../ajax/account/ajax_agent_account.php",
+		            method: "POST",
+		            data: {
+		                agent_transection: agent_email
+		            },
+		            success: function(data) {
+		                // console.log(data);
+		                $(".loading-img").css("display", "none");
+						$("#agent_transection_table tbody").find("*").remove();
+						$("#agent_transection_table tbody").append(data);
+		            }
+		        });
+			});
+				
+
+		    $("#payment").click(function() {
+		        $("#overviewbody").css("display", "none");
+		        $("#transectionbody").css("display", "none");
+		        $("#paymentbody").css("display", "block");
+		        $("#balancebody").css("display", "none");
+		        $("#limitbody").css("display", "none");
+
+
+		        var agent_email = $("#cour_company").find(":selected").val();
+		        $(".loading-img").css("display", "block");
+
+		        $.ajax({
+		            url: "../ajax/account/ajax_agent_account.php",
+		            method: "POST",
+		            data: {
+		                agent_payment: agent_email
+		            },
+		            success: function(data) {
+		                $(".loading-img").css("display", "none");
+						$("#agent_payment_table tbody").find("*").remove();
+						$("#agent_payment_table tbody").append(data);
+		            }
+		        });
+
+
+		    });
+
+		    $("#balance").click(function() {
+		        $("#overviewbody").css("display", "none");
+		        $("#transectionbody").css("display", "none");
+		        $("#paymentbody").css("display", "none");
+		        $("#balancebody").css("display", "block");
+		        $("#limitbody").css("display", "none");
+
+		        var agent_email = $("#cour_company").find(":selected").val();
+		        $(".loading-img").css("display", "block");
+
+				$.ajax({
+		            url: "../ajax/account/ajax_agent_account.php",
+		            method: "POST",
+		            data: {
+		                agent_balance: agent_email
+		            },
+		            success: function(data) {
+		                $(".loading-img").css("display", "none");
+		                $("#agent_balance_table").find("*").remove();
+						$("#agent_balance_table").append(data);
+		            }
+		        });
+		    });
+
+		    $("#limit").click(function() {
+		        $("#overviewbody").css("display", "none");
+		        $("#transectionbody").css("display", "none");
+		        $("#paymentbody").css("display", "none");
+		        $("#balancebody").css("display", "none");
+		        $("#limitbody").css("display", "block");
+
+		        var agent_email = $("#cour_company").find(":selected").val();
+		        $(".loading-img").css("display", "block");
+
+		        $.ajax({
+		            url: "../ajax/account/ajax_agent_account.php",
+		            method: "POST",
+		            data: {
+		                agent_credit_limit: agent_email
+		            },
+		            success: function(data) {
+		                $("#principal_limit_table").html(data);
+		                $(".loading-img").css("display", "none");
+		                console.log(data);
 		            }
 		        });
 
@@ -1485,6 +1719,7 @@ if($uri_parts[0] == '/new_principal_settings.php'){
 		                $("#viewpriceview-loading").css("display", "none");
 		                $("#showpricetable").append(data);
                         console.log(data);
+						// $("#load_price").app
 		            }
 		        })
 
@@ -1775,7 +2010,8 @@ if($uri_parts[0] == '/corporate_client_price.php'){
 		        $(".nav_view li").removeClass("active");
 		        $(this).addClass("active");
 		    });
-
+			
+	
 			$("#setprice").click(function() {
 		        $(".viewpanel").css("display", "none");
 		        $("#view_setprice").css("display", "block");
@@ -1832,7 +2068,10 @@ if($uri_parts[0] == '/corporate_client_price.php'){
 			$("#corporate_zone_set_form").submit(function(event){
 				event.preventDefault();
 
-				var setCorporateClientGeneralPrice = $(this).serialize();
+				var con = confirm("Are you sure?");
+
+				if(con == 1){
+					var setCorporateClientGeneralPrice = $(this).serialize();
 				// console.log(setCorporateClientGeneralPrice);
 				$.ajax({
 					url:"../ajax/ajax_corporate_prices.php",
@@ -1846,30 +2085,32 @@ if($uri_parts[0] == '/corporate_client_price.php'){
 						}
 					}
 				});
-
-
-
-			})
+				}
+				});
 			
 			$("#viewprice").click(function() {
 		        $(".viewpanel").css("display", "none");
 		        $("#view_viewprice").css("display", "block");
 
+		        var corporate_mail = $("#corporate_email").val();
 
-
-		        var agent_mail = $("#agent_email").val();
-
+				// console.log(corporate_mail);
+				$("#showpricetable").find("*").remove();
 		        $.ajax({
-		            url: "../ajax/ajax_agent_prices.php",
+		            url: "../ajax/ajax_corporate_prices_view.php",
 		            method: "POST",
 		            data: {
-		                get_view_price_principal: agent_mail
+		                get_view_price_corporate_email: corporate_mail
 		            },
 		            success: function(data) {
-		                $("#view_principal").find("*").remove();
-		                $("#view_principal").append(data);
-		                $("#view_principal").selectpicker('refresh');
-		                //		                console.log(data);
+
+						console.log(data);
+						$("#view_viewprice").attr("display", "block");
+						$("#showpricetable").append(data);
+		                // $("#view_principal").find("*").remove();
+		                // $("#view_principal").append(data);
+		                // $("#view_principal").selectpicker('refresh');
+		                // //		                console.log(data);
 		            }
 		        })
 
@@ -1880,24 +2121,69 @@ if($uri_parts[0] == '/corporate_client_price.php'){
 		        $(".viewpanel").css("display", "none");
 		        $("#view_updateprice").css("display", "block");
 
-		        var agent_mail = $("#agent_email").val();
+		        var corporate_email = $("#corporate_email").val();
 
-		        $("#load_update_price").find("*").remove();
+		        // $("#load_corporate_update_price").find("*").remove();
 
 		        $.ajax({
-		            url: "../ajax/ajax_agent_prices.php",
+		            url: "../ajax/ajax_corporate_prices_update.php",
 		            method: "POST",
 		            data: {
-		                get_view_price_principal: agent_mail
+		                select_corporate_zone: corporate_email
 		            },
 		            success: function(data) {
-		                $("#upzoneprincipal").find("*").remove();
-		                $("#upzoneprincipal").append(data);
-		                $("#upzoneprincipal").selectpicker('refresh');
-		                //		                console.log(data);
+		                $("#upzone").find("*").remove();
+		                $("#upzone").append(data);
+		                $("#upzone").selectpicker('refresh');
+		                		                // console.log(data);
 		            }
 		        })
 		    });
+
+			$("#upzone").change(function(){
+				var selected_zone = $(this).find(":selected").val();
+				var corporate_email = $("#corporate_email").val();
+
+				if(selected_zone != ""){
+					$.ajax({
+		            url: "../ajax/ajax_corporate_prices_update.php",
+		            method: "POST",
+		            data: {
+		                selected_zone: selected_zone,
+		                selected_corporate: corporate_email,
+		            },
+		            success: function(data) {
+		                $("#load_corporate_general_price").find("*").remove();
+		                $("#load_corporate_general_price").append(data);
+		                		                // console.log(data);
+		            }
+		        })
+				}
+
+				// console.log(selected_zone + "" + corporate_email);
+			})
+
+			//data submission to the database
+			$("#update_corporate_price_submit").submit(function(event){
+				event.preventDefault();
+				var formData = $(this).serialize() + "&corporate_email=" + $("#corporate_email").val();
+
+				var con = confirm("Are you sure");
+				if(con == 1){
+					$("#viewpriceview-loading").css("display","block");
+					$.ajax({
+					url:"../ajax/ajax_corporate_prices_update.php",
+					method:"POST",
+					data: formData,
+					success:function(result){
+						$("#viewpriceview-loading").css("display","none");
+						// location.reload();
+						}
+					})
+				}
+			
+				
+			})
 
 			$("#copyCorporate").click(function() {
 		        $(".viewpanel").css("display", "none");
@@ -1929,63 +2215,525 @@ if($uri_parts[0] == '/corporate_client_price.php'){
 }
 
 
-if($uri_parts[0] == '/set_corporate_client_special_price.php'){
+if($uri_parts[0] == '/corporate_client_special_price.php'){
     ?>
 
 
-		<script>
-		    $(document).ready(function() {
-		        $("#startdatepicker").datepicker();
-		        $("#enddatepicker").datepicker();
-		    });
+<script>
 
-		    $("#corporate_client_price").on("submit", function(event) {
-		        event.preventDefault();
-		        var corporate_client_price = $("#corporate_client_price").serialize();
+$("#corporate_client_select").change(function() {
+					  var corporate_id = $(this).find(":selected").val();
 
-		        $.ajax({
-		            url: "/lib/ajax_corporate_special.php",
-		            method: "POST",
-		            data: corporate_client_price,
-		            success: function(data) {
-		                if (data == 1) {
-		                    location.reload();
-		                } else {
-		                    alert('Error: ' + data);
-		                }
-		            }
-		        });
+					//   console.log(corporate_id);
+					  if (corporate_id != "") {
+						  $(".nav_view").css("display", "block");
+	  
+						  $.ajax({
+							  url: "../ajax/ajax_corporate_client_special_price.php",
+							  method: "POST",
+							  data: {
+								  get_corporate_email: corporate_id
+							  },
+							  success: function(data) {
+								  $("#corporate_email").val(data);
+							  }
+						  })
+	  
+					  } else {
+						  $(".nav_view").css("display", "none");
+						  $("#corporate_email").val("");
+					  }
+	  
+					  $(".viewpanel").css("display", "none");
+					  $(".nav_view li").removeClass("active");
+				  });
+        
+		$( function() {
+		  $( "#agent_start_date" ).datepicker({
+			  dateFormat: 'yy-mm-dd'
+		  });
+		} );
+			  
+		$( function() {
+		  $( "#agent_end_date" ).datepicker({
+			  dateFormat: 'yy-mm-dd'
+		  });
+		} );
+			  
+		$( function() {
+		  $( "#up_start_date" ).datepicker({
+			  dateFormat: 'yy-mm-dd'
+		  });
+		} );
+			  
+		$( function() {
+		  $( "#up_end_date" ).datepicker({
+			  dateFormat: 'yy-mm-dd'
+		  });
+		} );
+			  
+		$( function() {
+		  $( "#copy_start" ).datepicker({
+			  dateFormat: 'yy-mm-dd'
+		  });
+		} );
+			  
+		$( function() {
+		  $( "#copy_end" ).datepicker({
+			  dateFormat: 'yy-mm-dd'
+		  });
+		} );
+			  
+			  $('#agent_zone_price').DataTable()
+	  
+				  
+	  
+				  $(".nav_view li").click(function() {
+					  $(".nav_view li").removeClass("active");
+					  $(this).addClass("active");
+					  
+					  $(".viewpanel").css('display', 'none');
+					  
+					  var id = $(this).find('a').attr("id");
+					  
+					  $("#view_"+id).css('display', 'block');
+					  
+				  });
+			  
+			  $("#setprice").click(function(){
+				  var corporate_mail = $("#corporate_email").val();
+				  $.ajax({
+					  url: "../ajax/ajax_corporate_client_special_price.php",
+					  method: "POST",
+					  data: {
+						  get_corporate_country_list: corporate_mail
+					  },
+					  success: function(data){
+						//   console.log(data);
+						$("#country_list").find("*").remove("");
+						  $("#country_list").append(data);
+						  $("#country_list").selectpicker('refresh');
+					  }
+				  });
+			  })
 
-		    });
 
-		    $('#client_zone_id').change(function() {
-		        var client_zone_id = $('#client_zone_id').val();
-		        var client_price_id = $("#client_price_id").val();
-		        $("#client_good_type").children("option").remove();
-		        $.ajax({
-		            url: "/lib/ajax_corporate_special.php",
-		            method: "POST",
-		            data: {
-		                client_zone_id_check: client_zone_id,
-		                client_price_id_check: client_price_id
-		            },
-		            success: function(data) {
+			  $("#country_list").change(function(){
+				  var country = $(this).find(":selected").val();
 
-		                /* <option value="P">Parcel</option>
-		                 <option value="D">Documnet</option>*/
+				  if(country != ""){
+					  $("#submit_special_price").prop("disabled", false);
+				  }
+			  });
 
-		                if (data == 1) {
-		                    $("#client_good_type").append('<option value="P">Parcel</option>');
-		                } else if (data == 2) {
-		                    $("#client_good_type").append('<option value="D">Documnet</option>');
-		                } else {
-		                    $("#client_good_type").append('<option value="">--</option><option value="P">Parcel</option><option value="D">Documnet</option>');
-		                }
-		            }
-		        });
-		    });
+			  $("#set_corporate_special_price").submit(function(event){
+				  event.preventDefault();
+				  var formData = $(this).serialize();
 
-		</script>
+				  var con = confirm("Are you sure?");
+
+				  if(con == 1){
+					  $.ajax({
+						  url:"../ajax/ajax_corporate_client_special_price.php",
+						  method:"POST",
+						  data:formData,
+						  success:function(submitResult){
+							if(submitResult == '2'){
+                            $("#country_list").val("");
+                            $("#country_list").selectpicker('refresh');
+                            $("#agent_start_date").val("");
+                            $("#agent_end_date").val("");
+                            $('#set_corporate_special_price').trigger("reset");
+
+							// document.getElementById("set_corporate_special_price").reset();
+							// document.getElementById("set_corporate_special_price").reset();
+                            
+                            alert("Successfully Submited!");
+                            
+                        }else{
+							alert("Somthing Wrong@@!!");
+							console.log(submitResult);
+                        }
+						  }
+					  })
+				  }
+			  })
+			  
+			  
+			  $("#viewprice").click(function(){
+				  
+				  var corporate_mail = $("#corporate_email").val();
+
+				//   console.log(corporate_mail);
+				  $.ajax({
+					  url: "../ajax/ajax_corporate_client_special_price.php",
+					  method: "POST",
+					  data: {
+						  get_corporate_country_list_view: corporate_mail
+					  },
+					  success: function(data){
+						//   console.log(data);
+						$("#view_country").find("*").remove("");
+						  $("#view_country").append(data);
+						  $("#view_country").selectpicker('refresh');
+					  }
+				  });
+			  });
+			  
+			  $("#view_country").change(function(){
+				  var corporate_country_tag = $(this).find(":selected").val();
+				  var corporate_email = $("#corporate_email").val();
+
+				//   console.log(corporate_country_tag);
+				//   console.log(corporate_email);
+				  
+				  $("#load_price").find("*").remove();
+				//   $("#view_country").selectpicker('refresh');
+				  
+				  if(corporate_email != ''){
+					  $.ajax({
+						  url: "../ajax/ajax_corporate_client_special_price.php",
+						  method: "POST",
+						  data: {
+							corporate_country_tag_view_price: corporate_country_tag,
+							corporate_email_view_price: corporate_email
+						  },
+						  success: function(data){
+							  console.log(data);
+							  $("#load_price").append(data);
+							//   $("#view_country").selectpicker('refresh');
+						  }
+					  })
+				  }
+			  })
+			  
+			  
+			  
+			  $("#updateprice").click(function(){
+				  var corporate_email = $("#corporate_email").val();				  
+				//   $("#up_agent_principal").find("*").remove();
+				//   $("#up_agent_principal").selectpicker('refresh');
+				// console.log("'" + corporate_email + "'");
+				  
+				  $("#up_country").find("*").remove();
+	  
+				//   $("#up_start_date").val("");
+				//   $("#up_end_date").val("");
+	  
+				//   $("#up_start_date").prop("disabled", true);
+				//   $("#up_end_date").prop("disabled", true);
+				  
+				  $.ajax({
+					  url: "../ajax/ajax_corporate_client_special_price.php",
+					  method: "POST",
+					  data: {
+						  getCountryList: corporate_email
+					  },
+					  success: function(data){
+						//   console.log(data);
+						  $("#up_country").append(data);
+						  $("#up_country").selectpicker('refresh');
+					  }
+				  })
+			  })
+
+			  $("#up_country").change(function(){
+				  var country_name = $(this).find(":selected").val();
+				  var corporate_email = $("#corporate_email").val();
+
+				  if(country_name != ""){
+					$.ajax({
+					  url:"../ajax/ajax_corporate_client_special_price.php",
+					  method:"POST",
+					  data:{
+						  countryName:country_name,
+						  corporateEmail:corporate_email
+					  },
+					  dataType: 'JSON',
+					  success:function(result){
+						  $("#up_start_date").val(result.start_date)
+						  $("#up_end_date").val(result.end_date)
+					  }
+				  })
+				  }else{
+						$("#up_start_date").val("")
+						  $("#up_end_date").val("")
+				  }
+				  if(country_name != ""){
+					$.ajax({
+					  url:"../ajax/ajax_corporate_client_special_price.php",
+					  method:"POST",
+					  data:{
+						  countryName_price:country_name,
+						  corporateEmail_price:corporate_email
+					  },
+					  success:function(result_price){
+						  $("#load_update_price").append(result_price);
+					  }
+				  })
+				  }else{
+						
+				  }
+			  })
+
+			  //submit changed data 
+			  $("#update_corporate_client_special_price").submit(function(event){
+				  event.preventDefault();
+				  //receive all information for update price
+				  var all_price = $(this).serialize() + "&corporate_email=" + $("#corporate_email").val();
+				//   var corporate_email = $("#corporate_email").val();
+
+				  var con =confirm("Are you sure?");
+
+				  if(con == 1){
+					$.ajax({
+						url:"../ajax/ajax_corporate_client_special_price.php",
+						method:"POST",
+						data: all_price,
+						success:function(result){
+							$("#update_corporate_client_special_price").trigger("reset");
+							$("#load_update_price").find("*").remove();
+							$("#up_country").val("");
+							$("#up_country").selectpicker("refresh");
+							}
+					})
+				  }
+			  })
+
+			  $("#up_agent_principal").change(function(){
+				  var agent_mail = $("#agent_email").val();
+				  var pid = $("#up_agent_principal").find(":selected").val();
+	  
+				  $("#up_country").find("*").remove();
+				  $("#up_country").selectpicker('refresh');
+	  
+				  if(pid != ''){
+					  $.ajax({
+						  url: "../ajax/ajax_agent_client_special_price.php",
+						  method: "POST",
+						  data: {
+							  up_agent_mail: agent_mail,
+							  up_agent_pid: pid
+						  },
+						  success: function(data){
+							  $("#up_country").append(data);
+							  $("#up_country").selectpicker('refresh');
+						  }
+					  })
+				  }
+			  })
+	  
+			  $("#up_country").change(function(){
+				  var agent_mail = $("#agent_email").val();
+				  var pid = $("#up_agent_principal").find(":selected").val();
+				  var tag = $("#up_country").find(":selected").val();
+	  
+				  $("#up_start_date").val("");
+				  $("#up_end_date").val("");
+	  
+				  $("#load_update_price").find("*").remove();
+				  if(tag != ''){
+					  $.ajax({
+						  url: "../ajax/ajax_agent_client_special_price.php",
+						  method: "POST",
+						  data: {
+							  get_up_mail: agent_mail,
+							  get_up_pid: pid,
+							  get_up_tag: tag
+						  },
+						  success: function(data){
+							  $("#load_update_price").append(data);
+						  }
+					  })
+	  
+					  
+					  
+					  $.ajax({
+						  url: "../ajax/ajax_agent_client_special_price.php",
+						  method: "POST",
+						  data: {
+							  view_agent_price_mail_date: agent_mail,
+							  view_agent_price_pid_date: pid,
+							  view_agent_price_tag_date: tag
+						  },
+						  dataType: 'json',
+						  success: function(result){
+							  $("#up_start_date").val(result.start_date);
+							  $("#up_end_date").val(result.end_date);
+							  $("#up_start_date").prop("disabled", false);
+							  $("#up_end_date").prop("disabled", false);
+						  }
+					  })
+				  }
+			  })
+	  
+			  function update_agent_submit(event){
+				  event.preventDefault();
+				  var agent_mail = $("#agent_email").val();
+				  var form_data = $(event.target).serialize()+"&up_agent_sub="+agent_mail;
+				  // console.log(form_data);
+				  $.ajax({
+					  url: "../ajax/ajax_agent_client_special_price.php",
+					  method: "POST",
+					  data: form_data,
+					  success: function(data){
+						  if(data == '3'){
+							  alert("Updated Successfully!!");
+							  $("#up_agent_principal").val("");
+							  $("#up_agent_principal").selectpicker("refresh");
+							  $("#up_country").val("");
+							  $("#up_country").selectpicker("refresh");
+							  $("#up_start_date").val("");
+							  $("#up_start_date").prop("disabled", true);
+							  $("#up_end_date").val("");
+							  $("#up_end_date").prop("disabled", true);
+							  $("#load_update_price").find("*").remove();
+						  }else{
+							  alert("Warning: Data Not Submitted!!@");
+							  console.log(data);
+						  }
+					  }
+				  })
+			  }
+	  
+			  $("#copyagent").click(function(){
+				  $("#copy_to_principal_id").find("*").remove();
+				  $("#copy_to_principal_id").selectpicker('refresh');
+				  var agent_mail = $("#agent_email").val();
+				  
+				  $.ajax({
+					  url: "../ajax/ajax_agent_client_special_price.php",
+					  method: "POST",
+					  data: {
+						  get_agent_principals: agent_mail
+					  },
+					  success: function(data){
+						  $("#copy_to_principal_id").append(data);
+						  $("#copy_to_principal_id").selectpicker('refresh');
+					  }
+				  })
+			  })
+	  
+			  $("#copy_from_agent_id").change(function(){
+				  var agent_mail = $("#copy_from_agent_id").find(":selected").val();
+				  $("#copy_from_principal_id").find("*").remove();
+				  $("#copy_from_principal_id").selectpicker('refresh');
+				  if(agent_mail != ""){
+					  $.ajax({
+						  url: "../ajax/ajax_agent_client_special_price.php",
+						  method: "POST",
+						  data: {
+							  get_agent_principals_price: agent_mail
+						  },
+						  success: function(data){
+							  // console.log(data);
+							  $("#copy_from_principal_id").append(data);
+							  $("#copy_from_principal_id").selectpicker('refresh');
+						  }
+					  })
+				  }
+			  })
+	  
+			  function select_all_country(){
+				  var check = $("#all_country").prop('checked');
+				  if(check  == true){
+					  $(".country_tag").prop("checked", true);
+					  $("#copy_btn").prop('disabled', false);
+					  $("#copy_start").prop('disabled', false);
+					  $("#copy_end").prop('disabled', false);
+				  }else{
+					  $(".country_tag").prop("checked", false);
+					  $("#copy_btn").prop('disabled', true);
+					  $("#copy_start").prop('disabled', true);
+					  $("#copy_end").prop('disabled', true);
+				  }
+			  }
+	  
+			  function check_all_country(){
+				  // var country_tags = $(".country_tag");
+				  
+				  var fail = 0;
+				  var gain = 0;
+				  $(".country_tag").each(function() {
+					  if($(this).prop('checked') == false){
+						  fail = 1;
+					  }
+					  if($(this).prop('checked') == true){
+						  gain = 1;
+					  }
+				  });
+	  
+				  if(fail == 0){
+					  $("#all_country").prop('checked', true);
+				  }else{
+					  $("#all_country").prop('checked', false);
+				  }
+	  
+				  if(gain == 0){
+					  $("#copy_btn").prop('disabled', true);
+					  $("#copy_start").prop('disabled', true);
+					  $("#copy_end").prop('disabled', true);
+				  }else{
+					  $("#copy_btn").prop('disabled', false);
+					  $("#copy_start").prop('disabled', false);
+					  $("#copy_end").prop('disabled', false);
+				  }
+			  }
+	  
+			  $("#copy_from_principal_id").change(function(){
+				  var form_principal = $("#copy_from_principal_id").find(":selected").val();
+				  var form_agent_mail = $("#copy_from_agent_id").find(":selected").val();
+				  $("#copy_country_list").find("*").remove();
+				  if(form_principal != ""){
+					  $.ajax({
+						  url: "../ajax/ajax_agent_client_special_price.php",
+						  method: "POST",
+						  data: {
+							  copy_from_principal_country: form_principal,
+							  copy_from_agent_country: form_agent_mail
+						  },
+						  success: function(data){
+							  $("#copy_country_list").append(data);
+						  }
+					  })
+				  }
+			  })
+	  
+			  $("#agent_sepcial_copy_form").submit(function(e){
+				  var agent_mail = $("#agent_email").val();
+				  e.preventDefault();
+				  var form_data = $("#agent_sepcial_copy_form").serialize()+"&copy_to_agent_id="+agent_mail;
+				  var r = confirm("This action will be replace all previous data of selected country!");
+				  if(r === true){
+					  $.ajax({
+						  url: "../ajax/ajax_agent_client_special_price.php",
+						  method: "POST",
+						  data: form_data,
+						  success: function(data){
+							  if(data == 'done'){
+								  $("#copy_country_list").find("*").remove();
+								  $("#copy_start").prop('disabled', true);
+								  $("#copy_end").prop('disabled', true);
+								  $("#copy_btn").prop('disabled', true);
+	  
+								  $("#copy_to_principal_id").val("");
+								  $("#copy_to_principal_id").selectpicker('refresh');
+								  $("#copy_from_agent_id").val("");
+								  $("#copy_from_agent_id").selectpicker('refresh');
+								  $("#copy_from_principal_id").val("");
+								  $("#copy_from_principal_id").selectpicker('refresh');
+								  alert("Price Copied Successfully!");
+							  }else{
+								  alert("Something is wrong!");
+								  console.log(data);
+							  }
+						  }
+					  })
+				  }
+				  
+			  });
+			  
+		  </script>
 
 		<?php
 }
@@ -2804,10 +3552,24 @@ if($uri_parts[0] == '/consignment_assign.php'){
     ?>
 
 		<script>
+
+			$(".nav_view li").click(function(){
+				$(".nav_view li").removeClass('active');
+				$(this).addClass('active');
+
+				var id = $(this).find('a').attr("id");
+
+				$(".body_area").css("display", "none");
+				$("#"+id+"_body").css("display", "block");
+
+			});
+
+			$(".tables").DataTable();
+
 		    $(".assign").click(function() {
 		        var id = $(this).attr("id");
 
-		        $("#remote_poss").html('');
+		        $(".remote_poss").html('');
 
 		        $("#principal_list").find("tr").remove();
 
@@ -2860,9 +3622,69 @@ if($uri_parts[0] == '/consignment_assign.php'){
 
 		    });
 
+		    $(".agent_assign").click(function() {
+		        var id = $(this).attr("id");
+				var track_id = $(this).parent('div').find('.tracking_id').val();
+		        $(".remote_poss").html('');
+
+		        $("#agent_principal_list").find("tr").remove();
+
+		        $.ajax({
+		            url: "../ajax/ajax_consignment.php",
+		            method: "POST",
+		            data: {
+		                get_con_details: id
+		            },
+		            dataType: "JSON",
+		            success: function(data) {
+		                // console.log(data);
+		                $("#agent_trackid").text(data.tracking_id);
+		                $("#agent_city").text(data.r_city);
+		                $("#agent_zip").text(data.r_zip);
+		                $("#agent_country_tag").val(data.r_country);
+		                if (data.g_type == 'P') {
+		                    $("#agent_type").text("PARCEL");
+		                } else {
+		                    $("#agent_type").text("DOCUMENT");
+		                }
+		                $("#agent_weight").text(data.g_weight + ' kg');
+		                $("#agent_shipcharge").text(data.g_shipment_charge + ' USD');
+
+		                $.ajax({
+		                    url: "../ajax/ajax_agent_consignment.php",
+		                    method: "POST",
+		                    data: {
+		                        get_country_name: data.r_country
+		                    },
+		                    success: function(countryname) {
+		                        $("#agent_destcountry").text(countryname);
+								// console.log(countryname);
+								
+		                    }
+		                });
+		            }
+		        });
+
+		        $.ajax({
+		            url: "../ajax/ajax_agent_consignment.php",
+		            method: "POST",
+		            data: {
+		                get_principal_list: id,
+						track_id: track_id
+
+		            },
+		            success: function(data) {
+		                $("#agent_principal_list").append(data);
+						// console.log(data);
+		            }
+		        });
+
+
+		    });
+
 		    function getRemotePoss(id, pid) {
 
-		        $("#remote_poss").html('');
+		        $(".remote_poss").html('');
 
 		        $(".loading-img").css("display", "block");
 
@@ -2874,7 +3696,7 @@ if($uri_parts[0] == '/consignment_assign.php'){
 		                pid: pid
 		            },
 		            success: function(data) {
-		                $("#remote_poss").html(data);
+		                $(".remote_poss").html(data);
 		                $(".loading-img").css("display", "none");
 		            }
 		        });
@@ -2883,7 +3705,36 @@ if($uri_parts[0] == '/consignment_assign.php'){
 
 		        var tag = $("#country_tag").val();
 
-		        $("#assing-btn").attr('onclick', 'assignFunction(' + trackid + ',' + pid + ',"' + tag + '")');
+		        $(".assing-btn").attr('onclick', 'assignFunction(' + trackid + ',' + pid + ',"' + tag + '")');
+
+		    }
+
+		    function getRemotePossAgent(id, pid) {
+
+				alert("Working!");
+
+		        $(".remote_poss").html('');
+
+		        $(".loading-img").css("display", "block");
+
+		        $.ajax({
+		            url: "../ajax/ajax_remotearea.php",
+		            method: "POST",
+		            data: {
+		                match_city_id: id,
+		                pid: pid
+		            },
+		            success: function(data) {
+		                $(".remote_poss").html(data);
+		                $(".loading-img").css("display", "none");
+		            }
+		        });
+
+		        var trackid = $("#agent_trackid").text();
+
+		        var tag = $("#agent_country_tag").val();
+
+		        $(".agent-assing-btn").attr('onclick', 'assignAgentFunction(' + trackid + ',' + pid + ',"' + tag + '")');
 
 		    }
 
@@ -2897,6 +3748,33 @@ if($uri_parts[0] == '/consignment_assign.php'){
 		            method: "POST",
 		            data: {
 		                trackid: trackid,
+		                pid: pid,
+		                tag: tag
+		            },
+		            success: function(data) {
+		                $(".loading-img").css("display", "none");
+		                if (data == '1') {
+		                    alert("Operation Success!!!");
+		                    $("#myModal").modal('toggle');
+		                    location.reload();
+		                } else {
+		                    alert(data);
+		                    $("#myModal").modal('toggle');
+		                }
+
+		            }
+		        })
+		    }
+
+		    function assignAgentFunction(trackid, pid, tag) {
+		        $(".loading-img").css("display", "block");
+
+				alert(trackid+" "+pid+" "+tag);
+		        $.ajax({
+		            url: "../ajax/ajax_assign_consignment.php",
+		            method: "POST",
+		            data: {
+		                agent_trackid: trackid,
 		                pid: pid,
 		                tag: tag
 		            },
@@ -3840,6 +4718,18 @@ if($uri_parts[0] == '/agent_client_special_price.php'){
 	});
   } );
         
+  $( function() {
+    $( "#copy_start" ).datepicker({
+		dateFormat: 'yy-mm-dd'
+	});
+  } );
+        
+  $( function() {
+    $( "#copy_end" ).datepicker({
+		dateFormat: 'yy-mm-dd'
+	});
+  } );
+        
         $('#agent_zone_price').DataTable()
 
 		    $("#agent_select").change(function() {
@@ -4146,6 +5036,143 @@ if($uri_parts[0] == '/agent_client_special_price.php'){
 				}
 			})
 		}
+
+		$("#copyagent").click(function(){
+			$("#copy_to_principal_id").find("*").remove();
+			$("#copy_to_principal_id").selectpicker('refresh');
+			var agent_mail = $("#agent_email").val();
+            
+            $.ajax({
+                url: "../ajax/ajax_agent_client_special_price.php",
+                method: "POST",
+                data: {
+                    get_agent_principals: agent_mail
+                },
+                success: function(data){
+                    $("#copy_to_principal_id").append(data);
+                    $("#copy_to_principal_id").selectpicker('refresh');
+                }
+            })
+		})
+
+		$("#copy_from_agent_id").change(function(){
+			var agent_mail = $("#copy_from_agent_id").find(":selected").val();
+			$("#copy_from_principal_id").find("*").remove();
+			$("#copy_from_principal_id").selectpicker('refresh');
+			if(agent_mail != ""){
+				$.ajax({
+					url: "../ajax/ajax_agent_client_special_price.php",
+					method: "POST",
+					data: {
+						get_agent_principals_price: agent_mail
+					},
+					success: function(data){
+						// console.log(data);
+						$("#copy_from_principal_id").append(data);
+						$("#copy_from_principal_id").selectpicker('refresh');
+					}
+				})
+			}
+		})
+
+		function select_all_country(){
+			var check = $("#all_country").prop('checked');
+			if(check  == true){
+				$(".country_tag").prop("checked", true);
+				$("#copy_btn").prop('disabled', false);
+				$("#copy_start").prop('disabled', false);
+				$("#copy_end").prop('disabled', false);
+			}else{
+				$(".country_tag").prop("checked", false);
+				$("#copy_btn").prop('disabled', true);
+				$("#copy_start").prop('disabled', true);
+				$("#copy_end").prop('disabled', true);
+			}
+		}
+
+		function check_all_country(){
+			// var country_tags = $(".country_tag");
+			
+			var fail = 0;
+			var gain = 0;
+			$(".country_tag").each(function() {
+				if($(this).prop('checked') == false){
+					fail = 1;
+				}
+				if($(this).prop('checked') == true){
+					gain = 1;
+				}
+			});
+
+			if(fail == 0){
+				$("#all_country").prop('checked', true);
+			}else{
+				$("#all_country").prop('checked', false);
+			}
+
+			if(gain == 0){
+				$("#copy_btn").prop('disabled', true);
+				$("#copy_start").prop('disabled', true);
+				$("#copy_end").prop('disabled', true);
+			}else{
+				$("#copy_btn").prop('disabled', false);
+				$("#copy_start").prop('disabled', false);
+				$("#copy_end").prop('disabled', false);
+			}
+		}
+
+		$("#copy_from_principal_id").change(function(){
+			var form_principal = $("#copy_from_principal_id").find(":selected").val();
+			var form_agent_mail = $("#copy_from_agent_id").find(":selected").val();
+			$("#copy_country_list").find("*").remove();
+			if(form_principal != ""){
+				$.ajax({
+					url: "../ajax/ajax_agent_client_special_price.php",
+					method: "POST",
+					data: {
+						copy_from_principal_country: form_principal,
+						copy_from_agent_country: form_agent_mail
+					},
+					success: function(data){
+						$("#copy_country_list").append(data);
+					}
+				})
+			}
+		})
+
+		$("#agent_sepcial_copy_form").submit(function(e){
+			var agent_mail = $("#agent_email").val();
+			e.preventDefault();
+			var form_data = $("#agent_sepcial_copy_form").serialize()+"&copy_to_agent_id="+agent_mail;
+			var r = confirm("This action will be replace all previous data of selected country!");
+			if(r === true){
+				$.ajax({
+					url: "../ajax/ajax_agent_client_special_price.php",
+					method: "POST",
+					data: form_data,
+					success: function(data){
+						if(data == 'done'){
+							$("#copy_country_list").find("*").remove();
+							$("#copy_start").prop('disabled', true);
+							$("#copy_end").prop('disabled', true);
+							$("#copy_btn").prop('disabled', true);
+
+							$("#copy_to_principal_id").val("");
+							$("#copy_to_principal_id").selectpicker('refresh');
+							$("#copy_from_agent_id").val("");
+							$("#copy_from_agent_id").selectpicker('refresh');
+							$("#copy_from_principal_id").val("");
+							$("#copy_from_principal_id").selectpicker('refresh');
+							alert("Price Copied Successfully!");
+						}else{
+							alert("Something is wrong!");
+							console.log(data);
+						}
+					}
+				})
+			}
+			
+		});
         
     </script>
     <?php
@@ -4817,7 +5844,8 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
 		            method: "POST",
 		            data: "",
 		            success: function(data) {
-		                $(event.target).val(data);
+						$(event.target).val(data);
+						$("#refference_no").val(data);
 		            }
 		        });
 		    }
@@ -4929,7 +5957,7 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
 		                $(".agent_sender_contact").val(data.contact);
 		                $(".agent_sender_addr").val(data.address);
 		                $(".agent_assign_to").val(data.assign_to);
-		                //                        console.log(data);
+		                                    //    console.log(data);
 		            }
 		        });
 
@@ -5022,8 +6050,8 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
 		                success: function(data) {
 		                    if (data == '1') {
 		                        alert("Consigned Booking Successfully!");
-//		                        document.getElementById("agent_consignment_form").reset();
-//		                        $('.selectpicker').selectpicker('refresh');
+		                        document.getElementById("agent_consignment_form").reset();
+		                        $('.selectpicker').selectpicker('refresh');
                                 
                                 console.log(data);
 		                    } else {

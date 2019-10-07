@@ -270,52 +270,75 @@ include('includes/header.php');
                                 <i class="fa fa-external-link-square"></i>
                                 Copy Agent Price
                             </div>
-                            <div class="panel-body">
-                               <br>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                           <label for="">To Principal</label>
-                                            <select name="copy_to_principal_id" id="copy_to_principal_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
-                                                <option value="">--</option>
-                                            </select>
+                            <form id="agent_sepcial_copy_form" action="">
+                                <div class="panel-body">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">To Principal</label>
+                                                <select name="copy_to_principal_id" id="copy_to_principal_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
+                                                    <option value="">--</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <h3>FROM</h3>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="">From Agent</label>
-                                            <select name="copy_from_agent_id" id="copy_from_agent_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
-                                                <option value="">--</option>
-                                                <?php
-                                                 $copy_query = $db->link->query($selectclientname);
-                                                if($copy_query->num_rows > 0){
-                                                    while($copy_row = $copy_query->fetch_assoc()){
-                                                        ?>
-                                                        <option value="<?php echo $copy_row['email']; ?>"><?php echo $copy_row['company_name']; ?></option>
-                                                        <?php
+                                        <div class="col-md-1">
+                                            <h3>FROM</h3>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">From Agent</label>
+                                                <select name="copy_from_agent_id" id="copy_from_agent_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
+                                                    <option value="">--</option>
+                                                    <?php
+                                                        $copy_query = $db->link->query($selectclientname);
+                                                    if($copy_query->num_rows > 0){
+                                                        while($copy_row = $copy_query->fetch_assoc()){
+                                                            ?>
+                                                            <option value="<?php echo $copy_row['email']; ?>"><?php echo $copy_row['company_name']; ?></option>
+                                                            <?php
+                                                        }
                                                     }
-                                                }
-                                                ?>
-                                            </select>
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">From Principal</label>
+                                                <select name="copy_from_principal_id" id="copy_from_principal_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
+                                                    <option value="">--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <br>
+                                            <button id="copy_btn" style="margin-top: 8px;" class="btn btn-sm btn-warning" disabled>COPY</button>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="">From Principal</label>
-                                            <select name="copy_from_principal_id" id="copy_from_principal_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
-                                                <option value="">--</option>
-                                            </select>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <label for="copy_start">Start Date</label>
+                                                <input id="copy_start" name="copy_start" type="text" class="form-control" required disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <label for="copy_end">End Date</label>
+                                                <input id="copy_end" name="copy_end" type="text" class="form-control" required disabled>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="row">
                                         <br>
-                                        <button id="copy_btn" style="margin-top: 8px;" class="btn btn-sm btn-warning">COPY</button>
+                                        <div id="copy_country_list">
+                                            
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
 
                     </div>

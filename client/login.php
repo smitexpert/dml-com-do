@@ -3,9 +3,10 @@
 include("lib/Database.php");
 include("lib/Session.php");
 
-Session::checkLogin();
+
 
 function agent_login($email, $password){
+    Session::checkLogin();
     $password = md5($password);
     $db = new Database();
     
@@ -17,8 +18,9 @@ function agent_login($email, $password){
             Session::set('agent_email', $row['email']);
             Session::set('agent_name', $row['name']);
             Session::set('agent_company', $row['company_name']);
+            Session::set('type', "agent");
         }
-        header('Location: agent/');
+        header('Location: client/');
     }else{
         return "0";
     }

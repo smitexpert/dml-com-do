@@ -1,8 +1,13 @@
 <?php 
 include("../lib/Session.php");
+include("../lib/Database.php");
+
+
 
 Session::checkAgentSession();
 
+$agent_email = Session::get('agent_email');
+$db = new Database();
 
 ?>
 
@@ -114,6 +119,25 @@ Session::checkAgentSession();
             font-size: 14px;
         }
 
+        .nav_view {
+            margin-top: 5px;
+            float: right;
+        }
+        .nav_view .nav>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    background-color: #fcd16c;
+    color: #fff;
+}
+.nav_view .nav-pills>li.active>a, .nav_view .nav-pills>li.active>a:hover, .nav_view .nav-pills>li.active>a:focus {
+    color: #fff;
+    background-color: orange;
+}
+.panel-heading {
+    background: #ffc800 !important;
+}
+
     </style>
 </head>
 
@@ -179,3 +203,17 @@ Session::checkAgentSession();
         <!-- end: TOP NAVIGATION CONTAINER -->
     </div>
     <!-- end: HEADER -->
+
+    <div class="main-container">
+   <br>
+    <?php 
+
+    if(Session::get('type') == "agent"){
+        include("agent_sidebar.php"); 
+    }else{
+
+    }
+    
+    
+    
+    ?>

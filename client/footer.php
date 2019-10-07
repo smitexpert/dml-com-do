@@ -65,50 +65,13 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 		<script src="http://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-		
+		<?php
+			$uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
+		?>
 		<script>
 		    jQuery(document).ready(function() {
 
-		        //DATA TABLE FOR CONSIGNEMENT LIST
-		        $('#consListTable').DataTable({
-		            // "scrollY": 200,
-		            "scrollX": true
-		        });
-
-		        // //table for pricncipal price srch of search_principal_price.php
-		        // $('#principricetable').DataTable();
-
-		        //DATA TABLE
-		        $('#example').DataTable();
-
-
-		        //DATATABLE  : SHOW ALL THE COUNTRY
-		        $('#cntylisttable').DataTable({
-		            initComplete: function() {
-		                this.api().columns().every(function() {
-		                    var column = this;
-		                    var select = $('<select><option value=""></option></select>')
-		                        .appendTo($(column.footer()).empty())
-		                        .on('change', function() {
-		                            var val = $.fn.dataTable.util.escapeRegex(
-		                                $(this).val()
-		                            );
-		                            column
-		                                .search(val ? '^' + val + '$' : '', true, false)
-		                                .draw();
-		                        });
-		                    column.data().unique().sort().each(function(d, j) {
-		                        if (column.search() === '^' + d + '$') {
-		                            select.append('<option value="' + d + '" selected="selected">' + d + '</option>')
-		                        } else {
-		                            select.append('<option value="' + d + '">' + d + '</option>')
-		                        }
-		                    });
-		                });
-		            }
-		        });
-
-
+		    
 		        //ADD CLASS TO LI BASED ON URL STARTS
 		        var fullpath = window.location.pathname;
 		        var filename = fullpath.replace(/^.*[\\\/]/, '');
@@ -117,12 +80,107 @@
 		        currentLink.closest('.linav').addClass("active open");
 		        //ADDING CLASS TO LI BASED ON URL
 
-		        Main.init();
-		        Index.init();
+		        // Main.init();
+		        // Index.init();
 
 		    });
 
 		</script>
+
+
+<?php
+	if($uri_parts[0] == '/client/agent_client_view_price.php'){
+		?>
+		<script>
+			$(".nav_view li").click(function(){
+				$(".nav_view li").removeClass('active');
+				$(this).addClass('active');
+				var id = $(this).find('a').attr("id");
+
+				$(".view_panel").css("display", "none");
+				$("#view_"+id).css("display", "block");
+			});
+
+			$("#principal").change(function(){
+				var principal = $("#principal").find(":selected").val();
+				$("#price_view_table").find("*").remove();
+				$.ajax({
+					url: "ajax/ajax_agent_general_price.php",
+					method: "POST",
+					data: {
+						view_price_principal: principal
+					},
+					success: function(data){
+						$("#price_view_table").append(data);
+					}
+				})
+			})
+
+			$("#special_principal").change(function(){
+				var principal = $("#special_principal").find(":selected").val();
+				
+				$.ajax({
+					url: "ajax/ajax_agent_special_price.php",
+					method: "POST",
+					data: {
+						special_country_list: principal
+					},
+					success: function(data){
+						$("#country").find("*").remove();
+						$("#country").append(data);
+						$("#country").selectpicker("refresh");
+					}
+				})
+			})
+
+			$("#country").change(function(){
+				var tag = $("#country").find(":selected").val();
+				var principal = $("#special_principal").find(":selected").val();
+				
+				$.ajax({
+					url: "ajax/ajax_agent_special_price.php",
+					method: "POST",
+					data: {
+						agent_special_price_principal: principal,
+						agent_special_price_tag: tag
+					},
+					success: function(data){
+						$("#special_view_panel").find("*").remove();
+						$("#special_view_panel").append(data);
+					}
+				})
+			})
+		</script>
+		<?php
+	}
+?>
+
+<?php 
+if($uri_parts[0] == '/client/search_price.php'){
+	?>
+	<script>
+		$("#get_price").click(function(){
+			var country_tag = $("#country").val();
+			var weight = $("#weight").val();
+
+			if(country_tag != ""){
+				$.ajax({
+					url:"ajax/ajax_search_price.php",
+					method:"POST",
+					data:{
+						country_tag:country_tag,
+						weight:weight
+					},
+					success:function(result){
+						console.log(result);
+					}
+				})
+			}
+		})
+	</script>
+	<?php
+}
+?>
 
 
 </body>

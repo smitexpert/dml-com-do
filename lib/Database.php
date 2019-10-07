@@ -277,6 +277,10 @@ class Database
         }
     }
 
+    public function con_close(){
+        $this->link->close();
+    }
+
 
 }
 

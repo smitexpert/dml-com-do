@@ -489,7 +489,7 @@ if(isset($_POST['upzoneprincipalid'])){
     }
     
     
-    if($dbn->link->multi_query($upPer) === TRUE){
+    if($db->link->multi_query($upPer) === TRUE){
         $ret++;
     }else{
         echo $dbn->link->error;

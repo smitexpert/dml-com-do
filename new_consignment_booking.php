@@ -972,8 +972,12 @@ if (isset($_POST['submit'])) {
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                           <br>
-                                                            <p>IN BDT = <span id="agent_bdt"></span></p>
+                                                            <div class="form-group">
+                                                                <label class="control-label">
+                                                                    Refference No. <span class="symbol required"></span>
+                                                                </label>
+                                                                <input type="text" class="form-control" name="refference_no" id="refference_no" required>
+                                                            </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
@@ -983,6 +987,12 @@ if (isset($_POST['submit'])) {
                                                                 <input onkeyup="agent_convert_to_bdt()" style="text-align: right;" type="text" class="form-control" name="shipping_charge" id="agent_shipping_charge" readonly>
                                                                 <span id="showgenprice"></span>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                    <div class="col-md-6">
+                                                           <br>
+                                                            <p>IN BDT = <span id="agent_bdt"></span></p>
                                                         </div>
                                                     </div>
                                                     <div class="row">
