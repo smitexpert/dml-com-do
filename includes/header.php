@@ -18,7 +18,7 @@ function random_color() {
 spl_autoload_register(function($class){
 	require_once __DIR__.'/../classes/'.$class.'.php';
 });
-
+date_default_timezone_set("Asia/Dhaka");
 
 $db = new Database();
 $format = new Formatting();
@@ -66,11 +66,17 @@ if(Session::get('role') != 1){
     $isUrlActive = false;
 
     for($i=0; $i<$row_menu[0]; $i++){
-        $menuUrl = '/'.$menuSession[$i];
+        
+        $menuUrl = $menuSession[$i];
+        if(!isset($menuSession[$i])){
+            header("location: logout.php");
+        }
         if( $menuUrl == $getUrl[0] ){
             $isUrlActive = true;
         }
     }
+
+    
 
     if($getUrl[0] != '/dashboard.php'){
         if($isUrlActive != true){
@@ -111,6 +117,7 @@ if(Session::get('role') != 1){
     <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/style.css">
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/jquery.timepicker.min.css">
     <link rel="stylesheet" href="assets/css/main-responsive.css">
     <link rel="stylesheet" href="assets/plugins/iCheck/skins/all.css">
     <link rel="stylesheet" href="assets/plugins/bootstrap-colorpalette/css/bootstrap-colorpalette.css">

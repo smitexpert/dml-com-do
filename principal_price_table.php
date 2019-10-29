@@ -323,24 +323,28 @@ if(isset($_POST['update_zone_price'])){
         
                 $dw = 0.25;
                 while( $dw<=3.0){
-                    
+                    $dm_price = 0;
+                    ?>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon"><?php echo number_format($dw, 2).' kg'; ?></span>
+                            <input type="hidden" value="<?php echo $dw; ?>" name="d_weight[]">
+                    <?php
                     
                     $sql_d = "SELECT price FROM principal_price WHERE principal_id='$prinicipal_Id' AND zone='$zone_code' AND weight='$dw' AND goods_type='D' ORDER BY weight ASC";
                     
                     $rlt_d = $db->link->query($sql_d);
                     while($row_d = $rlt_d->fetch_assoc()){                          
+                        $dm_price = $row_d['price'];
+                        
 
+                    }
                 ?>
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <span class="input-group-addon"><?php echo number_format($dw, 2).' kg'; ?></span>
-                            <input type="hidden" value="<?php echo $dw; ?>" name="d_weight[]">
-                            <input type="text" class="form-control up_price" name="d_price[]" placeholder="0" value="<?php echo round($row_d['price'], 2); ?>">
+                    
+                            <input type="text" class="form-control up_price" name="d_price[]" placeholder="0" value="<?php echo round($dm_price, 2); ?>">
                         </div>
                     </div>
                     <?php
-
-                    }
                     
                     
                     if($dw == 0.25){
@@ -435,6 +439,8 @@ if(isset($_POST['upzoneprincipalid'])){
     
     $d_price = $_POST['d_price'];
     $d_weight = $_POST['d_weight'];
+
+    // print_r($p_price);
     
     $ret = 0;
     
@@ -445,6 +451,8 @@ if(isset($_POST['upzoneprincipalid'])){
     if($db->link->query($del_zone)){
         $ret++;
     }
+
+    // echo $del_zone;
     
     
     
@@ -463,9 +471,11 @@ if(isset($_POST['upzoneprincipalid'])){
         }
         
     }
+
+    // echo $upDoc;
     
     
-    if($db->link->multi_query($upDoc) === TRUE){
+    if($db->link->multi_query($upDoc)){
         $ret++;
     }else{
         echo $db->link->error;
@@ -485,11 +495,15 @@ if(isset($_POST['upzoneprincipalid'])){
         }else{
             $upPer .= "INSERT INTO principal_price(principal_id, zone, country, goods_type, weight, price, status) VALUES ('$upzoneprincipalid', '$zone_code_update', '0', 'P', '$p_we', '$p_pr', '1');";
         }
+
+        
         
     }
+
+    // echo $upPer;
     
     
-    if($db->link->multi_query($upPer) === TRUE){
+    if($dbn->link->multi_query($upPer)){
         $ret++;
     }else{
         echo $dbn->link->error;

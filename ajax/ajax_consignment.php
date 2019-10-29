@@ -34,6 +34,19 @@ if(isset($_POST['get_con_details'])){
     echo json_encode($row);
 }
 
+if(isset($_POST['get_agent_con_details'])){
+    
+    $id = $_POST['get_agent_con_details'];
+    
+    $sql = "SELECT consignment_booking.*, agent_services.service_name FROM consignment_booking INNER JOIN agent_consignment ON consignment_booking.tracking_id = agent_consignment.tracking_id INNER JOIN agent_services ON agent_consignment.service_id = agent_services.id WHERE consignment_booking.id='$id'";
+    $query = $db->link->query($sql);
+    $row = $query->fetch_array();
+    
+    echo json_encode($row);
+
+    // echo $sql;
+}
+
 if(isset($_POST['get_country_name'])){
     $tag = $_POST['get_country_name'];
     echo $db->getCountryName($tag);

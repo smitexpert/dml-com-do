@@ -14,6 +14,7 @@
             <!-- end: SPANEL CONFIGURATION MODAL FORM -->
             <div class="container">
                 <div class="row">
+                    <br>
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -63,7 +64,7 @@
                                     </div>
                                     <br>
                                 </div><br><br><br>
-                                <div class="tbl">                                    
+                                <div id="load_price">                                    
                                 </div>
                             </div>
                         </div>

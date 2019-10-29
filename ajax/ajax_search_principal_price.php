@@ -38,14 +38,34 @@ if(isset($_POST['country'])){
         if($qrPrice->num_rows > 0){
             
             $dt = 1;
-            
-            while($rowPrice = $qrPrice->fetch_assoc()){
+
+            $rowPrice = $qrPrice->fetch_assoc();
+
+            $slSpPrice = "SELECT price FROM principal_special_rate WHERE principal_id='$principal_id' AND country_tag='$country' AND weight='$weight' AND goods_type='D' AND price > 0";
+
+            $qrSpPrice = $db->link->query($slSpPrice);
+
+            if($qrSpPrice->num_rows > 0){
+                $rowSpPrice = $qrSpPrice->fetch_assoc();
+                if($rowPrice['price'] < $rowSpPrice['price']){
+                    $lowest_price[$i] = $rowPrice['price'];
+                    $lowest_costing[$i] = $db->getPrincipalCosting($principal_id, $rowPrice['price'], $weight);
+                }else{
+                    $lowest_price[$i] = $rowSpPrice['price'];
+                    $lowest_costing[$i] = $db->getPrincipalCosting($principal_id, $rowSpPrice['price'], $weight);
+                }
+            }else{
                 $lowest_price[$i] = $rowPrice['price'];
                 $lowest_costing[$i] = $db->getPrincipalCosting($principal_id, $rowPrice['price'], $weight);
+            }
+            
+            // while($rowPrice = $qrPrice->fetch_assoc()){
+            //     $lowest_price[$i] = $rowPrice['price'];
+            //     $lowest_costing[$i] = $db->getPrincipalCosting($principal_id, $rowPrice['price'], $weight);
+            // }
+            
                 $lowest_p_id[$i] = $principal_id;
                 $i++;
-            }
-     
             
         }
     }
@@ -150,13 +170,33 @@ if(isset($_POST['country'])){
             
             $pt = 1;
             
-            while($rowPrice = $qrPrice->fetch_assoc()){
+            $rowPrice = $qrPrice->fetch_assoc();
+
+            $slSpPrice = "SELECT price FROM principal_special_rate WHERE principal_id='$principal_id' AND country_tag='$country' AND weight='$weight' AND goods_type='P' AND price > 0";
+
+            $qrSpPrice = $db->link->query($slSpPrice);
+
+            if($qrSpPrice->num_rows > 0){
+                $rowSpPrice = $qrSpPrice->fetch_assoc();
+                if($rowPrice['price'] < $rowSpPrice['price']){
+                    $lowest_price[$i] = $rowPrice['price'];
+                    $lowest_costing[$i] = $db->getPrincipalCosting($principal_id, $rowPrice['price'], $weight);
+                }else{
+                    $lowest_price[$i] = $rowSpPrice['price'];
+                    $lowest_costing[$i] = $db->getPrincipalCosting($principal_id, $rowSpPrice['price'], $weight);
+                }
+            }else{
                 $lowest_price[$i] = $rowPrice['price'];
                 $lowest_costing[$i] = $db->getPrincipalCosting($principal_id, $rowPrice['price'], $weight);
+            }
+
+            // while($rowPrice = $qrPrice->fetch_assoc()){
+            //     $lowest_price[$i] = $rowPrice['price'];
+            //     $lowest_costing[$i] = $db->getPrincipalCosting($principal_id, $rowPrice['price'], $weight);
+            // }
+            
                 $lowest_p_id[$i] = $principal_id;
                 $i++;
-            }
-     
             
         }
     }

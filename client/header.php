@@ -7,6 +7,12 @@ include("../lib/Database.php");
 Session::checkAgentSession();
 
 $agent_email = Session::get('agent_email');
+$agent_id = Session::get('agent_id');
+$id = Session::get('client_table_id');
+$agent_name = Session::get('agent_name');
+$agent_company = Session::get('agent_company');
+$contact = Session::get('contact');
+$address = Session::get('address');
 $db = new Database();
 
 ?>
@@ -52,6 +58,8 @@ $db = new Database();
     <link rel="stylesheet" href="../assets/plugins/gritter/css/jquery.gritter.css">
     <link href="../assets/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" type="text/css" />
     <link href="../assets/plugins/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/date/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/date/jquery-ui.theme.min.css" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" type="text/css" href="../assets/DataTables/datatables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
@@ -83,10 +91,10 @@ $db = new Database();
         }
         
         .loading img {
-            left: 45%;
+           left: 45%;
             top: 30%;
             position: relative;
-        }
+        } 
 
         #selected_country a {
             margin: 0 10px;
@@ -137,6 +145,16 @@ $db = new Database();
 .panel-heading {
     background: #ffc800 !important;
 }
+.loading-img {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            top: 15%;
+            text-align: center;
+            z-index: 999;
+            display: none;
+} 
+        
 
     </style>
 </head>
@@ -147,6 +165,7 @@ $db = new Database();
 <!-- start: BODY -->
 
 <body>
+
     <!-- start: HEADER -->
     <div class="navbar navbar-inverse navbar-fixed-top">
         <!-- start: TOP NAVIGATION CONTAINER -->
@@ -158,7 +177,7 @@ $db = new Database();
                 </button>
                 <!-- end: RESPONSIVE MENU TOGGLER -->
                 <!-- start: LOGO -->
-                <a class="navbar-brand" href="clientdashboard.php">
+                <a class="navbar-brand" href="../client/index.php">
                     DML EXPRESS
                 </a>
                 <!-- end: LOGO -->
@@ -203,8 +222,13 @@ $db = new Database();
         <!-- end: TOP NAVIGATION CONTAINER -->
     </div>
     <!-- end: HEADER -->
+    <div class="loading-img">
+            <img src="../img/loading.gif" alt="">
+        </div>
 
     <div class="main-container">
+
+        
    <br>
     <?php 
 
@@ -217,3 +241,4 @@ $db = new Database();
     
     
     ?>
+    

@@ -233,7 +233,7 @@ if (isset($_POST['submit'])) {
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label for="goods_title">Goods Title</label>
+                                                                <label for="goods_title">Goods Title <span class="symbol required"></span></label>
                                                                 <input type="text" class="form-control" id="goods_title" name="goods_title" placeholder="Goods Title" required>
                                                             </div>
                                                         </div>
@@ -571,7 +571,7 @@ if (isset($_POST['submit'])) {
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label for="goods_title">Goods Title</label>
+                                                                <label for="goods_title">Goods Title <span class="symbol required"></span></label>
                                                                 <input type="text" class="form-control" name="goods_title" id="goods_title" placeholder="Goods Title" required>
                                                             </div>
                                                         </div>
@@ -696,7 +696,7 @@ if (isset($_POST['submit'])) {
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="control-label">
-                                                                    Agent Company <span class="symbol required"></span>
+                                                                    Select Agent <span class="symbol required"></span>
                                                                 </label>
                                                                 <input type="hidden" name="assign_to" class="agent_assign_to">
                                                                 <input type="hidden" id="agent_company_name" name="agent_company_name">
@@ -704,19 +704,29 @@ if (isset($_POST['submit'])) {
 
                                                                     <option value="">Select Agent</option>
                                                                     <?php $query = "SELECT * FROM agent_clients WHERE status=1 ORDER BY id DESC";
-														    $selectCorpoClient = $Corpoclients->selectCorpoClient($query);
-														    if ($selectCorpoClient) { while ($getcropoclnt=$selectCorpoClient->fetch_assoc()) { ?>
+                                                            $selectCorpoClient = $Corpoclients->selectCorpoClient($query);
+                                                            if ($selectCorpoClient) { while ($getcropoclnt=$selectCorpoClient->fetch_assoc()) { ?>
                                                                     <option value="<?php echo $getcropoclnt['id'];?>"><?php echo $getcropoclnt['company_name'];?></option>
                                                                     <?php } }else{} ?>
                                                                 </select>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="control-label">
                                                                     Sender Name <span class="symbol required"></span>
                                                                 </label>
-                                                                <input type="text" class="form-control agent_sender_name" id="sender_name" name="sender_name" required="" readonly>
+                                                                <input type="text" class="form-control agent_sender_name" id="sender_name" name="sender_name" required="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">
+                                                                    Sender Company <span class="symbol required"></span>
+                                                                </label>
+                                                                <input type="text" class="form-control agent_sender_company" id="sender_company" name="agent_sender_company" required="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -726,7 +736,7 @@ if (isset($_POST['submit'])) {
                                                                 <label class="control-label">
                                                                     Sender Email <span class="symbol required"></span>
                                                                 </label>
-                                                                <input type="email" class="form-control agent_sender_mail" id="sender_mail" name="sender_mail" required="" readonly>
+                                                                <input type="email" class="form-control agent_sender_mail" id="sender_mail" name="sender_mail" required="">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
@@ -734,7 +744,7 @@ if (isset($_POST['submit'])) {
                                                                 <label class="control-label">
                                                                     Sender Contact <span class="symbol required"></span>
                                                                 </label>
-                                                                <input type="text" class="form-control agent_sender_contact" id="sender_contact" name="sender_contact" required="" readonly>
+                                                                <input type="text" class="form-control agent_sender_contact" id="sender_contact" name="sender_contact" required="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -744,7 +754,7 @@ if (isset($_POST['submit'])) {
                                                                 <label class="control-label">
                                                                     Sender Address <span class="symbol required"></span>
                                                                 </label>
-                                                                <input type="text" class="form-control agent_sender_addr" id="sender_addr" name="sender_addr" required="" readonly>
+                                                                <input type="text" class="form-control agent_sender_addr" id="sender_addr" name="sender_addr" required="">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
@@ -752,7 +762,6 @@ if (isset($_POST['submit'])) {
                                                                 <label class="control-label">
                                                                     Sender Country <span class="symbol required"></span>
                                                                 </label>
-                                                                <!--                                                            <input type="text"  id="sender_country" name="sender_country" required="">-->
                                                                 <select class="form-control" name="sender_country" id="sender_country" required>
                                                                     <option value="BD" selected>Bangladesh</option>
                                                                     <option value="IN">India</option>
@@ -886,7 +895,7 @@ if (isset($_POST['submit'])) {
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label for="goods_title">Goods Title</label>
+                                                                <label for="goods_title">Goods Title <span class="symbol required"></span></label>
                                                                 <input type="text" class="form-control" id="goods_title" placeholder="Goods Title" name="goods_title" required>
                                                             </div>
                                                         </div>

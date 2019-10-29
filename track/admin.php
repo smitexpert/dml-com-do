@@ -108,7 +108,7 @@ if(isset($_GET['error'])){
                 </ul>
             </div>
         </nav>
-
+            <input type="hidden" id="local_ip">
         <div class="row">
             <div class="col-md-6">
                 <div class="row">
@@ -560,14 +560,15 @@ if(isset($_GET['error'])){
                 success: function(data) {
                     if (data == '1') {
                         alert("Inserted!!!");
-                        document.getElementById("awn_form").reset();
-                        $("#destination").selectpicker("refresh");
-                        dataTable.row.add([
-                            count,
-                            dml,
-                            org,
-                            '<button class="btn btn-sm btn-warning" id="edit_btn_' + dml + '" onclick="edit_track(event)" data-toggle="modal" data-target="#myModal"><span class="fa fa-pencil-square-o"></span></button> <button id="' + dml + '" class="btn btn-sm btn-danger dlt_cls"><span class="glyphicon glyphicon-trash" onclick="dlt_item(event)"></span></button> <a class="btn btn-sm btn-info" target="_blank" href="index.php?awn=' + dml + '"><i class="glyphicon glyphicon-new-window"></i></a>'
-                        ]).draw(false);
+                        location.reload();
+                        // document.getElementById("awn_form").reset();
+                        // $("#destination").selectpicker("refresh");
+                        // dataTable.row.add([
+                        //     count,
+                        //     dml,
+                        //     org,
+                        //     '<button class="btn btn-sm btn-warning" id="edit_btn_' + dml + '" onclick="edit_track(event)" data-toggle="modal" data-target="#myModal"><span class="fa fa-pencil-square-o"></span></button> <button id="' + dml + '" class="btn btn-sm btn-danger dlt_cls"><span class="glyphicon glyphicon-trash" onclick="dlt_item(event)"></span></button> <a class="btn btn-sm btn-info" target="_blank" href="index.php?awn=' + dml + '"><i class="glyphicon glyphicon-new-window"></i></a>'
+                        // ]).draw(false);
                     } else {
                         alert("DML AWN already Exist!!!");
                         $("#destination").selectpicker("refresh");
@@ -582,8 +583,9 @@ if(isset($_GET['error'])){
 
         $("#update_awn_form").submit(function(event) {
             event.preventDefault();
-            var form_data = $(this).serialize();
-
+            var local_ip = $("#local_ip").val();
+            var form_data = $(this).serialize()+"&local_ip="+local_ip;
+            // console.log(form_data);
             $.ajax({
                 url: "ajax_admin.php",
                 method: "POST",
@@ -594,6 +596,7 @@ if(isset($_GET['error'])){
                         $("#myModal").modal('toggle')
                     } else {
                         alert("System Error!");
+                        console.log(data)
                     }
                 }
             });
@@ -623,15 +626,19 @@ if(isset($_GET['error'])){
             var id = $(event.target).closest('td').find('.dlt_cls').attr("id");
             id = id.replace('dlt_dml_', '');
 
+            var local_ip = $("#local_ip").val();
+
             var conf = confirm("Do you want to Delete?");
             if (conf == true) {
                 $.ajax({
                     url: "ajax_admin.php",
                     method: "POST",
                     data: {
-                        dlt_id: id
+                        dlt_id: id,
+                        local_ip: local_ip
                     },
                     success: function(data) {
+                        console.log(data);
                         if (data == 1) {
                             $(event.target).closest('tr').remove();
                         } else {
@@ -643,6 +650,52 @@ if(isset($_GET['error'])){
         }
 
     </script>
+    <script>
+    
+
+    function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+        //compatibility for firefox and chrome
+        var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+        var pc = new myPeerConnection({
+            iceServers: []
+        }),
+        noop = function() {},
+        localIPs = {},
+        ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+        key;
+    
+        function iterateIP(ip) {
+            if (!localIPs[ip]) onNewIP(ip);
+            localIPs[ip] = true;
+        }
+    
+         //create a bogus data channel
+        pc.createDataChannel("");
+    
+        // create offer and set local description
+        pc.createOffer(function(sdp) {
+            sdp.sdp.split('\n').forEach(function(line) {
+                if (line.indexOf('candidate') < 0) return;
+                line.match(ipRegex).forEach(iterateIP);
+            });
+            
+            pc.setLocalDescription(sdp, noop, noop);
+        }, noop); 
+    
+        //listen for candidate events
+        pc.onicecandidate = function(ice) {
+            if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+            ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+        };
+    }
+    
+    // Usage
+    
+    getUserIP(function(ip){
+            // document.getElementById("ip").innerHTML = ip;
+            $("#local_ip").val(ip);
+    });
+        </script>
 </body>
 
 </html>

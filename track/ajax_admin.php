@@ -3,6 +3,7 @@
 require_once 'Database.php';
 
 $db = new Database;
+$dbn = new Database;
 
 
 if(isset($_POST['dml'])){
@@ -27,8 +28,27 @@ if(isset($_POST['dml'])){
     }
 }
 
+function get_client_ip() {
+    $ipaddress = '';
+    if (isset($_SERVER['HTTP_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if(isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+}
 
 if(isset($_POST['up_dml'])){
+    $local_ip = $_POST['local_ip'];
     $id = mysqli_real_escape_string($db->link, $_POST['up_id']);
     $dml = mysqli_real_escape_string($db->link, $_POST['up_dml']);
     $org = mysqli_real_escape_string($db->link, $_POST['up_org']);
@@ -40,26 +60,78 @@ if(isset($_POST['up_dml'])){
     $pcs = mysqli_real_escape_string($db->link, $_POST['up_pcs']);
     $ship_content = mysqli_real_escape_string($db->link, $_POST['up_ship_content']);
     $booking_date = mysqli_real_escape_string($db->link, $_POST['up_booking_date']);
-    
-    $sql = "UPDATE test_track SET dml_awn='$dml', org_awn='$org', principal='$principal', shipper_name='$shipper_name', origin='$origin', destination='$destination', consignee_name='$consignee_name', pcs='$pcs', ship_content='$ship_content', booking_date='$booking_date' WHERE id='$id'";
-    $query = $db->link->query($sql);
+
+
+    $ip_address = get_client_ip();
+    $local_ip = $_POST['local_ip'];
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $geo_location = "lat:  - long: ";
+
+    $getSql = "SELECT test_track.id, test_track.dml_awn, test_track.org_awn, test_track.principal, test_track.shipper_name, test_track.origin, test_track.destination, test_track.consignee_name, test_track.pcs, test_track.ship_content, test_track.booking_date, test_track.status FROM test_track WHERE test_track.id='$id'";
+
+    $getQuery = $db->link->query($getSql);
+
+    $getRow = $getQuery->fetch_assoc();
+
+    // var_dump($getRow);
+
+    $dt = new DateTime('now', new DateTimezone('Asia/Dhaka'));
+    $now_date = $dt->format('F j, Y, g:i a');
+
+    $inSql = "INSERT INTO test_track_update_history (table_id, dml_awn, org_awn, principal, shipper_name, origin, destination, consignee_name, pcs, ship_content, booking_date, ip_address, local_ip, user_agent, geo_location, status, update_date) VALUES ('".$getRow['id']."', '".$getRow['dml_awn']."', '".$getRow['org_awn']."', '".$getRow['principal']."', '".$getRow['shipper_name']."', '".$getRow['origin']."', '".$getRow['destination']."', '".$getRow['consignee_name']."', '".$getRow['pcs']."', '".$getRow['ship_content']."', '".$getRow['booking_date']."', '$ip_address', '$local_ip', '$user_agent', '$geo_location', '".$getRow['status']."', '$now_date');UPDATE test_track SET dml_awn='$dml', org_awn='$org', principal='$principal', shipper_name='$shipper_name', origin='$origin', destination='$destination', consignee_name='$consignee_name', pcs='$pcs', ship_content='$ship_content', booking_date='$booking_date' WHERE id='$id'";
+    $query = $dbn->link->multi_query($inSql);
     if($query){
         echo 1;
     }else{
-        echo 0;
-//        echo $db->link->error;
+        // echo 0;
+       echo $db->link->error;
     }
 }
 
+
+
 if(isset($_POST['dlt_id'])){
     $id = $_POST['dlt_id'];
-    $sql = "DELETE FROM test_track WHERE dml_awn='$id'";
-    $query = $db->link->query($sql);
+    $ip_address = get_client_ip();
+    $local_ip = $_POST['local_ip'];
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $geo_location = "";
+    // $geo_location_array = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip_address));
+
+    $geo_location_array = "";
+
+    if(empty($geo_location_array)){
+        $geo_location_array['geoplugin_latitude'] = "";
+        $geo_location_array['geoplugin_longitude'] = "";
+    }
+
+
+    $geo_location_lat = $geo_location_array['geoplugin_latitude'];
+    $geo_location_long = $geo_location_array['geoplugin_longitude'];
+
+    $geo_location = "lat: ".$geo_location_lat." - long: ".$geo_location_long;
+
+    $getSql = "SELECT test_track.id, test_track.dml_awn, test_track.org_awn, test_track.principal, test_track.shipper_name, test_track.origin, test_track.destination, test_track.consignee_name, test_track.pcs, test_track.ship_content, test_track.booking_date, test_track.status FROM test_track WHERE test_track.dml_awn='$id'";
+
+    $getQuery = $db->link->query($getSql);
+
+    $getRow = $getQuery->fetch_assoc();
+
+    $dt = new DateTime('now', new DateTimezone('Asia/Dhaka'));
+    $now_date = $dt->format('F j, Y, g:i a');
+
+    $inSql = "INSERT INTO test_track_delete_history (table_id, dml_awn, org_awn, principal, shipper_name, origin, destination, consignee_name, pcs, ship_content, booking_date, ip_address, local_ip, user_agent, geo_location, status, del_date) VALUES ('".$getRow['id']."', '".$getRow['dml_awn']."', '".$getRow['org_awn']."', '".$getRow['principal']."', '".$getRow['shipper_name']."', '".$getRow['origin']."', '".$getRow['destination']."', '".$getRow['consignee_name']."', '".$getRow['pcs']."', '".$getRow['ship_content']."', '".$getRow['booking_date']."', '$ip_address', '$local_ip', '$user_agent', '$geo_location', '".$getRow['status']."', '$now_date'); DELETE FROM test_track WHERE dml_awn='$id'";
+
+    // $sql = "DELETE FROM test_track WHERE dml_awn='$id'";
+
+    $query = $db->link->multi_query($inSql);
     if($query){
         echo 1;
     }else{
-        echo 0;
+        echo $db->link->error;
     }
+
+    // echo $now_date; 
 }
 
 if(isset($_POST['org_up_id'])){

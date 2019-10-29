@@ -46,6 +46,7 @@
 		<!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
 		<script src="assets/js/form-elements.js"></script>
 		<script src="assets/js/bootstrap-select.js"></script>
+		<script src="assets/js/jquery.timepicker.min.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="assets/DataTables/datatables.js">
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js">
@@ -74,7 +75,24 @@ $uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
 ?>
 
 		<script>
+
 		    jQuery(document).ready(function() {
+
+				setInterval(function(){ 
+					$.ajax({
+						url: "../ajax/ajax_session_check.php",
+						method: "POST",
+						data: {
+							checkLogin: ""
+						},
+						success: function(data){
+							console.log(data);
+							if(data != '1'){
+								location.reload();
+							}
+						}
+					})
+				 }, 5000);
 
 		        //DATA TABLE FOR CONSIGNEMENT LIST
 		        $('#consListTable').DataTable({
@@ -1868,6 +1886,7 @@ if($uri_parts[0] == '/new_principal_settings.php'){
 		                    });
 		                } else {
 		                    alert('ERRROR@@!! UPDATE NOT WORKING!!!');
+							console.log(data);
 		                }
 
 		            }
@@ -3625,6 +3644,9 @@ if($uri_parts[0] == '/consignment_assign.php'){
 		    $(".agent_assign").click(function() {
 		        var id = $(this).attr("id");
 				var track_id = $(this).parent('div').find('.tracking_id').val();
+
+				$("#agent_assing_button").prop("disabled", true);
+
 		        $(".remote_poss").html('');
 
 		        $("#agent_principal_list").find("tr").remove();
@@ -3633,15 +3655,17 @@ if($uri_parts[0] == '/consignment_assign.php'){
 		            url: "../ajax/ajax_consignment.php",
 		            method: "POST",
 		            data: {
-		                get_con_details: id
+		                get_agent_con_details: id
 		            },
 		            dataType: "JSON",
 		            success: function(data) {
 		                // console.log(data);
+						$("#agent_id").val(id);
 		                $("#agent_trackid").text(data.tracking_id);
 		                $("#agent_city").text(data.r_city);
 		                $("#agent_zip").text(data.r_zip);
 		                $("#agent_country_tag").val(data.r_country);
+		                $("#agent_selected_service").text(data.service_name);
 		                if (data.g_type == 'P') {
 		                    $("#agent_type").text("PARCEL");
 		                } else {
@@ -3701,6 +3725,14 @@ if($uri_parts[0] == '/consignment_assign.php'){
 		            }
 		        });
 
+				// $.ajax({
+				// 	url: "",
+				// 	method: "POST",
+				// 	data {
+						
+				// 	}
+				// })
+
 		        var trackid = $("#trackid").text();
 
 		        var tag = $("#country_tag").val();
@@ -3711,9 +3743,15 @@ if($uri_parts[0] == '/consignment_assign.php'){
 
 		    function getRemotePossAgent(id, pid) {
 
-				alert("Working!");
+				// alert("Working!");
 
 		        $(".remote_poss").html('');
+
+				$("#agent_assing_button").prop("disabled", false);
+
+				// var agent_cost = $(event.target).closest('tr').find(".agent_price").val();
+				
+				// $("#agent_shipcharge").text(agent_cost+" USD");
 
 		        $(".loading-img").css("display", "block");
 
@@ -3734,7 +3772,9 @@ if($uri_parts[0] == '/consignment_assign.php'){
 
 		        var tag = $("#agent_country_tag").val();
 
-		        $(".agent-assing-btn").attr('onclick', 'assignAgentFunction(' + trackid + ',' + pid + ',"' + tag + '")');
+				var agent_id = $("#agent_id").val();
+
+		        $(".agent-assing-btn").attr('onclick', 'assignFunction(' + trackid + ',' + pid + ',"' + tag + '")');
 
 		    }
 
@@ -3766,32 +3806,33 @@ if($uri_parts[0] == '/consignment_assign.php'){
 		        })
 		    }
 
-		    function assignAgentFunction(trackid, pid, tag) {
-		        $(".loading-img").css("display", "block");
+		    // function assignAgentFunction(trackid, pid, tag, agent_cost) {
+		    //     $(".loading-img").css("display", "block");
 
-				alert(trackid+" "+pid+" "+tag);
-		        $.ajax({
-		            url: "../ajax/ajax_assign_consignment.php",
-		            method: "POST",
-		            data: {
-		                agent_trackid: trackid,
-		                pid: pid,
-		                tag: tag
-		            },
-		            success: function(data) {
-		                $(".loading-img").css("display", "none");
-		                if (data == '1') {
-		                    alert("Operation Success!!!");
-		                    $("#myModal").modal('toggle');
-		                    location.reload();
-		                } else {
-		                    alert(data);
-		                    $("#myModal").modal('toggle');
-		                }
+			// 	// alert(trackid+" "+pid+" "+tag+" "+agent_cost);
+		    //     $.ajax({
+		    //         url: "../ajax/ajax_assign_consignment.php",
+		    //         method: "POST",
+		    //         data: {
+		    //             agent_trackid: trackid,
+		    //             pid: pid,
+		    //             tag: tag,
+			// 			agent_cost: agent_cost
+		    //         },
+		    //         success: function(data) {
+		    //             $(".loading-img").css("display", "none");
+		    //             if (data == '1') {
+		    //                 alert("Operation Success!!!");
+		    //                 $("#myModal").modal('toggle');
+		    //                 location.reload();
+		    //             } else {
+		    //                 alert(data);
+		    //                 $("#myModal").modal('toggle');
+		    //             }
 
-		            }
-		        })
-		    }
+		    //         }
+		    //     })
+		    // }
 
 		</script>
 
@@ -4350,8 +4391,9 @@ if($uri_parts[0] == '/agent_prices.php'){
 		            }
 		        })
 
-		    });
-
+			});
+		
+			
 
 		    $("#viewprice").click(function() {
 		        $(".viewpanel").css("display", "none");
@@ -5953,6 +5995,7 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
 		            success: function(data) {
 		                $(".agent_sender_name").val(data.name);
 		                $("#agent_company_name").val(data.company_name);
+		                $(".agent_sender_company").val(data.company_name);
 		                $(".agent_sender_mail").val(data.email);
 		                $(".agent_sender_contact").val(data.contact);
 		                $(".agent_sender_addr").val(data.address);
@@ -6001,8 +6044,8 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
 		                        var con = confirm("No Price Found! Do you want to input Price Manually?");
 		                        if (con == true) {
 		                            $("#agent_shipping_charge").prop('readonly', false);
-		                            agent_convert_to_bdt()
 		                        }
+								agent_convert_to_bdt()
 		                    } else {
 		                        $("#agent_shipping_charge").prop('readonly', true);
 		                        $("#agent_shipping_charge").val(data);
@@ -6011,7 +6054,10 @@ if($uri_parts[0] == '/new_consignment_booking.php'){
 		                }
 		            });
 
-		        }
+		        }else{
+					$("#agent_shipping_charge").val("");
+					agent_convert_to_bdt()
+				}
 		    }
 
 		    function agent_convert_to_bdt() {

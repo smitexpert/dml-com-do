@@ -2,10 +2,54 @@
 	$query = "SELECT * FROM corporate_clients WHERE status=1 ORDER BY created_date ASC";
     $selectCorpoClient = $Corpoclients->selectCorpoClient($query);
 if (isset($_POST['submit'])) {
-    $insertCorpoClient = $Corpoclients->insertCorpoclient($_POST);
-    header('location: '.$_SERVER['PHP_SELF']);
+    
+
+    $client_id = $_POST['client_id'];
+    $table_id = $_POST['table_id'];
+
+    $client_name = $_POST['client_name'];
+    $client_company = $_POST['client_company'];
+    $client_mail = $_POST['client_mail'];
+    $client_contact = $_POST['client_contact'];
+    $client_addr = $_POST['client_addr'];
+    $member_type = $_POST['member_type'];
+    $bank_name = $_POST['bank_name'];
+    $account_name = $_POST['account_name'];
+    $acc_num = $_POST['acc_num'];
+    $discount = $_POST['discount'];
+    $client_status = $_POST['client_status'];
+    $corpoAssignTo = $_POST['corpoAssignTo'];
+
+    $password = md5(123456);
+
+    $logged_user = Session::get('adminId');
+
+    $insert = "INSERT INTO corporate_clients (name, email, company_name, address, contact, bank_name, bank_account_name, bank_acount_number, member_type, discount_offer, password, assign_to, created_by, created_date, status) VALUES ('$client_name', '$client_mail', '$client_company', '$client_addr', '$client_contact', '$bank_name', '$account_name', '$acc_num', '$member_type', '$discount', '$password', '$corpoAssignTo', '$logged_user', NOW(), '1');INSERT INTO corporate_accounts (corporate_client_email, credit_limit, cash_amount, debit_amount, update_date, balance, update_by) VALUES ('$client_mail', '0', '0', '0', NOW(), '0', '$logged_user');INSERT INTO client_table (client_type, table_id, client_id) VALUES ('corporate', '$table_id', '$client_id')";
+
+    $query = $db->link->multi_query($insert);
+    
+    if($query){
+        header('location: '.$_SERVER['PHP_SELF']."?success");
+    }else{
+        header('location: '.$_SERVER['PHP_SELF']."?error=".$db->link->error);
+    }
+
+
+
 }
 
+$sql = "SELECT id FROM corporate_clients ORDER BY id DESC LIMIT 1";
+$query = $db->link->query($sql);
+if($query->num_rows > 0){
+    $row = $query->fetch_assoc();
+    $last_id = $row['id'];
+    $last_id++;
+}else{
+    $last_id = 1;
+}
+
+
+$client_id = "222".sprintf("%03d", $last_id);
 
 
 
@@ -55,7 +99,17 @@ if (isset($_POST['submit'])) {
                                             <?php } ?>
                                         </div>
                                     </div>
-
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Client Id</label>
+                                            <input type="text" class="form-control" value="<?php echo $client_id; ?>" name="client_id" readonly>
+                                            <input type="hidden" value="<?php echo $last_id; ?>" name="table_id">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">

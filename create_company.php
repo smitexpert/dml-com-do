@@ -1,4 +1,17 @@
 <?php include('includes/header.php'); 
+
+$sql = "SELECT id FROM corporate_company ORDER BY id DESC LIMIT 1";
+$query = $db->link->query($sql);
+if($query->num_rows > 0){
+    $row = $query->fetch_assoc();
+    $last_id = $row['id'];
+    $last_id++;
+}else{
+    $last_id = 1;
+}
+
+
+$company_id = "SM".sprintf("%06d", $last_id);
 	
 if (isset($_POST['submit'])) {
     
@@ -7,19 +20,21 @@ if (isset($_POST['submit'])) {
     $client_mail = $_POST['client_mail'];
     $client_contact = $_POST['client_contact'];
     $client_addr = $_POST['client_addr'];
-    $corpoAssignTo = $_POST['corpoAssignTo'];
+    // $corpoAssignTo = $_POST['corpoAssignTo'];
     $created_by = Session::get('adminId');
     
-    $insert = "INSERT INTO corporate_company (name, company_name, email, contact, address, assign_to, created_by) VALUES ('$client_name', '$client_company', '$client_mail', '$client_contact', '$client_addr', '$corpoAssignTo', '$created_by')";
+    $insert = "INSERT INTO corporate_company (company_id, name, company_name, email, contact, address, assign_to, created_by) VALUES ('$company_id', '$client_name', '$client_company', '$client_mail', '$client_contact', '$client_addr', '$created_by', '$created_by')";
     $query = $db->link->query($insert);
     
     if($query){
-        header("location: ".$_SERVER['PHP_SELF']."?success=true");
+        header("location: ".$_SERVER['PHP_SELF']."?success=true&company=".$client_company);
     }else{
         header("location: ".$_SERVER['PHP_SELF']."?success=false");
     }
     
 }
+
+
 
 
 
@@ -49,12 +64,24 @@ if (isset($_POST['submit'])) {
                             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" role="form" id="fcorpo_orm" method="POST">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="errorHandler alert alert-danger no-display">
-                                            <i class="fa fa-times-sign"></i> You have some form errors. Please check below.
+                                        
+                                        <?php 
+                                            if(isset($_GET['success'])){
+                                                if($_GET['success'] == 'true'){
+                                                    ?>
+                                        <div class="successHandler alert alert-success">
+                                            <i class="fa fa-ok"></i> The Company <b><?php echo $_GET['company']; ?></b>  Successfully Created!!!
                                         </div>
-                                        <div class="successHandler alert alert-success no-display">
-                                            <i class="fa fa-ok"></i> Your form validation is successful!
-                                        </div>
+                                                    <?php
+                                                }else{
+                                                    ?>
+                                                    <div class="errorHandler alert alert-danger">
+                                                        <i class="fa fa-times-sign"></i> You have some form errors. Please check below.
+                                                    </div>
+                                                    <?php
+                                                }
+                                            }
+                                        ?>
                                     </div>
 
                                     <div class="row-fluid">
@@ -71,70 +98,68 @@ if (isset($_POST['submit'])) {
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">
-                                                Client Name<span class="symbol required"></span>
-                                            </label>
-                                            <input type="text" class="form-control" id="client_name" name="client_name" required>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                
+                                            </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                                    <label class="control-label">
+                                                        Company ID <span class="symbol required"></span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="company_id" name="company_id" value="<?php echo $company_id; ?>" required readonly>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Chairman / Managing Director<span class="symbol required"></span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="client_name" name="client_name" required>
+                                                </div>
 
 
-                                        <div class="form-group">
-                                            <label class="control-label">
-                                                Company Name<span class="symbol required"></span>
-                                            </label>
-                                            <input type="text" class="form-control" id="client_company" name="client_company" required>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Company Name<span class="symbol required"></span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="client_company" name="client_company" required>
+                                                </div>
+
+
+                                                
+
+
+                                                
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Contact <span class="symbol required"></span>
+                                                    </label>
+                                                    <input type="text" required class="form-control" name="client_contact" id="client_contact">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Email Address <span class="symbol required"></span>
+                                                    </label>
+                                                    <input class="form-control" type="email" required id="client_mail" name="client_mail">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Address <span class="symbol required"></span>
+                                                    </label>
+                                                    <input type="textarea" required class="form-control" id="client_addr" name="client_addr">
+                                                </div>
+<br>
+
+                                            </div>
                                         </div>
-
-
-                                        <div class="form-group">
-                                            <label class="control-label">
-                                                Email Address <span class="symbol required"></span>
-                                            </label>
-                                            <input class="form-control" type="email" required id="client_mail" name="client_mail">
-                                        </div>
-
-
-                                        
-
-                                    </div>
-                                    <div class="col-md-6">
-                                        
-                                        <div class="form-group">
-                                            <label class="control-label">
-                                                Contact <span class="symbol required"></span>
-                                            </label>
-                                            <input type="text" required class="form-control" name="client_contact" id="client_contact">
-                                        </div>
-
-
-                                        <div class="form-group">
-                                            <label class="control-label">
-                                                Address <span class="symbol required"></span>
-                                            </label>
-                                            <input type="textarea" required class="form-control" id="client_addr" name="client_addr">
-                                        </div>
-
-                                        <div class="form-group connected-group">
-                                            <label class="control-label">Assign to :<span class="symbol required"></span>
-                                            </label>
-                                            <select name="corpoAssignTo" id="corpoAssignTo" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" required>
-                                                <option value="">--</option>
-                                                <?php 
-	$query2 = "SELECT * FROM user WHERE status=1 AND rule != 1";
-    $selectstuff = $db->link->query($query2);
-	if ($selectstuff) { while ($getstuff=$selectstuff->fetch_assoc()) { ?>
-                                                <option value="<?php echo $getstuff['userId']; ?>"><?php echo $getstuff['name']; ?></option>
-                                                <?php } }else{} ?>
-
-                                            </select>
-                                        </div><br>
-
-
-
-
-
                                     </div>
 
                                 </div>

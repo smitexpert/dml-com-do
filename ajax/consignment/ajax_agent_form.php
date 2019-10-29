@@ -25,7 +25,7 @@ if(isset($_POST['get_agent_info'])){
 if(isset($_POST['get_agent_principals'])){
     $id = $_POST['get_agent_principals'];
     
-    $sql = "SELECT agent_principal.principal_id, principals_name.principal_name FROM agent_principal INNER JOIN agent_clients ON agent_clients.email = agent_principal.agent_email INNER JOIN principals_name ON agent_principal.principal_id = principals_name.id WHERE agent_clients.id = '$id' AND agent_principal.status='1'";
+    $sql = "SELECT agent_principal.principal_id, agent_services.service_name FROM agent_principal INNER JOIN agent_clients ON agent_clients.email = agent_principal.agent_email INNER JOIN agent_services ON agent_principal.principal_id = agent_services.id WHERE agent_clients.id = '$id' AND agent_principal.status='1'";
     
     $query = $db->link->query($sql);
     ?>
@@ -34,7 +34,7 @@ if(isset($_POST['get_agent_principals'])){
     if($query->num_rows > 0){
         while($row = $query->fetch_assoc()){
             ?>
-            <option value="<?php echo $row['principal_id']; ?>"><?php echo $row['principal_name']; ?></option>
+            <option value="<?php echo $row['principal_id']; ?>"><?php echo $row['service_name']; ?></option>
             <?php
         }
     }
@@ -50,7 +50,7 @@ if(isset($_POST['agent_dest_country'])){
     $agent_principal = $_POST['agent_principal'];
     $agent_sender_mail = $_POST['agent_sender_mail'];
     
-    $sql = "SELECT price, principal_id FROM agent_client_price WHERE weight = '2' AND agent_client_email = 'sujon@gmail.com' AND principal_id = '2' AND goods_type = ''";
+    // $sql = "SELECT price, principal_id FROM agent_client_price WHERE weight = '2' AND agent_client_email = 'sujon@gmail.com' AND principal_id = '2' AND goods_type = ''";
     
     $sql = "SELECT agent_client_price.price, agent_client_price.principal_id, dml_zone.country_tag FROM agent_client_price INNER JOIN dml_zone ON dml_zone.zone = agent_client_price.zone WHERE dml_zone.country_tag = '$agent_dest_country' AND  agent_client_price.weight = '$agent_goods_weight' AND agent_client_price.agent_client_email = '$agent_sender_mail' AND agent_client_price.principal_id = '$agent_principal' AND agent_client_price.goods_type = '$agent_goods_type'";
 
@@ -72,8 +72,36 @@ if(isset($_POST['agent_dest_country'])){
         $p++;
     }
     
-    if(($price != 0) && ($special_price != 0)){
-        if($special_price < $price){
+    // if(($price == 0) && ($special_price == 0)){
+    //     if($special_price < $price){
+    //         echo $special_price;
+    //     }else{
+    //         echo $price;
+    //     }
+
+    //     if($price != 0){
+    //         if($price < $special_price){
+
+    //         }else{
+
+    //         }
+    //     }else if($special_price != 0){
+            
+    //     }
+    // }else{
+    //     echo "NOTHING";
+    // }
+
+    if(($price == 0) && ($special_price == 0)){
+        echo "NOTHING";
+    }else if($price < $special_price){
+        if($price != 0){
+            echo $price;
+        }else{
+            echo $special_price;
+        }
+    }else if($special_price < $price){
+        if($special_price != 0){
             echo $special_price;
         }else{
             echo $price;
@@ -95,6 +123,7 @@ if(isset($_POST['usd'])){
 
 if(isset($_POST['agent_company_name'])){
     $agent_company_name = $_POST['agent_company_name'];
+    $agent_sender_company = $_POST['agent_sender_company'];
     $agent_company_id = $_POST['agent_company'];
     $sender_name = $_POST['sender_name'];
     $sender_mail = $_POST['sender_mail'];
@@ -123,72 +152,25 @@ if(isset($_POST['agent_company_name'])){
     $shipping_charge = $_POST['shipping_charge'];
     
     $agent_principal = $_POST['agent_principal'];
+
+    // $p_cur = $db->getCurrencyName($agent_principal);
+    // $base_rate = $db->getCurrency($p_cur);
     
     $assign_to = $_POST['assign_to'];
+
+    $usd_sql = "SELECT currency_rate FROM currency WHERE currency_name='USD'";
+    $usd_query = $db->link->query($usd_sql);
+    $usd_row = $usd_query->fetch_row();
+    $bdt_rate = $usd_row[0]*$shipping_charge;
     
-    $sql = "INSERT INTO consignment_booking(client_Id, tracking_id, awb_no, s_type, s_name, s_company, s_email, s_contact, s_country, s_address, r_name, r_company, r_email, r_address1, r_address2, r_address3, r_zip, r_phone, r_mobile, r_city, r_country, g_title, g_type, g_weight, g_pieces, g_customs_value, g_shipment_charge, status, assigned_user, submited_by) VALUES ('$agent_company_id', '$trackID', '$custom_trackId', 'agent', '$sender_name', '$agent_company_name', '$sender_mail', '$sender_contact', '$sender_country', '$sender_addr', '$recipient_name', '$recipient_company', '$recipient_mail', '$recipient_addr1', '$recipient_addr2', '$recipient_addr3', '$recipient_zip', '$recipient_phone', '$recipient_mobile', '$recipient_city', '$dest_country', '$goods_title', '$goods_type', '$goods_weight', '$shimpent_pieces', '$shimpent_declared_value', '$shipping_charge', '1', '$assign_to', '$logged_user')";
+    $sql = "INSERT INTO consignment_booking(client_Id, tracking_id, awb_no, s_type, s_name, s_company, s_email, s_contact, s_country, s_address, r_name, r_company, r_email, r_address1, r_address2, r_address3, r_zip, r_phone, r_mobile, r_city, r_country, g_title, g_type, g_weight, g_pieces, g_customs_value, g_shipment_charge, status, assigned_user, submited_by) VALUES ('$agent_company_id', '$trackID', '$custom_trackId', 'agent', '$sender_name', '$agent_sender_company', '$sender_mail', '$sender_contact', '$sender_country', '$sender_addr', '$recipient_name', '$recipient_company', '$recipient_mail', '$recipient_addr1', '$recipient_addr2', '$recipient_addr3', '$recipient_zip', '$recipient_phone', '$recipient_mobile', '$recipient_city', '$dest_country', '$goods_title', '$goods_type', '$goods_weight', '$shimpent_pieces', '$shimpent_declared_value', '$shipping_charge', '1', '$assign_to', '$logged_user'); INSERT INTO accounts (reference_id, transaction_id, transaction_type, transaction_mode, payer_type, client_name, client_id, amount, based, base_rate, bdt_ammount, usd_ammount, prepared_by, description, transaction_date) VALUES ('$trackID', 'DML$t', '1', 'booking', 'agent', '$agent_company_name', '$agent_company_id', '$shipping_charge', 'USD', '$shipping_charge', '$bdt_rate', '$shipping_charge', '$logged_user', 'CONSIGNMENT BOOKING FROM DML', NOW()); UPDATE agent_accounts SET debit_amount = debit_amount+$bdt_rate WHERE agent_email='$sender_mail';
+    INSERT INTO agent_consignment (service_id, client_id, tracking_id, shipment_charge, assign_by) VALUES ('$agent_principal', '$agent_company_id', '$trackID', '$shipping_charge', 'dml')";
     
-    $query = $db->link->query($sql);
+    $query = $dbn->link->multi_query($sql);
 //    $query = true;
     
     if($query){
-        
-        $selectZone = "SELECT zone FROM principal_zone WHERE principal_id = '$agent_principal' AND country_tag = '$dest_country'";
-        $queryZone = $db->link->query($selectZone);
-        $rowZone = $queryZone->fetch_assoc();
-        $zone = $rowZone['zone'];
-
-        $selectPr = "SELECT price FROM principal_price WHERE weight='$goods_weight' AND goods_type='$goods_type' AND principal_id='$agent_principal' AND zone='$zone'";
-        $queryPr = $db->link->query($selectPr);
-
-        $rowPr = $queryPr->fetch_assoc();
-
-        $principal_rate = $rowPr['price'];
-
-        $principal_rate_usd = $db->converttousd($agent_principal, $rowPr['price']);
-
-        $costing = $db->getPrincipalCosting($agent_principal, $rowPr['price'], $goods_weight);
-        
-        $sql2 = "INSERT INTO consignment_booked (tracking_id, principal_id, principal_rate, principal_rate_usd, costing, booking_price, assigned_by, status, assigned_date) VALUES ('$trackID', '$agent_principal', '$principal_rate', '$principal_rate_usd', '$costing', '$shipping_charge', '$logged_user', '2', NOW())";
-        
-//        echo $sql2;
-        
-        $query2 = $db->link->query($sql2);
-        if($query2){
-            $track_sql = "INSERT INTO custom_tracking_no(custom_id, tracking_id, client_type, client_email) VALUES('$refference_no', '$trackID', 'agent', '$sender_mail')";
-
-            $track_query = $db->link->query($track_sql);
-
-            if($track_query){
-
-                $usd_sql = "SELECT currency_rate FROM currency WHERE currency_name='USD'";
-                $usd_query = $db->link->query($usd_sql);
-                $usd_row = $usd_query->fetch_row();
-                $bdt_rate = $usd_row[0]*$shipping_charge;
-                $usd_rate = $usd_row[0];
-                $usd_costing_rate = $usd_row[0]*$costing;
-                $t2 = $t+1;
-
-                $p_sql = "SELECT principal_name FROM principals_name WHERE id='$agent_principal'";
-                $p_query = $db->link->query($p_sql);
-                $p_row = $p_query->fetch_row();
-                $p_name = $p_row[0];
-
-                $account_sql = "INSERT INTO accounts (reference_id, transaction_id, transaction_type, transaction_mode, payer_type, client_name, client_id, amount, based, base_rate, bdt_ammount, usd_ammount, prepared_by, description, transaction_date) VALUES ('$trackID', 'DML$t', '1', 'booking', 'agent', '$agent_company_name', '$agent_company_id', '$shipping_charge', 'USD', '$usd_rate', '$bdt_rate', '$shipping_charge', '$logged_user', 'CONSIGNMENT BOOKING FROM DML', NOW()); INSERT INTO accounts (reference_id, transaction_id, transaction_type, transaction_mode, payer_type, client_name, client_id, amount, based, base_rate, bdt_ammount, usd_ammount, prepared_by, description, transaction_date) VALUES ('$trackID', 'DML$t2', '0', 'booking', 'principal', '$p_name', '$agent_principal', '$costing', 'USD', '$usd_rate', '$usd_costing_rate', '$costing', '$logged_user', 'PRINCIPAL COSTING FOR CONSIGNMENT', NOW());UPDATE agent_accounts SET debit_amount = debit_amount+$bdt_rate WHERE agent_email='$sender_mail'";
-
-                $account_query = $db->link->multi_query($account_sql);
-                if($account_query){
-                    echo "1";
-                }else{
-                    echo $db->link->error;
-                }
-            }else{
-                echo $db->link->error;
-            }
-        }else{
-            echo $db->link->error;
-        }
-        
+        echo '1';
     }else{
         echo $db->link->error;
     }

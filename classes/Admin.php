@@ -71,7 +71,7 @@ class Admin{
                         $i = 0;
 
                         while($totalMenu = $totalMenuQuery->fetch_assoc()){
-                            $menuArry[$i] = $totalMenu['menuUrl'];
+                            $menuArry[$i] = '/'.$totalMenu['menuUrl'];
                             $i++;
                         }
 

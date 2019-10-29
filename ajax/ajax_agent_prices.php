@@ -54,7 +54,7 @@ if(isset($_POST['get_zone_agent_mail'])){
 if(isset($_POST['agent_setprice_mail'])){
     $agent_mail = $_POST['agent_setprice_mail'];
     
-    $sql = "SELECT principals_name.id, principals_name.principal_name FROM principals_name LEFT JOIN agent_principal ON agent_principal.principal_id = principals_name.id WHERE agent_principal.agent_email = '$agent_mail' ORDER BY agent_principal.principal_id ASC";
+    $sql = "SELECT agent_services.id, agent_services.service_name FROM agent_services LEFT JOIN agent_principal ON agent_principal.principal_id = agent_services.id WHERE agent_principal.agent_email = '$agent_mail' ORDER BY agent_principal.principal_id ASC";
     $query = $db->link->query($sql);
     if($query->num_rows > 0){
         ?>
@@ -62,7 +62,7 @@ if(isset($_POST['agent_setprice_mail'])){
         <?php
         while($row = $query->fetch_assoc()){
             ?>
-    <option value="<?php echo $row['id']; ?>"><?php echo $row['principal_name']; ?></option>
+    <option value="<?php echo $row['id']; ?>"><?php echo $row['service_name']; ?></option>
     <?php
         }
     }else{
@@ -161,7 +161,7 @@ if(isset($_POST['agent_email'])){
 
 if(isset($_POST['get_view_price_principal'])){
     $agent_mail = $_POST['get_view_price_principal'];
-    $sql = "SELECT DISTINCT agent_client_price.principal_id, principals_name.principal_name FROM agent_client_price INNER JOIN principals_name ON agent_client_price.principal_id=principals_name.id  WHERE agent_client_price.agent_client_email='$agent_mail'";
+    $sql = "SELECT DISTINCT agent_client_price.principal_id, agent_services.service_name FROM agent_client_price INNER JOIN agent_services ON agent_client_price.principal_id=agent_services.id  WHERE agent_client_price.agent_client_email='$agent_mail'";
     $query = $db->link->query($sql);
     ?>
     <option value="">--</option>
@@ -169,7 +169,7 @@ if(isset($_POST['get_view_price_principal'])){
     if($query->num_rows > 0){
         while($row = $query->fetch_assoc()){
             ?>
-            <option value="<?php echo $row['principal_id']; ?>"><?php echo $row['principal_name']; ?></option>
+            <option value="<?php echo $row['principal_id']; ?>"><?php echo $row['service_name']; ?></option>
             <?php
         }
     }
@@ -637,7 +637,7 @@ if(isset($_POST['upzoneprincipal'])){
 if(isset($_POST['agent_copyprice_mail'])){
     $agent_mail = $_POST['agent_copyprice_mail'];
     
-    $sql = "SELECT DISTINCT principals_name.principal_name, principals_name.id FROM principals_name INNER JOIN agent_client_price ON agent_client_price.principal_id = principals_name.id WHERE agent_client_price.agent_client_email='$agent_mail' ORDER BY agent_client_price.principal_id ASC";
+    $sql = "SELECT DISTINCT agent_services.service_name, agent_services.id FROM agent_services INNER JOIN agent_client_price ON agent_client_price.principal_id = agent_services.id WHERE agent_client_price.agent_client_email='$agent_mail' ORDER BY agent_client_price.principal_id ASC";
     $query = $db->link->query($sql);
     if($query->num_rows > 0){
         ?>
@@ -645,7 +645,7 @@ if(isset($_POST['agent_copyprice_mail'])){
         <?php
         while($row = $query->fetch_assoc()){
             ?>
-    <option value="<?php echo $row['id']; ?>"><?php echo $row['principal_name']; ?></option>
+    <option value="<?php echo $row['id']; ?>"><?php echo $row['service_name']; ?></option>
     <?php
         }
     }else{

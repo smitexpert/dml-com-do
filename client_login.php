@@ -4,20 +4,24 @@ include('client/login.php');
 
 $msg = '';
 
-if(isset($_POST['agent'])){
-    $email = $_POST['email'];
+if(isset($_POST['client_id'])){
+    $client_id = $_POST['client_id'];
     $password = $_POST['password'];
-    
-    if(agent_login($email, $password) == '0'){
+
+    if(client_login($client_id, $password) == '0'){
         $msg = "Login Information Incorrect!";
     }
+    
+    // if(agent_login($email, $password) == '0'){
+    //     $msg = "Login Information Incorrect!";
+    // }
 }
 
-if(isset($_POST['corporate'])){
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $msg = "Corporate Email: ".$email;
-}
+// if(isset($_POST['corporate'])){
+//     $email = $_POST['email'];
+//     $password = $_POST['password'];
+//     $msg = "Corporate Email: ".$email;
+// }
 
 ?>
 
@@ -105,28 +109,28 @@ if(isset($_POST['corporate'])){
                             CLIENT LOGIN PANEL
                         </div>
                         <div class="panel-body">
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-md-12">
                                     <div class="client_btn_group">
                                        <button id="corporate_btn" class="client_btn active">Corporate</button>
                                        <button id="agent_btn" class="client_btn">Agent</button>
                                     </div>
                                 </div>
-                            </div>
-                            <br>
+                            </div> -->
+                            <!-- <br> -->
                             <div id="corporate_form">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h4 class="text-center">Corporate Login Form</h4>
+                                        <!-- <h4 class="text-center">Client Login Form</h4> -->
                                     </div>
                                 </div>
                                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="fomr-group">
-                                                <label for="">Email</label>
-                                                <input name="email" type="email" class="form-control" required>
-                                                <input type="hidden" name="corporate" value="1">
+                                                <label for="">Client ID</label>
+                                                <input name="client_id" type="text" class="form-control" required>
+                                                <!-- <input type="hidden" name="corporate" value="1"> -->
                                             </div>
                                         </div>
                                     </div>
@@ -146,7 +150,7 @@ if(isset($_POST['corporate'])){
                                     </div>
                                 </form>
                             </div>
-                            <div id="agent_form" style="display:none;">
+                            <!-- <div id="agent_form" style="display:none;">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h4 class="text-center">Agent Login Form</h4>
@@ -177,7 +181,7 @@ if(isset($_POST['corporate'])){
                                         </div>
                                     </div>
                                 </form>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

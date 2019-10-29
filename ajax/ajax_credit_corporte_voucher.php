@@ -51,7 +51,7 @@ if(isset($_POST['pay_mode_agent'])){
     $ammount_agent_usd = $_POST['ammount_agent_usd'];
 
     //insert into accounts
-    $insert_accounts = "INSERT INTO accounts (reference_id, transaction_id,transaction_type,transaction_mode,payer_type,client_name,client_id,amount,based,base_rate,bdt_ammount,bank_aacount_no,bank_name,prepared_by,description, transaction_date,usd_ammount) VALUES('$refferenceno','$transaction_id','1','$pay_mode_agent','agent','$agent_name','$agent_id','$ammount_agent','BDT','1','$ammount_agent','$bank_account_no_agent','$bank_name_agent','$userId','$description_agent','$agent_credit_date','$ammount_agent_usd');UPDATE agent_accounts SET cash_amount = cash_amount + $ammount_agent WHERE agent_email = (SELECT agent_clients.email FROM agent_clients WHERE agent_clients.id = '$agent_id')";
+    $insert_accounts = "INSERT INTO accounts (reference_id, transaction_id,transaction_type,transaction_mode,payer_type,client_name,client_id,amount,based,base_rate,bdt_ammount,bank_aacount_no,bank_name,prepared_by,description, transaction_date,usd_ammount) VALUES('$refferenceno','$transaction_id','0','$pay_mode_agent','agent','$agent_name','$agent_id','$ammount_agent','BDT','1','$ammount_agent','$bank_account_no_agent','$bank_name_agent','$userId','$description_agent','$agent_credit_date','$ammount_agent_usd');UPDATE agent_accounts SET cash_amount = cash_amount + $ammount_agent WHERE agent_email = (SELECT agent_clients.email FROM agent_clients WHERE agent_clients.id = '$agent_id')";
 
     $result = $db->link->multi_query($insert_accounts);
 
@@ -82,7 +82,7 @@ if(isset($_POST['corporate_credit_date'])){
     
     $usd_ammount = $ammount/$usd;
     
-    $sql = "INSERT INTO accounts (reference_id, transaction_id, transaction_type, transaction_mode, payer_type, client_name, client_id, amount, based, base_rate, bdt_ammount, usd_ammount, bank_aacount_no, bank_name, prepared_by, description, transaction_date) VALUES ('$refferenceno', '$transaction_id', '1', '$pay_mode_corporate', '$payer_type', '$client_name', '$client_id', '$ammount', 'BDT', '1', '$ammount', '$usd_ammount', '$bank_account_no', '$bank_name', '$user', '$description', '$corporate_credit_date')";
+    $sql = "INSERT INTO accounts (reference_id, transaction_id, transaction_type, transaction_mode, payer_type, client_name, client_id, amount, based, base_rate, bdt_ammount, usd_ammount, bank_aacount_no, bank_name, prepared_by, description, transaction_date) VALUES ('$refferenceno', '$transaction_id', '0', '$pay_mode_corporate', '$payer_type', '$client_name', '$client_id', '$ammount', 'BDT', '1', '$ammount', '$usd_ammount', '$bank_account_no', '$bank_name', '$user', '$description', '$corporate_credit_date')";
     
     $result = $db->link->query($sql);
     

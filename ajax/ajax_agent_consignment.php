@@ -154,52 +154,8 @@ if(isset($_POST['get_principal_list'])){
     <td><?php echo $db->checkRemoteArea($country, $r_zip, $r_city, $lowest_p_id[$j]); ?></td>
     <td><?php if($price_type[$j] == 1){ echo "Sepecial"; } else { echo "General"; } ?></td>
     <td>
-        <?php
-            if($principal_selected == $lowest_p_id[$j]){
-                ?>
-                <input onclick="getRemotePossAgent(<?php echo $id.', '.$lowest_p_id[$j]; ?>)" type="radio" name="radio" checked>
-                <?php
-            }else{
-                ?>
-                <input onclick="getRemotePossAgent(<?php echo $id.', '.$lowest_p_id[$j]; ?>)" type="radio" name="radio">
-                <?php
-            }
-        ?>
+        <input onclick="getRemotePossAgent(<?php echo $id.', '.$lowest_p_id[$j]; ?>)" type="radio" name="radio" >
         
-    </td>
-    <td>
-        <?php
-        $current_pid = $lowest_p_id[$j];
-            $agent_sql = "SELECT price FROM agent_client_price WHERE principal_id='$current_pid' AND goods_type='$g_type' AND weight='$weight' AND zone=(SELECT zone FROM dml_zone WHERE country_tag='$country') AND agent_client_email=(SELECT email FROM agent_clients WHERE id='$agent_id')";
-
-            $agent_query = $db->link->query($agent_sql);
-
-            if($agent_query->num_rows > 0){
-                $agent_row = $agent_query->fetch_assoc();
-                $agent_price = $agent_row['price'];
-            }else{
-                $agent_price = 0;
-            }
-
-            $agent_sql_sp = "SELECT price FROM agent_client_special_rate WHERE principal_id='$current_pid' AND goods_type='$g_type' AND weight='$weight' AND country_tag='$country' AND agent_client_email=(SELECT email FROM agent_clients WHERE id='$agent_id')";
-
-            $agent_query_sp = $db->link->query($agent_sql_sp);
-
-            if($agent_query_sp->num_rows > 0){
-                $agent_row_sp = $agent_query_sp->fetch_assoc();
-                $agent_price_sp = $agent_row_sp['price'];
-            }else{
-                $agent_price_sp = 0;
-            }
-
-            if($agent_price_sp < $agent_price){
-                echo $agent_price_sp;
-            }else{
-                echo $agent_price;
-            }
-
-            
-        ?>
     </td>
 </tr>
            

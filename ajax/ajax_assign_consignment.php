@@ -56,12 +56,10 @@ if(isset($_POST['trackid'])){
     
     $date = date('Y-m-d');
     
-    $insert = "INSERT INTO consignment_booked (tracking_id, principal_id, principal_rate, principal_rate_usd, costing, booking_price, assigned_by, assigned_date) VALUES ('$trackid', '$pid', '$principal_rate', '$principal_rate_usd', '$costing', '$booking_price', '$assignee', '$date')";
-    $query = $db->link->query($insert);
-    
-    if($query){
-        
-        $p_name = $db->getPrincipalName($pid);
+    // $insert = "INSERT INTO consignment_booked (tracking_id, principal_id, principal_rate, principal_rate_usd, costing, booking_price, assigned_by, assigned_date) VALUES ('$trackid', '$pid', '$principal_rate', '$principal_rate_usd', '$costing', '$booking_price', '$assignee', '$date')";
+    // $query = $db->link->query($insert);
+
+    $p_name = $db->getPrincipalName($pid);
         $p_cur = $db->getCurrencyName($pid);
         $cur_rate = $db->getCurrency($p_cur);
         
@@ -71,9 +69,10 @@ if(isset($_POST['trackid'])){
         $t=time();
         $transaction_id = 'DML'.$t;
         
-        $sql_acc = "INSERT INTO accounts (reference_id, transaction_id, transaction_type, transaction_mode, payer_type, client_name, client_id, amount, based, base_rate, bdt_ammount, usd_ammount, prepared_by, description, transaction_date) VALUE ('$trackid', '$transaction_id', '1', 'booking', 'principal', '$p_name', '$pid', '$con_to_base', '$p_cur', '$cur_rate', '$con_to_bdt', '$costing', '$assignee', 'Consignment Booking', '$date')";
+        $sql_acc = "INSERT INTO accounts (reference_id, transaction_id, transaction_type, transaction_mode, payer_type, client_name, client_id, amount, based, base_rate, bdt_ammount, usd_ammount, prepared_by, description, transaction_date) VALUE ('$trackid', '$transaction_id', '1', 'booking', 'principal', '$p_name', '$pid', '$con_to_base', '$p_cur', '$cur_rate', '$con_to_bdt', '$costing', '$assignee', 'Consignment Booking', '$date');
+        INSERT INTO consignment_booked (tracking_id, principal_id, principal_rate, principal_rate_usd, costing, booking_price, assigned_by, assigned_date) VALUES ('$trackid', '$pid', '$con_to_base', '$principal_rate_usd', '$costing', '$booking_price', '$assignee', '$date')";
         
-        $rsl_acc = $db->link->query($sql_acc);
+        $rsl_acc = $ndb->link->multi_query($sql_acc);
         
         if($rsl_acc){
             $up = "UPDATE consignment_booking SET status = '2' WHERE tracking_id='$trackid'";
@@ -85,20 +84,21 @@ if(isset($_POST['trackid'])){
             }
         }else{
             echo 'Accounts Not Working!';
+            echo 'CONSINGMENT ASSIGN ERROR!!!';
+            echo $db->link->error;
         }
-        
-        
-    }else{
-        echo 'CONSINGMENT ASSIGN ERROR!!!';
-        echo $db->link->error;
-    }
 }
+
+
+// This is very secure part
 
 if(isset($_POST['agent_trackid'])){
 
     $trackid = $_POST['agent_trackid'];
     $pid = $_POST['pid'];
     $tag = $_POST['tag'];
+    $agent_cost = $_POST['agent_cost'];
+
 
     $selctTrck = "SELECT g_weight, g_type, g_shipment_charge FROM consignment_booking WHERE tracking_id='$trackid'";
     $queryTrck = $db->link->query($selctTrck);
@@ -132,6 +132,10 @@ if(isset($_POST['agent_trackid'])){
     }else{
         $principal_rate = $rowPr['price'];
     }
+
+    $current_pid = $pid;
+    
+
     
     
     
@@ -144,7 +148,7 @@ if(isset($_POST['agent_trackid'])){
     $date = date('Y-m-d');
     
     // $insert = "INSERT INTO consignment_booked (tracking_id, principal_id, principal_rate, principal_rate_usd, costing, booking_price, assigned_by, assigned_date) VALUES ('$trackid', '$pid', '$principal_rate', '$principal_rate_usd', '$costing', '$booking_price', '$assignee', '$date')";
-    $insert = "UPDATE consignment_booked SET principal_id='$pid', principal_rate='$principal_rate',  principal_rate_usd='$principal_rate_usd', costing='$costing', booking_price='$booking_price', assigned_by='$assignee', assigned_date='$date' WHERE tracking_id='$trackid'";
+    $insert = "UPDATE consignment_booked SET principal_id='$pid', principal_rate='$principal_rate',  principal_rate_usd='$principal_rate_usd', costing='$costing', booking_price='$booking_price', assigned_by='$assignee', assigned_date='$date', status='0' WHERE tracking_id='$trackid'";
     $query = $db->link->query($insert);
     
     if($query){
@@ -152,20 +156,26 @@ if(isset($_POST['agent_trackid'])){
         $p_name = $db->getPrincipalName($pid);
         $p_cur = $db->getCurrencyName($pid);
         $cur_rate = $db->getCurrency($p_cur);
+        $usd_rate = $db->getCurrency("USD");
         
-        $con_to_bdt = $costing*$db->getCurrency("USD");
-        $con_to_base = $con_to_bdt/$cur_rate;
+        $con_to_bdt = $principal_rate_usd*$usd_rate;
+
+        // $con_to_usd = $con_to_bdt/$usd_rate;
+
+        // $con_to_base = $con_to_bdt/$cur_rate;
+
+        $agent_con_to_bdt = $agent_cost*$usd_rate;
         
         $t=time();
         $transaction_id = 'DML'.$t;
         
         // $sql_acc = "INSERT INTO accounts (reference_id, transaction_id, transaction_type, transaction_mode, payer_type, client_name, client_id, amount, based, base_rate, bdt_ammount, usd_ammount, prepared_by, description, transaction_date) VALUE ('$trackid', '$transaction_id', '1', 'booking', 'principal', '$p_name', '$pid', '$con_to_base', '$p_cur', '$cur_rate', '$con_to_bdt', '$costing', '$assignee', 'Consignment Booking', '$date')";
-        $sql_acc = "UPDATE accounts SET amount='$con_to_base', based='$p_cur', base_rate='$cur_rate', bdt_ammount='$con_to_bdt', usd_ammount='$costing', prepared_by='$assignee', transaction_date='$date' WHERE reference_id='$trackid'";
+        $sql_acc = "UPDATE accounts SET client_name='$p_name', amount='$principal_rate', based='$p_cur', base_rate='$cur_rate', bdt_ammount='$con_to_bdt', usd_ammount='$principal_rate_usd', prepared_by='$assignee', transaction_date='$date' WHERE reference_id='$trackid' AND payer_type='principal';UPDATE accounts SET amount='$agent_cost', bdt_ammount='$agent_con_to_bdt', usd_ammount='$agent_cost' WHERE reference_id='$trackid' AND payer_type='agent'";
         
-        $rsl_acc = $db->link->query($sql_acc);
+        $rsl_acc = $ndb->link->multi_query($sql_acc);
         
         if($rsl_acc){
-            $up = "UPDATE consignment_booking SET status = '2' WHERE tracking_id='$trackid'";
+            $up = "UPDATE consignment_booking SET g_shipment_charge='$agent_cost', status = '2' WHERE tracking_id='$trackid'";
             $get = $db->link->query($up);
             if($get){
                 echo '1';

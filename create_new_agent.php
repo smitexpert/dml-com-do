@@ -1,7 +1,7 @@
 <?php include('includes/header.php'); 
 	/*$query = "SELECT * FROM corporate_clients WHERE status=1 ORDER BY created_date ASC";
     $selectCorpoClient = $Corpoclients->selectCorpoClient($query);*/
-
+$error = "";
 if (isset($_POST['agent_name'])) {
     $agent_name = $_POST['agent_name'];
     $client_company = $_POST['client_company'];
@@ -23,15 +23,20 @@ if (isset($_POST['agent_name'])) {
     $created_by = Session::get("adminId");
     
     $created_date = date('Y-m-d');
+
+    $agent_id = $_POST['agent_id'];
+    $table_id = $_POST['table_id'];
+
+    // echo $agent_id." ".$table_id;
     
     
-    $insert = "INSERT INTO agent_clients (name, email, company_name, address, contact, bank_name, bank_account_name, bank_acount_number, member_type, discount_offer, password, assign_to, created_by, created_date, status) VALUES ('$agent_name', '$client_mail', '$client_company', '$client_addr', '$client_contact', '$bank_name', '$account_name', '$acc_num', '$member_type', '$discount', '$password', '$corpoAssignTo', '$created_by', '$created_date', '$client_status')";
+    $insert = "INSERT INTO agent_clients (name, email, company_name, address, contact, bank_name, bank_account_name, bank_acount_number, member_type, discount_offer, password, assign_to, created_by, created_date, status) VALUES ('$agent_name', '$client_mail', '$client_company', '$client_addr', '$client_contact', '$bank_name', '$account_name', '$acc_num', '$member_type', '$discount', '$password', '$corpoAssignTo', '$created_by', '$created_date', '$client_status');INSERT INTO agent_accounts (agent_email, credit_limit, cash_amount, debit_amount, update_date, balance, update_by) VALUES ('$client_mail', '0', '0', '0', NOW(), '0', '$created_by');INSERT INTO client_table (client_type, table_id, client_id) VALUES ('agent', '$table_id', '$agent_id')";
+
+    // echo $insert;
     
-    $query = $db->link->query($insert);
+    $query = $db->link->multi_query($insert);
     
     if($query){
-        $newQuery = "INSERT INTO agent_accounts (agent_email, credit_limit, cash_amount, debit_amount, update_date, balance, update_by) VALUES ('$client_mail', '0', '0', '0', NOW(), '0', '$created_by')";
-        $newResult = $db->link->query($newQuery);
         header('location: '.$_SERVER['PHP_SELF']."?success");
     }else{
         header('location: '.$_SERVER['PHP_SELF']."?error=".$db->link->error);
@@ -39,6 +44,18 @@ if (isset($_POST['agent_name'])) {
     
 }
 
+$sql = "SELECT id FROM agent_clients ORDER BY id DESC LIMIT 1";
+$query = $db->link->query($sql);
+if($query->num_rows > 0){
+    $row = $query->fetch_assoc();
+    $last_id = $row['id'];
+    $last_id++;
+}else{
+    $last_id = 1;
+}
+
+
+$agent_id = "111".sprintf("%03d", $last_id);
 
 
 
@@ -88,7 +105,17 @@ if (isset($_POST['agent_name'])) {
                                             <?php } ?>
                                         </div>
                                     </div>
-
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="">Agent id</label>
+                                                <input type="text" class="form-control" name="agent_id" value="<?php echo $agent_id; ?>" readonly>
+                                                <input type="hidden" name="table_id" value="<?php echo $last_id; ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">
@@ -182,7 +209,7 @@ if (isset($_POST['agent_name'])) {
 
 
                                         <div class="form-group connected-group">
-                                            <label class="control-label">Assign to :<span class="symbol required"></span>
+                                            <label class="control-label">Sales & Marketing<span class="symbol required"></span>
                                             </label>
                                             <select name="corpoAssignTo" id="corpoAssignTo" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" required>
                                                 <option value="">--</option>

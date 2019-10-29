@@ -45,23 +45,38 @@
 							</ul>
 						</li>						 -->
 
-
-						
 						<li class="linav">
 							<a href="search_price.php">
-								<span class="title">Search Price</span>
+								<span class="title">SEARCH PRICE</span>
 							</a>
 						</li>
+						
+						<li class="linav">
+							<a href="booking.php">
+								<span class="title">CONSIGNMENT BOOKING</span>
+							</a>
+						</li>
+						<li class="linav">
+							<a href="consignment_view.php">
+								<span class="title">CONSIGNMENT LIST</span>
+							</a>
+						</li>
+						
 						<li class="linav">
 							<a class="nav" href="agent_client_view_price.php">
-								<span class="title">View Genarel Price</span>
+								<span class="title">VIEW ALL PRICE</span>
 							</a>
 						</li>
 						<li class="linav">
-							<a href="client_view_special_price.php">
-								<span class="title">View Special Price</span>
+							<a class="nav" href="agent_accounts.php">
+								<span class="title">ACCOUNTS</span>
 							</a>
 						</li>
+						<!-- <li class="linav">
+							<a href="client_view_special_price.php">
+								<span class="title">Booking</span>
+							</a>
+						</li> -->
 												
 
 

@@ -397,7 +397,7 @@ $result_agent = $db->link->query($query_agent);
                 <div class="row">
                     <div class="col-md-6">
                         <table class="table" border="1">
-                            <caption>GOODS INFORMATION</caption>
+                            <caption>AGENT GOODS INFORMATION</caption>
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -410,6 +410,7 @@ $result_agent = $db->link->query($query_agent);
                                     <th>Tracking ID</th>
                                     <td>:</td>
                                     <td id="agent_trackid">000</td>
+                                    <input type="hidden" id="agent_cost">
                                 </tr>
                                 <tr>
                                     <th>Destination Country
@@ -444,6 +445,11 @@ $result_agent = $db->link->query($query_agent);
                                     <td>:</td>
                                     <td id="agent_shipcharge">000</td>
                                 </tr>
+                                <tr>
+                                    <th>SELECTED SERVICE</th>
+                                    <td>:</td>
+                                    <td id="agent_selected_service">000</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -457,7 +463,6 @@ $result_agent = $db->link->query($query_agent);
                                     <th>Remote Area</th>
                                     <th>Price Type</th>
                                     <th>#</th>
-                                    <th>Agent Price</th>
                                 </tr>
                             </thead>
                             <tbody id="agent_principal_list">
@@ -478,7 +483,7 @@ $result_agent = $db->link->query($query_agent);
                 <img src="img/loading.gif" alt="">
             </div>
             <div class="modal-footer">
-                <button id="" type="button" class="agent-assing-btn btn btn-default btn-warning" style="padding: 5px 60px; font-weight: bold;">Assign</button>
+                <button id="agent_assing_button" type="button" class="agent-assing-btn btn btn-default btn-warning" style="padding: 5px 60px; font-weight: bold;" disabled>Assign</button>
             </div>
         </div>
 
