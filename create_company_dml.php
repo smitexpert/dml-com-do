@@ -12,7 +12,7 @@ if($query->num_rows > 0){
 }
 
 
-$agent_id = "SM".sprintf("%04d", $last_id);
+$agent_id = "SM".sprintf("%06d", $last_id);
 	
 if (isset($_POST['submit'])) {
     

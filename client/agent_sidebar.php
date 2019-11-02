@@ -72,6 +72,11 @@
 								<span class="title">ACCOUNTS</span>
 							</a>
 						</li>
+						<li class="linav">
+							<a class="nav" href="agent_settings.php">
+								<span class="title">SETTINGS</span>
+							</a>
+						</li>
 						<!-- <li class="linav">
 							<a href="client_view_special_price.php">
 								<span class="title">Booking</span>

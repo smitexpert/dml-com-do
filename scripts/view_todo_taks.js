@@ -1,7 +1,7 @@
 $( function() {
     $( "#todo_select_date" ).datepicker({
-        dateFormat: "yy-mm-dd"
-    });
+      dateFormat: "yy-mm-dd"
+    })
   } );
 
   $("#todo_plan").DataTable();

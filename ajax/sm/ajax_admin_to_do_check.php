@@ -1,4 +1,5 @@
 <?php
+
 require '../../lib/Session.php';
 require "../../lib/Database.php";
 
@@ -11,9 +12,10 @@ $logged_user = Session::get('adminId');
 
 if(isset($_POST['visit_plan_ajax'])){
 
-    $date = $_POST['todo_select_date'];
+    $date = $_POST['to_do_date'];
+    $staff_id = $_POST['staff_id'];
 
-    $sql_plan = "SELECT marketing_add_plan.*, corporate_company.company_name FROM marketing_add_plan INNER JOIN corporate_company ON corporate_company.company_id = marketing_add_plan.company_id WHERE user_id='$logged_user' AND plan_date=date('$date') ORDER BY marketing_add_plan.plan_time ASC";
+    $sql_plan = "SELECT marketing_add_plan.*, corporate_company.company_name FROM marketing_add_plan INNER JOIN corporate_company ON corporate_company.company_id = marketing_add_plan.company_id WHERE user_id='$staff_id' AND plan_date=date('$date') ORDER BY marketing_add_plan.plan_time ASC";
 
     $query_plan = $db->link->query($sql_plan);
     $view_plan = array();
@@ -44,9 +46,10 @@ if(isset($_POST['visit_plan_ajax'])){
 
 if(isset($_POST['app_plan_ajax'])){
 
-    $date = $_POST['todo_select_date'];
+    $staff_id = $_POST['staff_id'];
+    $date = $_POST['to_do_date'];
 
-    $sql_app = "SELECT marketing_appointment_plan.*, corporate_company.company_name, marketing_contact_person.name FROM marketing_appointment_plan INNER JOIN corporate_company ON corporate_company.company_id = marketing_appointment_plan.company_id INNER JOIN marketing_contact_person ON marketing_contact_person.id = marketing_appointment_plan.contact_person WHERE marketing_appointment_plan.user_id='$logged_user' AND marketing_appointment_plan.app_date=date('$date') ORDER BY marketing_appointment_plan.app_time ASC";
+    $sql_app = "SELECT marketing_appointment_plan.*, corporate_company.company_name, marketing_contact_person.name FROM marketing_appointment_plan INNER JOIN corporate_company ON corporate_company.company_id = marketing_appointment_plan.company_id INNER JOIN marketing_contact_person ON marketing_contact_person.id = marketing_appointment_plan.contact_person WHERE marketing_appointment_plan.user_id='$staff_id' AND marketing_appointment_plan.app_date=date('$date') ORDER BY marketing_appointment_plan.app_time ASC";
 
     $query_app = $db->link->query($sql_app);
     
@@ -75,7 +78,5 @@ if(isset($_POST['app_plan_ajax'])){
 
     echo json_encode($view_plan);
 }
-
-// var_dump($_REQUEST);
 
 ?>

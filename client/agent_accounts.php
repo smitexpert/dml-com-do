@@ -10,7 +10,6 @@ include('header.php');
                 <div class="col-md-12">
                     <div class="nav_view">
                             <ul class="nav nav-pills">
-                                <li><a id="overview" href="#">OVERVIEW</a></li>
                                 <li><a id="limit" href="#">LIMIT</a></li>
                                 <li><a id="transection" href="#">TRANSECTION</a></li>
                                 <li><a id="payment" href="#">PAYMENT</a></li>

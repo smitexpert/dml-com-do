@@ -78,7 +78,19 @@ if(isset($_POST['up_dml'])){
     $dt = new DateTime('now', new DateTimezone('Asia/Dhaka'));
     $now_date = $dt->format('F j, Y, g:i a');
 
-    $inSql = "INSERT INTO test_track_update_history (table_id, dml_awn, org_awn, principal, shipper_name, origin, destination, consignee_name, pcs, ship_content, booking_date, ip_address, local_ip, user_agent, geo_location, status, update_date) VALUES ('".$getRow['id']."', '".$getRow['dml_awn']."', '".$getRow['org_awn']."', '".$getRow['principal']."', '".$getRow['shipper_name']."', '".$getRow['origin']."', '".$getRow['destination']."', '".$getRow['consignee_name']."', '".$getRow['pcs']."', '".$getRow['ship_content']."', '".$getRow['booking_date']."', '$ip_address', '$local_ip', '$user_agent', '$geo_location', '".$getRow['status']."', '$now_date');UPDATE test_track SET dml_awn='$dml', org_awn='$org', principal='$principal', shipper_name='$shipper_name', origin='$origin', destination='$destination', consignee_name='$consignee_name', pcs='$pcs', ship_content='$ship_content', booking_date='$booking_date' WHERE id='$id'";
+    $old_id = mysqli_real_escape_string($db->link, $getRow['id']);
+    $old_dml_awn = mysqli_real_escape_string($db->link, $getRow['dml_awn']);
+    $old_org_awn = mysqli_real_escape_string($db->link, $getRow['org_awn']);
+    $old_principal = mysqli_real_escape_string($db->link, $getRow['principal']);
+    $old_shipper_name = mysqli_real_escape_string($db->link, $getRow['shipper_name']);
+    $old_origin = mysqli_real_escape_string($db->link, $getRow['origin']);
+    $old_destination = mysqli_real_escape_string($db->link, $getRow['destination']);
+    $old_consignee_name = mysqli_real_escape_string($db->link, $getRow['consignee_name']);
+    $old_pcs = mysqli_real_escape_string($db->link, $getRow['pcs']);
+    $old_ship_content = mysqli_real_escape_string($db->link, $getRow['ship_content']);
+    $old_booking_date = mysqli_real_escape_string($db->link, $getRow['booking_date']);
+
+    $inSql = "INSERT INTO test_track_update_history (table_id, dml_awn, org_awn, principal, shipper_name, origin, destination, consignee_name, pcs, ship_content, booking_date, ip_address, local_ip, user_agent, geo_location, status, update_date) VALUES ('$old_id', '$old_dml_awn', '$old_org_awn', '$old_principal', '$old_shipper_name', '$old_origin', '$old_destination', '$old_consignee_name', '$old_pcs', '$old_ship_content', '$old_booking_date', '$ip_address', '$local_ip', '$user_agent', '$geo_location', '".$getRow['status']."', '$now_date');UPDATE test_track SET dml_awn='$dml', org_awn='$org', principal='$principal', shipper_name='$shipper_name', origin='$origin', destination='$destination', consignee_name='$consignee_name', pcs='$pcs', ship_content='$ship_content', booking_date='$booking_date' WHERE id='$id'";
     $query = $dbn->link->multi_query($inSql);
     if($query){
         echo 1;

@@ -704,7 +704,7 @@ if(Session::get('role') != 1){
                             <img src="assets/images/avatar-1-small.jpg" class="circle-img" alt="">
                             <span class="username">
                                 <?php if (isset($_SESSION['adminUser'])) {
-										echo $_SESSION['adminUser'];
+										echo $_SESSION['adminUser']." (".$_SESSION['adminId'].")";
 									}else{
 										header('Location:index.php');
 									}
