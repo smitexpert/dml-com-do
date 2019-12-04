@@ -68,6 +68,49 @@ if(Session::get('role') == 1){
 <?php
 
     
+$superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='tracking'";
+
+$creationAreaCount = $menu->count($superCreationAreaQuery);
+
+if($creationAreaCount[0] > 0) {
+
+$creationAreaMenu = $menu->select($superCreationAreaQuery);
+
+
+?>
+<li class="linav">
+    <a href="javascript:void(0)"><i class="clip-pencil"></i>
+    <span class="title">TRACKING AREA</span><i class="icon-arrow"></i>
+    <span class="selected"></span>
+    </a>
+    <ul  class="sub-menu">
+        <?php
+
+        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
+            ?>
+
+
+            <li class="acli <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?>">
+                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
+                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
+                </a>
+            </li>	
+
+            <?php
+            }
+
+
+        ?>
+
+
+    </ul>
+</li>
+<?php
+
+}
+
+
+
 $superCreationAreaQuery = "SELECT * FROM menu_sidebar WHERE menuIndex='consignment-area'";
 
 $creationAreaCount = $menu->count($superCreationAreaQuery);
@@ -670,7 +713,47 @@ $creationAreaMenu = $menu->select($superCreationAreaQuery);
     </li>
     <?php
     
-    
+  
+$superCreationAreaQuery = "SELECT * FROM $user_menu WHERE menuIndex='tracking'";
+
+$creationAreaCount = $menu->count($superCreationAreaQuery);
+
+if($creationAreaCount[0] > 0) {
+
+$creationAreaMenu = $menu->select($superCreationAreaQuery);
+
+
+?>
+<li class="linav">
+    <a href="javascript:void(0)"><i class="clip-pencil"></i>
+    <span class="title">TRACKING AREA</span><i class="icon-arrow"></i>
+    <span class="selected"></span>
+    </a>
+    <ul  class="sub-menu">
+        <?php
+
+        while($creationAreaRow = $creationAreaMenu->fetch_assoc()){
+            ?>
+
+
+            <li class="acli <?php if($currentPage == '/'.$creationAreaRow['menuUrl']){ echo 'active'; } ?>">
+                <a href="<?php echo $creationAreaRow['menuUrl']; ?>">
+                <span class="title"><?php echo $creationAreaRow['menuName']; ?></span>
+                </a>
+            </li>	
+
+            <?php
+            }
+
+
+        ?>
+
+
+    </ul>
+</li>
+<?php
+
+}
     
         
 $superCreationAreaQuery = "SELECT * FROM $user_menu WHERE menuIndex='consignment-area'";

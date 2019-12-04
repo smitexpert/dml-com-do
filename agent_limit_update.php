@@ -50,11 +50,11 @@ include('includes/header.php');
                                                     <select id="agent_limit_update_id" name="agent_limit_update_id" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" required>
 
                                                         <option>Select Client</option>
-                                                        <?php $query = "SELECT * FROM agent_clients WHERE status=1 ORDER BY created_date DESC";
+                                                        <?php $query = "SELECT agent_clients.id, agent_clients.company_name, client_table.client_id FROM agent_clients INNER JOIN client_table ON agent_clients.id = client_table.table_id WHERE agent_clients.status='1' AND client_table.client_type='agent'";
 														      $result = $db->link->query($query);
                                                                 while($row = $result->fetch_assoc()){
                                                                     ?>
-                                                                    <option value="<?php echo $row['id'];?>"><?php echo $row['company_name']; ?></option>
+                                                                    <option value="<?php echo $row['id'];?>"><?php echo $row['company_name']; ?> (<?php echo $row['client_id']; ?>)</option>
                                                                     <?php
                                                                 }
                                                         ?>

@@ -207,13 +207,13 @@ if (isset($_REQUEST['corp_client'])) {
 
                                                 <?php //if ($execgenpr) {while ($findgenpr=$execgenpr->fetch_assoc()) { ?>
                                                     <tr>
-                                                        <td class="yellow"><?php// echo $findgenpr['route_code']; ?></td>
+                                                        <td class="yellow"><?php // echo $findgenpr['route_code']; ?></td>
                                                         <td><?php //echo $findgenpr['income_or_outgo']; ?></td>
                                                         <td><?php //echo $findgenpr['goods_type']; ?></td>
                                                         <td><?php //echo $findgenpr['unit']; ?>1</td>
                                                         <td><?php //echo $findgenpr['price']; ?>1</td>
                                                     </tr>
-                                                <?php// } }else{ echo "Data not found";} ?>
+                                                <?php // } }else{ echo "Data not found";} ?>
 
 
                                                 </tbody>

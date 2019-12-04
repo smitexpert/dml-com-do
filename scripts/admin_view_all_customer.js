@@ -59,5 +59,44 @@ $(".edit").click(function(e){
     e.preventDefault();
     var id = $(this).attr("id");
     id = id.replace("edit_", '');
-    console.log(id);
+    $("#customer_edit_form").trigger("reset");
+    $.ajax({
+        url: "../ajax/sm/ajax_admin_edit_customer.php",
+        method: "POST",
+        data: {
+            get_customer_info: id
+        },
+        dataType: "JSON",
+        success: function(data){
+            $("#edit_company_id").val(data.company_id);
+            $("#edit_company_name").val(data.company_name);
+            $("#edit_company_contact").val(data.name);
+            $("#edit_contact").val(data.contact);
+            $("#edit_email_address").val(data.email);
+            $("#edit_address").val(data.address);
+            $("#edit_assigne").val(data.assign_to);
+            $("#edit_assigne").selectpicker('refresh');
+            // console.log(data);
+        }
+    })
+})
+
+$("#customer_edit_form").submit(function(e){
+    e.preventDefault();
+    var form_data = $(this).serialize();
+    
+    $.ajax({
+        url: "../ajax/sm/ajax_admin_edit_customer.php",
+        method: "POST",
+        data: form_data,
+        success: function(data){
+            $("#edit_modal").modal('toggle');
+            if(data == '1'){
+                alert("Update Success!");
+            }else{
+                alert("Something Wrong@");
+                console.log(data);
+            }
+        }
+    })
 })

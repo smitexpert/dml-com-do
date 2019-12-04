@@ -5,37 +5,6 @@ include('includes/extra-page-header.php');
 
 
 
-if(Session::get('role') != 1){
-    
-    $getUrl = '/role_play.php';
-
-    $usrMenuId = Session::get('adminId');
-
-    $countMenu = "SELECT COUNT(id) FROM menu_$usrMenuId";
-
-    $tmr = $db->link->query($countMenu);
-
-    $row_menu = $tmr->fetch_row();
-
-    $menuSession = Session::get('menus');
-
-    $isUrlActive = false;
-
-    for($i=0; $i<$row_menu[0]; $i++){
-        $menuUrl = '/'.$menuSession[$i];
-        if( $menuUrl == $getUrl ){
-            $isUrlActive = true;
-        }
-    }
-
-    if($getUrl != '/dashboard.php'){
-        if($isUrlActive != true){
-            header("location: dashboard.php");
-        }
-    }
-}
-
-
 $inMenu = new Database();
 
 $getRes = '';
@@ -177,6 +146,36 @@ if(isset($_GET['user'])){
                             ?>
                             <label class="checkbox-inline"><input type="checkbox" value="<?php echo $dashboardRow['id']; ?>" name="<?php echo $dashboardRow['menuName'] ?>" checked disabled><?php echo $dashboardRow['menuName']; ?></label>
                             <?php 
+                        }
+                        
+                        ?>
+                        
+                           </div>
+                        </div>
+                        <?php
+                    }
+                    
+                    ?>
+                 
+                    
+                  
+                  
+            </div>
+            <div class="col-md-4">
+                 <?php 
+                    if($db->CuntMenu('tracking') > 0){
+                        
+                        ?>
+                        <div class="panel panel-info">
+                          <div class="panel-heading">Tracking Area<div class="panel-tools"><a class="btn btn-xs btn-link panel-collapse collapses" href="#"></a></div></div>
+                          <div class="panel-body" style="display: block;">
+                        <?php
+                        $dashboardMenu = $db->Menus('tracking');
+                        
+                        while($dashboardRow = $dashboardMenu->fetch_assoc()){
+                            ?>
+                            <label class="checkbox-inline"><input type="checkbox" value="<?php echo $dashboardRow['id']; ?>" name="menu-area[]"  <?php echo $db->MenuUser($dashboardRow['menuUrl'], $_GET['user']); ?> ><?php echo $dashboardRow['menuName']; ?></label>
+                            <?php
                         }
                         
                         ?>

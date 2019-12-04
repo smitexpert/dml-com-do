@@ -25,10 +25,10 @@ include('includes/header.php');
                                     <select name="agent_select" required id="agent_select" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                         <option value="">--</option>
                                         <?php
-			$selectclientname = "SELECT * FROM agent_clients WHERE status='1'";
+			$selectclientname = "SELECT agent_clients.id, agent_clients.company_name, client_table.client_id FROM agent_clients INNER JOIN client_table ON agent_clients.id = client_table.table_id WHERE agent_clients.status='1' AND client_table.client_type='agent'";
 				$findclientname =  $db->link->query($selectclientname);
 		if ($findclientname->num_rows > 0) { while ($getclientname=$findclientname->fetch_assoc()) { ?>
-                                        <option id="cour_comp_name" value="<?php echo $getclientname['id']; ?>"><?php echo $getclientname['company_name']; ?></option>
+                                        <option id="cour_comp_name" value="<?php echo $getclientname['id']; ?>"><?php echo $getclientname['company_name']; ?> (<?php echo $getclientname['client_id']; ?>)</option>
                                         <!-- <option data-subtext="<?php //echo $getclientname['cour_comp_name']; ?>" class="cl" value="<?php //echo $getclientname['client_id']; ?>"><?php //echo $getclientname['cour_comp_name']; ?></option> -->
                                         <?php } }else{} ?>
                                     </select>
@@ -65,7 +65,7 @@ include('includes/header.php');
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group connected-group">
-                                                <label for="principal">Select Principal</label>
+                                                <label for="principal">Select Service</label>
                                                 <select name="principal" id="principal" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                                     <option value="">--</option>
                                                 </select>
@@ -175,7 +175,7 @@ include('includes/header.php');
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group connected-group">
-                            <label for="view_principal">Select Principal</label>
+                            <label for="view_principal">Select Service</label>
                             <select name="view_principal" id="view_principal" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                 <option value="">--</option>
                             </select>
@@ -203,7 +203,7 @@ include('includes/header.php');
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group connected-group">
-                                                <label for="upzoneprincipal">Select Principal</label>
+                                                <label for="upzoneprincipal">Select Service</label>
                                                 <select name="upzoneprincipal" id="upzoneprincipal" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                                                     <option value="">--</option>
                                                 </select>
@@ -243,7 +243,7 @@ include('includes/header.php');
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                           <label for="">To Principal</label>
+                                           <label for="">To Service</label>
                                             <select name="copy_to_principal_id" id="copy_to_principal_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
                                                 <option value="">--</option>
                                             </select>
@@ -272,7 +272,7 @@ include('includes/header.php');
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="">From Principal</label>
+                                            <label for="">From Service</label>
                                             <select name="copy_from_principal_id" id="copy_from_principal_id" class="form-control selectpicker"  data-show-subtext="true" data-live-search="true">
                                                 <option value="">--</option>
                                             </select>

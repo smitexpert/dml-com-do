@@ -2,13 +2,13 @@
 include('includes/header.php'); 
 
 
-if (isset($_POST['submit'])) {
-    $insertcourcompprice = $Courcompanyset->insertCourcompRoute($_POST);
-}
+// if (isset($_POST['submit'])) {
+//     $insertcourcompprice = $Courcompanyset->insertCourcompRoute($_POST);
+// }
 
-if (isset($_POST['prinicipalprice'])) {
-    $insertcourcompprice = $Courcompanyset->insertPrincipalPrice($_POST);
-}
+// if (isset($_POST['prinicipalprice'])) {
+//     $insertcourcompprice = $Courcompanyset->insertPrincipalPrice($_POST);
+// }
 
 $query = "SELECT p.*,r.cour_comp_name,c.country_name FROM tbl_principal_price as p,tbl_courier_companies as r,tbl_country as c WHERE p.cour_company = r.cour_comp_id AND p.country_id = c.country_id";
 $selectcourcomp = $Courcompanyset->selectcourComp($query);
@@ -249,7 +249,7 @@ $selectcourcomp = $Courcompanyset->selectcourComp($query);
 															//while ($findcountry=$execcountry->fetch_assoc())// { ?>
 															 option id="dd" value="<?php //echo $findcountry['country_id']; ?>"><?php //echo $findcountry['country_name']; ?>
 															</option> -->
-															<!-- <?php// }?> -->
+															<!-- <?php // }?> -->
 
 													<!-- </select> --> 
 													</div>
@@ -364,7 +364,7 @@ $selectcourcomp = $Courcompanyset->selectcourComp($query);
 														//$slectweight = "SELECT * FROM tbl_weight WHERE status=1 ORDER BY weight ASC";
 													//		 $execweight =  $Courcompanyset->selectcourComp($slectweight);
 													//while ($findweight=$execweight->fetch_assoc()) { ?>
-														<option value="<?php// echo $findweight['weight']; ?>"><?php// echo $findweight['weight']; ?></option>
+														<option value="<?php // echo $findweight['weight']; ?>"><?php // echo $findweight['weight']; ?></option>
 													<?php // } ?>
 													</select>
 											</div>

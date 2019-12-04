@@ -26,14 +26,15 @@ $ndb = new Database();
 <body>
 <?php
     if(isset($_POST['principals_prn'])){
-    $principals_prn = $_POST['principals_prn'];
+        $principals_prn = $_POST['principals_prn'];
         
-    $minformdate_prn = $_POST['minformdate_prn'];
-    $mintodate_prn = $_POST['mintodate_prn'];
+        $minformdate_prn = $_POST['minformdate_prn'];
+        $mintodate_prn = $_POST['mintodate_prn'];
         
-    $minformdate_prn = date('Y-m-d', strtotime($minformdate_prn));
-    $mintodate_prn = date('Y-m-d', strtotime($mintodate_prn));
-    
+        $minformdate_prn = date('Y-m-d', strtotime($minformdate_prn));
+        $mintodate_prn = date('Y-m-d', strtotime($mintodate_prn));
+        
+        print_r($minformdate_prn);
     ?>
 <button id="save">DOWNLOAD</button>
 <table border="1" class="table2excel">
@@ -101,7 +102,7 @@ $ndb = new Database();
         $p = 0;
         
         for($i=0; $i<count($principals_prn); $i++){
-            $sql = "SELECT * FROM consignment_booking LEFT JOIN consignment_booked ON consignment_booked.tracking_id = consignment_booking.tracking_id WHERE consignment_booked.principal_id = '$principals_prn[$i]' AND consignment_booked.date BETWEEN '$minformdate_prn' AND '$mintodate_prn' AND consignment_booked.status = '1'";
+            $sql = "SELECT consignment_booking.* FROM consignment_booking INNER JOIN consignment_booked ON consignment_booked.tracking_id = consignment_booking.tracking_id WHERE consignment_booked.principal_id = '$principals_prn[$i]' AND consignment_booked.date BETWEEN '$minformdate_prn' AND '$mintodate_prn'";
             $result = $db->link->query($sql);
             if($result->num_rows > 0){
                 while($row = $result->fetch_assoc()){

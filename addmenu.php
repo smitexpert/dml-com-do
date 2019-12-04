@@ -150,6 +150,7 @@ $getRes = '';
                                         <option value="sales-marketing">Sales And Marketing</option>
                                         <option value="accounts">Accounts</option>
                                         <option value="settings">Settings</option>
+                                        <option value="tracking">Tracking</option>
                                       </select>
                                     
                                 </div>

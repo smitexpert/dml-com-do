@@ -195,7 +195,7 @@ $db = new Database();
                         <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
                             <img src="assets/images/avatar-1-small.jpg" class="circle-img" alt="">
                             <span class="username">
-                                <?php echo Session::get("agent_name"); ?>
+                                <?php echo Session::get("agent_name")." (".$agent_id.")"; ?>
                             </span>
                             <i class="clip-chevron-down"></i>
                         </a>

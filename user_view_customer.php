@@ -1,7 +1,7 @@
 <?php
 include('includes/header.php');
 
-$sql = "SELECT corporate_company.company_id, corporate_company.company_name, (SELECT COUNT(marketing_contact_person.company_id) FROM marketing_contact_person WHERE marketing_contact_person.company_id = corporate_company.company_id) contact_persons, (SELECT COUNT(marketing_add_plan.company_id) FROM marketing_add_plan WHERE marketing_add_plan.company_id=corporate_company.company_id AND marketing_add_plan.status='2') total_visit, (SELECT COUNT(marketing_appointment_plan.company_id) FROM marketing_appointment_plan WHERE marketing_appointment_plan.company_id = corporate_company.company_id AND marketing_appointment_plan.status='2') appointemts, user.name FROM corporate_company INNER JOIN user ON user.userId = corporate_company.assign_to ORDER BY corporate_company.id DESC";
+$sql = "SELECT corporate_company.company_id, corporate_company.company_name, (SELECT COUNT(marketing_contact_person.company_id) FROM marketing_contact_person WHERE marketing_contact_person.company_id = corporate_company.company_id) contact_persons, (SELECT COUNT(marketing_add_plan.company_id) FROM marketing_add_plan WHERE marketing_add_plan.company_id=corporate_company.company_id AND marketing_add_plan.status='2') total_visit, (SELECT COUNT(marketing_appointment_plan.company_id) FROM marketing_appointment_plan WHERE marketing_appointment_plan.company_id = corporate_company.company_id AND marketing_appointment_plan.status='2') appointemts, user.name FROM corporate_company INNER JOIN user ON user.userId = corporate_company.assign_to WHERE corporate_company.assign_to='$userId' ORDER BY corporate_company.id DESC";
 
 
 ?>
@@ -32,17 +32,16 @@ $sql = "SELECT corporate_company.company_id, corporate_company.company_name, (SE
             <br>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table" id="customer_table"  style="text-align:center">
+                    <table class="table" id="customer_table" style="text-align: center;">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>ID</th>
                                 <th>Company Name</th>
-                                <th>Address</th>
                                 <th>Contact Persons</th>
                                 <th>Total Visit</th>
                                 <th>Appointments</th>
-                                <th>Assigned</th>
+                                <!-- <th>Assigned</th> -->
                                 <th>#</th>
                             </tr>
                         </thead>
@@ -67,7 +66,7 @@ $sql = "SELECT corporate_company.company_id, corporate_company.company_name, (SE
                                                 <a href="#" class="appointment" id="appointment_<?php echo $row['company_id']; ?>" data-toggle="modal" data-target="#appointment_modal">
                                                 <span class="label label-success"><?php echo $row['appointemts']; ?></span>
                                               </a></td>
-                                                <td style="text-align:left"><?php echo $row['name']; ?></td>
+                                                <!-- <td style="text-align:left"><?php echo $row['name']; ?></td> -->
                                                 <td>
                                                     <a href="#" class="btn btn-sm btn-warning edit" id="edit_<?php echo $row['company_id']; ?>"  data-toggle="modal" data-target="#edit_modal">#</a>
                                                 </td>
@@ -192,30 +191,11 @@ $sql = "SELECT corporate_company.company_id, corporate_company.company_name, (SE
               <div class="form-group">
                 <label for="edit_address">Address</label>
                 <input type="text" class="form-control" id="edit_address" name="edit_address">
+                <input type="hidden" name="edit_assigne" id="edit_assigne">
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="edit_assigne">Assigned</label>
-                <select name="edit_assigne" id="edit_assigne" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-                  <option value="">--</option>
-                  <?php 
-            $query2 = "SELECT * FROM user WHERE status=1 AND rule != 1";
-            $selectstuff = $db->link->query($query2);
-            if ($selectstuff) { while ($getstuff=$selectstuff->fetch_assoc()) { ?>
-              <option value="<?php echo $getstuff['userId']; ?>"><?php echo $getstuff['name']; ?></option>
-            <?php 
-            }
-          }
-            ?>
-                </select>
-              </div>
-            </div>
-          </div>
+          
           <br>
           <div class="row">
             <div class="col-md-12">

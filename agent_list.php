@@ -25,10 +25,10 @@ include('includes/header.php');
                         <select name="agent_select" required id="agent_select" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                             <option value="">--</option>
                             <?php
-                                $selectclientname = "SELECT * FROM agent_clients WHERE status='1'";
+                                $selectclientname = "SELECT agent_clients.id, agent_clients.company_name, client_table.client_id FROM agent_clients INNER JOIN client_table ON agent_clients.id = client_table.table_id WHERE agent_clients.status='1' AND client_table.client_type='agent'";
                                     $findclientname =  $db->link->query($selectclientname);
                                 if ($findclientname->num_rows > 0) { while ($getclientname=$findclientname->fetch_assoc()) { ?>
-                            <option id="cour_comp_name" value="<?php echo $getclientname['id']; ?>"><?php echo $getclientname['company_name']; ?></option>
+                            <option id="cour_comp_name" value="<?php echo $getclientname['id']; ?>"><?php echo $getclientname['company_name']; ?> (<?php echo $getclientname['client_id']; ?>)</option>
                             <!-- <option data-subtext="<?php //echo $getclientname['cour_comp_name']; ?>" class="cl" value="<?php //echo $getclientname['client_id']; ?>"><?php //echo $getclientname['cour_comp_name']; ?></option> -->
                             <?php } }else{} ?>
                         </select>

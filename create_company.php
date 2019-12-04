@@ -115,18 +115,20 @@ if (isset($_POST['submit'])) {
 
                                                 <div class="form-group">
                                                     <label class="control-label">
-                                                        Chairman / Managing Director<span class="symbol required"></span>
-                                                    </label>
-                                                    <input type="text" class="form-control" id="client_name" name="client_name" required>
-                                                </div>
-
-
-                                                <div class="form-group">
-                                                    <label class="control-label">
                                                         Company Name<span class="symbol required"></span>
                                                     </label>
                                                     <input type="text" class="form-control" id="client_company" name="client_company" required>
                                                 </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Chairman / Managing Director<span class="symbol required"></span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="client_name" name="client_name">
+                                                </div>
+
+
+                                                
 
 
                                                 
@@ -141,7 +143,7 @@ if (isset($_POST['submit'])) {
                                                     <label class="control-label">
                                                         Contact <span class="symbol required"></span>
                                                     </label>
-                                                    <input type="text" required class="form-control" name="client_contact" id="client_contact">
+                                                    <input type="text" class="form-control" name="client_contact" id="client_contact">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label">

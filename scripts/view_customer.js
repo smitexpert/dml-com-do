@@ -73,7 +73,7 @@ $("#add_contact_person").submit(function(e){
     })
 })
 
-$(".table").DataTable();
+$(".contact_person_list").DataTable();
 
 function get_contact_person_list_table(){
     var company_id = $("#company_list").find(":selected").val();

@@ -175,7 +175,24 @@ $sql = "SELECT * FROM corporate_company WHERE assign_to='$logged_user'";
 												Visit History
 											</div>
 											<div class="panel-body">
-												
+												<div>
+													<table class="table" id="view-visit-history">
+														<tr>
+															<th>#</th>
+															<th>Date</th>
+															<th>Time</th>
+															<th>Comment</th>
+															<th>Status</th>
+														</tr>
+														<tr>
+															<th>1</th>
+															<td>12-09-2019</td>
+															<td>11:10</td>
+															<td>Jabo</td>
+															<td>Scheduled</td>
+														</tr>
+													</table>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -185,7 +202,24 @@ $sql = "SELECT * FROM corporate_company WHERE assign_to='$logged_user'";
 												Appointment History
 											</div>
 											<div class="panel-body">
-
+												<table class="table" id="view-app-history">
+													<tr>
+														<th>#</th>
+														<th>Con. Person</th>
+														<th>Date</th>
+														<th>Time</th>
+														<th>Comment</th>
+														<th>Status</th>
+													</tr>
+													<tr>
+														<th>1</th>
+														<td>Name Of Person</td>
+														<td>12-09-2019</td>
+														<td>11:10</td>
+														<td>Jabo</td>
+														<td>Scheduled</td>
+													</tr>
+												</table>
 											</div>
 										</div>
 									</div>

@@ -7,6 +7,8 @@ $db = new Database;
 include('track_url.php');
 include('dhl_track.php');
 include('fed_track.php');
+include('airborne_track.php');
+include('ocs_track.php');
 
 if(isset($_GET['awn'])){
     $awn = $_GET['awn'];
@@ -212,12 +214,16 @@ if(isset($_GET['awn'])){
 
 
                 <?php
-        if($principal == "DHL"){  
+        if(($principal == "DHL") && ($org_awn != "")){  
             
-            dhl_tracking($awn, $org_awn, $show_date);
+            dhl_tracking($org_awn);
             
         }elseif($principal == "FEDEX"){
             fedex_tracking($awn, $org_awn, $show_date);
+        }elseif($principal == "AIRBORNE"){
+            airborne_tracking($org_awn);
+        }elseif($principal == "OCS"){
+            ocs_tracking($org_awn);
         }else{
             ?>
                 <table class="table tbl_five">
