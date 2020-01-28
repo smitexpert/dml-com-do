@@ -92,7 +92,7 @@ $result = $db->link->query($query);
 
                                             <td class="rbtn">
                                                 <div class="">
-                                                    <a href="update_consignment.php?id=<?php echo $row['id']; ?>" class="btn btn-xs btn-teal tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                                                    <a href="update_consignment.php?id=<?php echo $row['id']; ?>" class="btn btn-xs btn-teal tooltips" data-placement="top" data-original-title="Edit" title="Update"><i class="fa fa-edit"></i></a>
                                                     <a id="<?php echo $row['id']; ?>" href="#" class="btn btn-xs btn-bricky tooltips rts" data-placement="top" data-original-title="Remove" title="Return to shipper"><i class="fa fa-share"></i></a>
                                                 </div>
                                             </td>

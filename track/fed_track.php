@@ -95,18 +95,7 @@ if(isset($configData['TrackDetails']['Events'])){
 //}
     ?>
 <table class="table tbl_five">
-    <tr>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Location</th>
-        <th>Activities</th>
-    </tr>
-    <tr>
-        <td><?php echo date('d M Y', strtotime($date_time['DATE'])) ?></td>
-        <td><?php echo date('H:i: A', strtotime($date_time['TIME'])) ?></td>
-        <td>DHAKA-BGD</td>
-        <td>Shipment picked up</td>
-    </tr>
+
 
     <?php
     
@@ -148,31 +137,7 @@ if(isset($configData['TrackDetails']['Events'])){
 </table>
 
 <?php
-
-//WC [Description] => With delivery courier
-//OK [Description] => Delivered - Signed for by
-
-//foreach($configData as $child) {
-// echo '<pre>';  print_r($child);
-//}
     
-    }else{
-    ?>
-<table class="table tbl_five">
-    <tr>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Location</th>
-        <th>Activities</th>
-    </tr>
-    <tr>
-        <td><?php echo date('d M Y', strtotime($date_time['DATE'])) ?></td>
-        <td><?php echo date('H:i: A', strtotime($date_time['TIME'])) ?></td>
-        <td>DHAKA-BGD</td>
-        <td>Shipment picked up</td>
-    </tr>
-</table>
-<?php
     }
 }
 

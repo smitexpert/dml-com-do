@@ -3,7 +3,7 @@ include('includes/header.php');
 
 
 if (isset($_POST['submit'])) {
-    $insertcourcompprice = $Courcompanyset->insertPrincipalPrice($_POST);
+    $insertcourcompprice = $Courcompanyset->insertPrincipalPrice($_POST['']);
 }
 
 // $query = "SELECT p.*,r.cour_comp_name,c.weight FROM tbl_principal_price as p,tbl_courier_companies as r,tbl_weight as c WHERE p.cour_company = r.cour_comp_id AND p.unit = c.weight_id";

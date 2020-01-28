@@ -44,6 +44,14 @@ class Session{
         }
      }
 
+     public static function checkCorporateSession(){
+      self::init();
+      if (self::get("corporate_login")== false) {
+       self::destroy();
+       header("Location:../client_login.php");
+      }
+   }
+
      public static function checkLogin(){
         self::init();
         if (self::get("login")== true) {

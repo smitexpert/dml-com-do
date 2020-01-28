@@ -62,6 +62,10 @@ function getTrackUrl($val, $awn){
             'name'  => 'GULF WORLDWIDE EXPRESS',
             'url'   => 'http://www.gulfworldwideexpress.com/ShipmentTrackSingle.aspx?textfield='.$awn.'&radiobutton=SB',
         ],
+        'DML' => [
+            'name'  => 'DML OWN SERVICE',
+            'url'   => '#',
+        ],
     ];
     
     

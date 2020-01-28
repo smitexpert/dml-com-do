@@ -132,78 +132,6 @@ if(isset($_GET['awn'])){
       } 
 ?>
 
-<!--<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-title">
-                <h2>Shipper Info:</h2>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <th style="width: 25%;">Shipper Name</th>
-                                    <th style="width: 3px;">:</th>
-                                    <td><?php echo $row['shipper_name']; ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Origin</th>
-                                    <th>:</th>
-                                    <td><?php echo $row['origin']; ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Ship Content</th>
-                                    <th>:</th>
-                                    <td><?php echo $row['ship_content']; ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Pcs</th>
-                                    <th>:</th>
-                                    <td><?php echo $row['pcs']; ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Booking Date</th>
-                                    <th>:</th>
-                                    <td><?php $booking_date=$row['booking_date']; echo date('d M Y', strtotime($booking_date)); ?></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-title">
-                <h2>Consignee Info:</h2>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <th style="width: 28%;">Consignee Name</th>
-                                    <th style="width: 5px;">:</th>
-                                    <td><?php echo $row['consignee_name']; ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Destination</th>
-                                    <th>:</th>
-                                    <td><?php echo $row['destination']; ?></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
-
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -215,14 +143,141 @@ if(isset($_GET['awn'])){
 
                 <?php
         if(($principal == "DHL") && ($org_awn != "")){  
-            
+            ?>
+                <table class="table tbl_five">
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                        <th>Activities</th>
+                    </tr>
+                    <?php
+                        $sql = "SELECT * FROM test_track_update WHERE dml_awn='$awn' ORDER BY id DESC";
+                        $query = $db->link->query($sql);
+                        if($query->num_rows > 0){
+                            while($row = $query->fetch_assoc()){
+                                ?>
+                                    <tr>
+                                        <td><?php echo date('d-m-Y', strtotime($row['date'])); ?></td>
+                                        <td><?php echo $row['time']; ?></td>
+                                        <td><?php echo $row['location']; ?></td>
+                                        <td><?php echo $row['activities']; ?></td>
+                                    </tr>
+                                <?php
+                            }
+                        }
+                    ?>
+                    <tr>
+                        <td><?php echo date('d M Y', strtotime($show_date['DATE'])) ?></td>
+                        <td><?php echo date('H:i: A', strtotime($show_date['TIME'])) ?></td>
+                        <td>DHAKA-BGD</td>
+                        <td>Shipment picked up</td>
+                    </tr>
+                </table>
+                <?php
             dhl_tracking($org_awn);
             
         }elseif($principal == "FEDEX"){
+            ?>
+                <table class="table tbl_five">
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                        <th>Activities</th>
+                    </tr>
+                    <?php
+                        $sql = "SELECT * FROM test_track_update WHERE dml_awn='$awn' ORDER BY id DESC";
+                        $query = $db->link->query($sql);
+                        if($query->num_rows > 0){
+                            while($row = $query->fetch_assoc()){
+                                ?>
+                                    <tr>
+                                        <td><?php echo date('d-m-Y', strtotime($row['date'])); ?></td>
+                                        <td><?php echo $row['time']; ?></td>
+                                        <td><?php echo $row['location']; ?></td>
+                                        <td><?php echo $row['activities']; ?></td>
+                                    </tr>
+                                <?php
+                            }
+                        }
+                    ?>
+                    <tr>
+                        <td><?php echo date('d M Y', strtotime($show_date['DATE'])) ?></td>
+                        <td><?php echo date('H:i: A', strtotime($show_date['TIME'])) ?></td>
+                        <td>DHAKA-BGD</td>
+                        <td>Shipment picked up</td>
+                    </tr>
+                </table>
+                <?php
             fedex_tracking($awn, $org_awn, $show_date);
         }elseif($principal == "AIRBORNE"){
+            ?>
+                <table class="table tbl_five">
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                        <th>Activities</th>
+                    </tr>
+                    <?php
+                        $sql = "SELECT * FROM test_track_update WHERE dml_awn='$awn' ORDER BY id DESC";
+                        $query = $db->link->query($sql);
+                        if($query->num_rows > 0){
+                            while($row = $query->fetch_assoc()){
+                                ?>
+                                    <tr>
+                                        <td><?php echo date('d-m-Y', strtotime($row['date'])); ?></td>
+                                        <td><?php echo $row['time']; ?></td>
+                                        <td><?php echo $row['location']; ?></td>
+                                        <td><?php echo $row['activities']; ?></td>
+                                    </tr>
+                                <?php
+                            }
+                        }
+                    ?>
+                    <tr>
+                        <td><?php echo date('d M Y', strtotime($show_date['DATE'])) ?></td>
+                        <td><?php echo date('H:i: A', strtotime($show_date['TIME'])) ?></td>
+                        <td>DHAKA-BGD</td>
+                        <td>Shipment picked up</td>
+                    </tr>
+                </table>
+                <?php
             airborne_tracking($org_awn);
         }elseif($principal == "OCS"){
+            ?>
+                <table class="table tbl_five">
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                        <th>Activities</th>
+                    </tr>
+                    <?php
+                        $sql = "SELECT * FROM test_track_update WHERE dml_awn='$awn' ORDER BY id DESC";
+                        $query = $db->link->query($sql);
+                        if($query->num_rows > 0){
+                            while($row = $query->fetch_assoc()){
+                                ?>
+                                    <tr>
+                                        <td><?php echo date('d-m-Y', strtotime($row['date'])); ?></td>
+                                        <td><?php echo $row['time']; ?></td>
+                                        <td><?php echo $row['location']; ?></td>
+                                        <td><?php echo $row['activities']; ?></td>
+                                    </tr>
+                                <?php
+                            }
+                        }
+                    ?>
+                    <tr>
+                        <td><?php echo date('d M Y', strtotime($show_date['DATE'])) ?></td>
+                        <td><?php echo date('H:i: A', strtotime($show_date['TIME'])) ?></td>
+                        <td>DHAKA-BGD</td>
+                        <td>Shipment picked up</td>
+                    </tr>
+                </table>
+                <?php
             ocs_tracking($org_awn);
         }else{
             ?>
@@ -233,6 +288,22 @@ if(isset($_GET['awn'])){
                         <th>Location</th>
                         <th>Activities</th>
                     </tr>
+                    <?php
+                        $sql = "SELECT * FROM test_track_update WHERE dml_awn='$awn' ORDER BY id DESC";
+                        $query = $db->link->query($sql);
+                        if($query->num_rows > 0){
+                            while($row = $query->fetch_assoc()){
+                                ?>
+                                    <tr>
+                                        <td><?php echo date('d-m-Y', strtotime($row['date'])); ?></td>
+                                        <td><?php echo $row['time']; ?></td>
+                                        <td><?php echo $row['location']; ?></td>
+                                        <td><?php echo $row['activities']; ?></td>
+                                    </tr>
+                                <?php
+                            }
+                        }
+                    ?>
                     <tr>
                         <td><?php echo date('d M Y', strtotime($show_date['DATE'])) ?></td>
                         <td><?php echo date('H:i: A', strtotime($show_date['TIME'])) ?></td>
